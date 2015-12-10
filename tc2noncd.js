@@ -44,7 +44,7 @@ var map;
       ) {
 
 
-		//WipeIn/Out show and hide buttons;
+		//1. WipeIn/Out show and hide buttons;
 		var togglerChars = new Toggler({
 			node: "Chars",
 			showFunc: coreFx.wipeIn,
@@ -67,7 +67,7 @@ var map;
 		});
 
 
-		//Load map
+		//2. Load map
 
          map = new Map("map", {
             basemap: "streets",//"satellite",
@@ -77,7 +77,9 @@ var map;
 
          //ArcGIS Online feature service showing Mahattan Tc1 lots
          var layer = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd122015/FeatureServer/0", {
-            outFields: ["*"]
+            outFields: ["*"],
+            maxScale:1000,
+            minScale:5000
          });
          layer.maxScale=1000;
 		 layer.minScale=5000;
@@ -87,7 +89,7 @@ var map;
  		 layer.setRenderer(renderer);
 
 
-
+        //Neighborhood layer
          var layer_n = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/neigh/FeatureServer/0", {
             outFields: ["*"],
 			minScale: 300000,
@@ -98,10 +100,25 @@ var map;
 		 var rendererN = new SimpleRenderer(symbol);
  		 layer_n.setRenderer(rendererN);
 
-
+        //Condo Main layer
+         var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_cdmain122015/FeatureServer/0", {
+            outFields: ["*"],
+            maxScale:1000,
+            minScale:5000
+         });
+         layercdm.maxScale=1000;
+    	 layercdm.minScale=5000;
+         var symbol2 = new SimpleFillSymbol().setColor(new Color([0,108,108,0.15]));
+		 symbol2.setOutline(new SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new Color([0,57,89]), 2));
+		 var renderer = new SimpleRenderer(symbol2);
+ 		 layercdm.setRenderer(renderer);
+          
+        //Add layers to map
+        map.addLayer(layercdm);
         map.addLayer(layer_n);
         map.addLayer(layer);
 
+        //3. Set labels for nbhd layer;
         var labelField = "nbhdcaps";
 
         // create a renderer for the states layer to override default symbology
@@ -124,7 +141,7 @@ var map;
 		//Info Window: set size
         map.infoWindow.resize(245,300);
 
-		//Hover popup window set up
+		//4.a. Hover popup window set up
         dialog = new TooltipDialog({
           id: "tooltipDialog",
 
@@ -152,7 +169,7 @@ var map;
 
 
 
-		///SEARCH FUNCTION
+		///5. SEARCH FUNCTION
         //Create search widget
         var search = new Search({
           map: map,
@@ -175,7 +192,7 @@ var map;
              exactMatch: true,
              enableSuggestions: false,
              outFields: ["*"],
-             zoomScale: 10000,
+             //zoomScale: 10000,
              name: "Search by Block/lot",
 
               //Create an InfoTemplate and include three fields
@@ -302,7 +319,7 @@ var map;
 					}
 		}
 
-		//add for search on click
+		//5.b. add for search on click
 		function MapClickSearchHanlder(evt){
 
 
@@ -313,7 +330,7 @@ var map;
 		  search.search();
 		}
 
-		///HOVER FUNCTION
+		///4.b. HOVER FUNCTION
         //listen for when the onMouseOver event fires on the layer
         //when fired, create a new graphic with the geometry from the event.graphic and add it to the maps graphics layer
         layer.on("mouse-over", function(evt){
@@ -331,8 +348,9 @@ var map;
             x: evt.pageX,
             y: evt.pageY
           });
+          //ADD IF THEN FOR CONDO MAIN, LET T2=CONDOKEY
           var t2 = "${BORO}/${BLOCK}/${LOT}"; //add for search on click
-		  curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click
+		  curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click(4.b)
        	    map.setMapCursor("pointer"); //Add mouse change at hover
         });
         function closeDialog() {
@@ -346,7 +364,7 @@ var map;
 
 
 
-		//Show hide info box button;
+		//1.b. Show hide info box button;
 		var isClicked = false;
 		var toggler = new Toggler({
 		node: "AboutInfo"
