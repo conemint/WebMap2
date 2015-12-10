@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html dir="ltr">
+<!-->12.10.2015: "Apply sand box example of search on multiple sources on condo suffix and non condo data, get rid of default geocoder<-->
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+   <title>ArcGIS API for JavaScript | Search widget with multiple sources</title>
+   <link rel="stylesheet" href="https://js.arcgis.com/3.15/dijit/themes/claro/claro.css">
+   <link rel="stylesheet" href="https://js.arcgis.com/3.15/esri/css/esri.css">
+   <style>
+      html,
+      body,
+      #map {
+         height: 100%;
+         width: 100%;
+         margin: 0;
+         padding: 0;
+      }
+      #search {
+         display: block;
+         position: absolute;
+         z-index: 2;
+         top: 20px;
+         left: 74px;
+      }
+   </style>
+
+   </script>
+<script src="https://js.arcgis.com/3.15/"></script>
+   <script>
+      require([
+        "esri/map", "esri/dijit/Search", "esri/layers/FeatureLayer", "esri/InfoTemplate", "dojo/domReady!"
+      ], function (Map, Search, FeatureLayer, InfoTemplate) {
+         var map = new Map("map", {
+            basemap: "streets",
+            center: [-74.005941, 40.712784], // lon, lat
+            zoom: 17
+         });
+
+         var s = new Search({
+            enableButtonMode: false, //this enables the search widget to display as a single button
+            enableLabel: true,
+            enableInfoWindow: true,
+            showInfoWindowOnSelect: true,
+			zoomScale: 5000,
+			allPlaceholder: "Choose search type",
+            map: map
+         }, "search");
+
+         var sources = [];
+
+         //Push the sources used to search, by default the ArcGIS Online World geocoder is included. In addition there is a feature layer of US congressional districts. The districts search is set up to find the "DISTRICTID". Also, a feature layer of senator information is set up to find based on the senator name. 
+
+         sources.push({
+            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd122015/FeatureServer/0"),
+            searchFields: ["bl_sp"],
+            displayField: "bl_sp",
+            exactMatch: false,
+            outFields: ["*"],
+            name: "noncondo",
+            placeholder: "126/27",
+            maxResults: 6,
+            maxSuggestions: 6,
+
+            //Create an InfoTemplate and include three fields
+                         infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
+					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
+					+"</br>Total Units:${resunit}</br>"
+					+"</br>Gross SQFT:${ttlsqft} SQFT</br>"
+					+"</br>Stories:${story:NumberFormat}</br>"
+					+"</br>Year Built:${AYB}</br>"
+					+"</br>Residential SQFT:${ressqft} SQFT</br></br>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
+					),
+            enableSuggestions: true,
+            minCharacters: 0
+         });
+
+         sources.push({
+            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdmainf/FeatureServer/0"),
+            searchFields: ["bl_sp"],
+            displayField: "bl_sp",
+            exactMatch: false,
+            name: "Condo suffix",
+            outFields: ["*"],
+            placeholder: "134/7503/R1",
+            maxResults: 6,
+            maxSuggestions: 6,
+
+            //Create an InfoTemplate
+
+                          infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
+					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
+					+"</br>Total Units:${resunit}</br>"
+					+"</br>Gross SQFT:${ttlsqft} SQFT</br>"
+					+"</br>Stories:${story:NumberFormat}</br>"
+					+"</br>Year Built:${AYB}</br>"
+					+"</br>Residential SQFT:${ressqft} SQFT</br></br>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
+					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
+					+"<div> </br><a href='http://maps.googleapis.com/maps/api/streetview?location=${Street_Num} ${Street_Nam}, new york, ny&size=600x400&fov=360&heading=235&pitch=10' target='_blank'>Google Street View</a></div>"
+					
+					),
+            
+            enableSuggestions: true,
+            minCharacters: 0
+         });
+
+         //Set the sources above to the search widget
+         s.set("sources", sources);
+
+         s.startup();
+
+      });
+   </script>
+</head>
+
+<body>
+   <div id="search"></div>
+   <div id="map"></div>
+</body>
+
+</html>
