@@ -1,0 +1,274 @@
+      html,
+      body{
+         padding: 0;
+         margin: 0;
+         height: 100%;
+         width: 100%;
+      }
+      #mapcan{
+         padding: 0;
+         margin: 0;
+         height: 100%;
+         width: 100%;
+      }
+	  #map{
+         padding: 0;
+         margin: 0;
+         height: 100%;
+         width: 100%;
+      }
+
+	  #chartable, td, th{
+		border-spacing:0px;
+		border: 0px solid #0052A3;
+		border-collapse: collapse;
+		color: #444;
+	  }
+	  #chartable{
+		margin-left: 5px;
+		margin-right: 5px;
+		margin-bottom: 10px;
+		margin-top: -10px;
+	  }
+	  #intable{
+	  	border-spacing:0px;
+		border: 0px solid #0052A3;
+		border-collapse: collapse;
+		color: #444;
+	  }
+	  #Title{
+		border: 0px solid #0052A3;
+		background-color: #0052A3;
+		width: 100%;
+	  }
+	  th{color: #292C2E;
+         height: auto;
+         font-family: arial;
+         font-weight: bold;
+		 background-color: #CEDAE6;
+		 }
+	  .dataheads{
+
+		font-family: arial;
+		font-size: 15px;
+		font-weight: bold;
+	  }
+	  .datah2{
+		font-family: arial;
+		font-size: 12px;
+		font-weight: bold;
+	  }
+	  .datanames{
+		font-family: arial;
+		font-size: 12px;
+		text-align: left;
+	  }
+	  .dataitem{
+		font-family: arial;
+		font-size: 12px;
+		text-align: left;
+	  }
+	  .toggb,#toggleButton{
+		font-family: "arial" ;
+		font-weight: bolder;
+		z-index: 50;
+		backgound-color:#CEDAE6;
+		border: solid 0px #001B33;
+		border-radius: 4px;
+	  }
+	  #toggleButton{
+		position: absolute;
+		top:130px;
+		left: 20px;
+		padding: 5px;
+		padding-left:10px;
+		padding-right:10px;
+		border: solid 1px #001B33;
+		border-radius: 40px;
+		width: 30px;
+		}
+	  #toggleButtonHome{
+		position: absolute;
+		top:165px;
+		left: 20px;
+		padding: 5px;
+		padding-left:10px;
+		padding-right:10px;
+		border: solid 1px #001B33;
+		border-radius: 40px;
+		width: 30px;
+		z-index: 50;
+		}
+	  #hideButtoncss{
+		left: 0px;
+		font-size: 15px;
+		border: solid 0px #CEDAE6;
+		background-color:#CEDAE6;
+		width: 25px;
+		font-family: "arial" ;
+		font-weight: bolder;
+		vertical-align: top;
+		}
+	  #showButtoncss{
+		position: absolute;
+		right: 5px;
+		bottom: 35px;
+		z-index:45;
+		border: solid 1px #001B33;
+		border-radius: 4px;
+		font-size: 15px;
+		background-color:#CEDAE6;
+		width: 30px;
+		font-family: "arial" ;
+		font-weight: bolder;
+		}
+	  #showtext{
+		position: absolute;
+		right: 38px;
+		bottom: 35px;
+		z-index:45;
+		font-family: arial;
+        font-weight: bold;
+        font-size: 12px;
+		font-style: italic;
+		color: #444;
+	  }
+	  #borderContainer {
+		 width: 100%;
+		 height: 100%;
+	  }
+	  #leftbox{
+	  background-color: #EBF0F5;
+	  }
+	  #AboutInfo{
+		 top:130px;
+		 left: 50px;
+         color: #444;
+         height: auto;
+         font-family: arial;
+         font-weight: bold;
+         font-size: 12px;
+         left: 69px;
+         margin: 5px;
+         padding: 10px;
+         position: absolute;
+         width: 260px;
+         z-index: 0;
+         border: solid 1px #001B33;
+         border-radius: 4px;
+         background-color: #EBF0F5;
+	  }
+      #info {
+         top: 31px;
+         color: #444;
+         height: auto;
+         font-family: arial;
+         font-weight: bold;
+         font-size: 12px;
+         left: 60px;
+         margin: 5px;
+         padding: 10px;
+         position: absolute;
+         width: 200px;
+         z-index: 40;
+         border: solid 1px #001B33;
+         border-radius: 4px;
+         background-color: #EBF0F5;
+      }
+        #boro {
+         top: 85px;
+         color: #444;
+         height: auto;
+         font-family: arial;
+         font-weight: bold;
+         font-size: 11px;
+         left: 60px;
+         height: 12px;
+         margin: 5px;
+         padding: 10px;
+         position: absolute;
+         width: 10px;
+         z-index: 40;
+         border: solid 1px #001B33;
+         border-radius: 4px;
+         background-color: #EBF0F5;
+      }
+	  #Chars {
+         display: block;
+         position: absolute;
+         z-index: 50;
+         top: 30px;
+         right: 0px;
+		 border-radius: 4px;
+		 border: solid 1px #001B33;
+		 background-color: #EBF0F5;
+		 overflow-y: auto;
+		 overflow-x: hidden;
+		 height: 100%;
+      }
+      #search {
+         display: block;
+         position: absolute;
+         z-index: 40;
+         top: 90px;
+         left: 100px;
+      }
+
+	  #BasemapToggle {
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+		z-index: 45;
+	  }
+
+      /*Beginning of search box modifications*/
+      .arcgisSearch .searchClear {
+         background-color: #EBF0F5;
+      }
+      .arcgisSearch .esriIconZoom {
+         background-image: url("http://www1.nyc.gov/assets/finance/jump/property-maps/find.png");
+         background-size: 20px 20px;
+      }
+      .esriIconZoom:before {
+         content: "";
+      }
+      .arcgisSearch .searchGroup .searchInput{
+         border: 1px solid #001B33;
+         background-color: #EBF0F5;
+          width: 120px;
+      }
+      .arcgisSearch .suggestionsMenu {
+         border: 1px solid #001B33;
+         background-color: #EBF0F5;
+         left:-35px;
+         width: 215px;
+      }
+      .arcgisSearch .searchBtn,
+      .arcgisSearch .noResultsMenu
+      {
+         border: 1px solid #001B33;
+         background-color: #EBF0F5;
+      }
+      .arcgisSearch .searchGroup .searchInput{
+          width: 100px;
+      }
+      .arcgisSearch .noValueText {
+         color: red;
+         font-size: 14px;
+      }
+
+      /*Beginning of popup infoWindow modifications*/
+      .esriPopup .titlePane {
+         background-color: #003D7A;
+         border-bottom: 1px solid #002952;
+         font-weight: bold;
+      }
+      .esriPopup a {
+         color: #006CA6;
+      }
+      .esriPopup .contentPane,
+      .esriPopup .actionsPane,
+      .esriPopup .pointer,
+      .esriPopup .outerPointer {
+         background-color: #EBF0F5;
+      }
