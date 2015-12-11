@@ -23,20 +23,60 @@
          top: 20px;
          left: 74px;
       }
+	  #turnOnOff{
+		font-family: "arial" ;
+		font-weight: bolder;
+		z-index: 50;
+		backgound-color:#CEDAE6;
+		border: solid 0px #001B33;
+		border-radius: 4px;
+		 position: absolute;
+		 top: 2px;
+		 left: 74px;
+	  }
    </style>
 
    </script>
 <script src="https://js.arcgis.com/3.15/"></script>
    <script>
       require([
-        "esri/map", "esri/dijit/Search", "esri/layers/FeatureLayer", "esri/InfoTemplate", "dojo/domReady!"
-      ], function (Map, Search, FeatureLayer, InfoTemplate) {
+        "esri/map", "esri/dijit/Search", "esri/layers/FeatureLayer", "dijit/form/ToggleButton","esri/InfoTemplate", "dojo/domReady!"
+      ], function (Map, Search, FeatureLayer, ToggleButton,InfoTemplate) {
          var map = new Map("map", {
             basemap: "streets",
             center: [-74.005941, 40.712784], // lon, lat
             zoom: 17
          });
 
+		 //ArcGIS Online feature service showing Mahattan Tc2 lots
+         var layer = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd122015/FeatureServer/0", {
+            outFields: ["*"],
+            maxScale:1000,
+            minScale:5000,
+			id:'noncd',
+			infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
+					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
+					+"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
+					+"</br>Total Units:${resunit}</br>"
+					+"</br>Gross SQFT:${ttlsqft} SQFT</br>"
+					+"</br>Stories:${story:NumberFormat}</br>"
+					+"</br>Year Built:${AYB}</br>"
+					+"</br>Residential SQFT:${ressqft} SQFT</br></br>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
+					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
+					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
+					),
+         });
+		 //Condo Suffix layer
+         var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdmainf/FeatureServer/0", {
+            outFields: ["*"],
+            maxScale:1000,
+            minScale:5000,
+			id:'cd'
+         });
+		//Add layers to map
+        map.addLayers([layer,layercdm]);
          var s = new Search({
             enableButtonMode: false, //this enables the search widget to display as a single button
             enableLabel: true,
@@ -44,6 +84,8 @@
             showInfoWindowOnSelect: true,
 			zoomScale: 1000,
 			allPlaceholder: "Choose search type",
+			activeSourceIndex:'cd',
+			enableSearchingAll: false,
             map: map
          }, "search");
 
@@ -111,14 +153,35 @@
 
          //Set the sources above to the search widget
          s.set("sources", sources);
-
+		s.set("activeSourceIndex", 1);
          s.startup();
-
+		 
+		 new ToggleButton({
+				  showLabel: true,
+				  onChange: function(val){            
+					if(val == true){
+					  layercdm.setVisibility(false);
+					  layer.setVisibility(true);
+					  this.set('label', 'Show and Search on  Condo');
+					  s.set("activeSourceIndex", 0);
+				   }
+				   else{
+					layercdm.setVisibility(true); 
+					layer.setVisibility(false);					
+					this.set('label', 'Show and Search on non Condo');
+					s.set("activeSourceIndex", 1);
+				   }
+				  },
+				  label: "Show and Search on non Condo"
+				}, "turnOnOff");
       });
+
+
    </script>
 </head>
 
 <body>
+	<button id="turnOnOff"></button>
    <div id="search"></div>
    <div id="map"></div>
 </body>
