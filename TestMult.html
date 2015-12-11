@@ -20,15 +20,22 @@
          display: block;
          position: absolute;
          z-index: 2;
-         top: 20px;
+         top: 25px;
          left: 74px;
       }
+	  span.dijit.dijitReset.dijitInline.dijitToggleButton {
+			display: inline-block;
+			border: 0;
+			padding: 0;
+			vertical-align: middle;
+			position: absolute;
+		}
 	  #turnOnOff{
 		font-family: "arial" ;
 		font-weight: bolder;
 		z-index: 50;
 		backgound-color:#CEDAE6;
-		border: solid 0px #001B33;
+		border: solid 1px #001B33;
 		border-radius: 4px;
 		 position: absolute;
 		 top: 2px;
@@ -75,8 +82,14 @@
             minScale:5000,
 			id:'cd'
          });
+		 //Condo Suffix layer
+         var layercds = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdsuff/FeatureServer/0", {
+            outFields: ["*"],
+            maxScale:1000,
+            minScale:5000
+         });
 		//Add layers to map
-        map.addLayers([layer,layercdm]);
+        map.addLayers([layer,layercdm,layercds]);
          var s = new Search({
             enableButtonMode: false, //this enables the search widget to display as a single button
             enableLabel: true,
@@ -153,7 +166,7 @@
 
          //Set the sources above to the search widget
          s.set("sources", sources);
-		s.set("activeSourceIndex", 1);
+		 s.set("activeSourceIndex", 1);
          s.startup();
 		 
 		 new ToggleButton({
@@ -181,7 +194,7 @@
 </head>
 
 <body>
-	<button id="turnOnOff"></button>
+	<button id="turnOnOff">Show and Search on non Condo</button>
    <div id="search"></div>
    <div id="map"></div>
 </body>
