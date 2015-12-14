@@ -41,14 +41,22 @@
 		 top: 2px;
 		 left: 74px;
 	  }
+	  .esriPopup .action.zoomTo { display: none; }
+	  #BasemapToggle {
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+		z-index: 45;
+	  }
    </style>
 
    </script>
 <script src="https://js.arcgis.com/3.15/"></script>
    <script>
       require([
-        "esri/map", "esri/dijit/Search", "esri/layers/FeatureLayer", "dijit/form/ToggleButton","esri/InfoTemplate", "dojo/domReady!"
-      ], function (Map, Search, FeatureLayer, ToggleButton,InfoTemplate) {
+        "esri/map","esri/dijit/BasemapToggle",
+		"esri/dijit/Search", "esri/layers/FeatureLayer", "dijit/form/ToggleButton","esri/InfoTemplate", "dojo/domReady!"
+      ], function (Map, BasemapToggle, Search, FeatureLayer, ToggleButton,InfoTemplate) {
          var map = new Map("map", {
             basemap: "streets",
             center: [-74.005941, 40.712784], // lon, lat
@@ -90,6 +98,16 @@
          });
 		//Add layers to map
         map.addLayers([layer,layercdm,layercds]);
+		//SET UP BASEMAP TOGGLE
+		var toggle = new BasemapToggle({
+			map: map,
+			basemap: "satellite"
+		}, "BasemapToggle");
+		toggle.startup();
+		
+		
+		
+		//Search
          var s = new Search({
             enableButtonMode: false, //this enables the search widget to display as a single button
             enableLabel: true,
@@ -110,9 +128,9 @@
             featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0"),
             searchFields: ["bl_sp"],
             displayField: "bl_sp",
-            exactMatch: false,
+            exactMatch: true,
             outFields: ["*"],
-            name: "noncondo",
+            name: "Search on nonCondo",
             placeholder: "126/27",
             maxResults: 3,
             maxSuggestions: 3,
@@ -139,8 +157,8 @@
             featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdmainf/FeatureServer/0"),
             searchFields: ["bl_sp"],
             displayField: "bl_sp",
-            exactMatch: false,
-            name: "Condo suffix",
+            exactMatch: true,
+            name: "Search on Condo suffix",
             outFields: ["*"],
             placeholder: "134/7503/R1",
             maxResults: 3,
@@ -148,7 +166,7 @@
 
             //Create an InfoTemplate
 
-                          infoTemplate: new InfoTemplate("Parcel: ${Boro}/${Block}/${Lot}/${Unit}",
+            /*              infoTemplate: new InfoTemplate("Parcel: ${Boro}/${Block}/${Lot}/${Unit}",
 					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
 					+"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
 					+"</br>Condo Number:${Parcel_ID}</br>"
@@ -158,7 +176,7 @@
 					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
 					+"<div> </br><a href='http://maps.googleapis.com/maps/api/streetview?location=${Street_Num} ${Street_Nam}, new york, ny&size=600x400&fov=360&heading=235&pitch=10' target='_blank'>Google Street View</a></div>"
 					
-					),
+					),*/
             
             enableSuggestions: true,
             minCharacters: 0
@@ -196,7 +214,9 @@
 <body>
 	<button id="turnOnOff">Show and Search on non Condo</button>
    <div id="search"></div>
-   <div id="map"></div>
+   <div id="map">
+		<div id="BasemapToggle"></div>
+   </div>
 </body>
 
 </html>
