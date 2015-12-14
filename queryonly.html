@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Query State Info without Map</title>
+
+    <script src="https://js.arcgis.com/3.15/"></script>
+    <script>
+      require([
+        "dojo/dom", "dojo/on",
+        "esri/tasks/query", "esri/tasks/QueryTask", "dojo/domReady!"
+      ], function (dom, on, Query, QueryTask) {
+
+        var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdsuff/FeatureServer/0");
+
+        var query = new Query();
+        query.returnGeometry = false;
+        query.outFields = ["*"];
+
+        on(dom.byId("execute"), "click", execute);
+
+        function execute () {
+          query.text = dom.byId("blu_sp").value;
+          queryTask.execute(query, showResults);
+        }
+
+        function showResults (results) {
+          var resultItems = [];
+          var resultCount = results.features.length;
+          for (var i = 0; i < resultCount; i++) {
+            var featureAttributes = results.features[i].attributes;
+            for (var attr in featureAttributes) {
+              resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
+            }
+            resultItems.push("<br>");
+          }
+          dom.byId("info").innerHTML = resultItems.join("");
+        }
+      });
+    </script>
+  </head>
+
+  <body>
+    US state name :
+    <input type="text" id="blu_sp" value="134/7503/R1">
+    <input id="execute" type="button" value="Get Details">
+    <br />
+    <br />
+    <div id="info" style="padding:5px; margin:5px; background-color:#eee;">
+    </div>
+  </body>
+</html>
