@@ -17,13 +17,15 @@
 
         var query = new Query();
         query.returnGeometry = false;
-        query.outFields = ["*"];
+        query.outFields = ["bcat","bc","Boro","Block","Lot","Unit","ttlsqft","ttlunit","ressqft","resunit", "comsqft","comunit","AYB","Zone_1","story","fmv", "Street_Num","Street_Nam","Structure","NBHD"];
 
         on(dom.byId("execute"), "click", execute);
 
         function execute () {
-          query.text = dom.byId("blu_sp").value;
-          queryTask.execute(query, showResults);
+			
+          //query.text = dom.byId("NBHD").value;
+          query.where = "CONDO_KEY = " + dom.byId("MatchOn").value;
+		  queryTask.execute(query, showResults,function(error){console.log(error);});
         }
 
         function showResults (results) {
@@ -43,8 +45,8 @@
   </head>
 
   <body>
-    US state name :
-    <input type="text" id="blu_sp" value="134/7503/R1">
+    US state name : 1/134/7503
+    <input type="text" id="MatchOn" value="1536">
     <input id="execute" type="button" value="Get Details">
     <br />
     <br />
