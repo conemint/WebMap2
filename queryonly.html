@@ -13,11 +13,12 @@
         "esri/tasks/query", "esri/tasks/QueryTask", "dojo/domReady!"
       ], function (dom, on, Query, QueryTask) {
 
-        var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdsuff/FeatureServer/0");
+        var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0");
 
         var query = new Query();
         query.returnGeometry = false;
-        query.outFields = ["bcat","bc","Boro","Block","Lot","Unit","ttlsqft","ttlunit","ressqft","resunit", "comsqft","comunit","AYB","Zone_1","story","fmv", "Street_Num","Street_Nam","Structure","NBHD"];
+        query.outFields = ["*"]
+		//query.outFields = ["bcat","bc","Boro","Block","Lot","Unit","ttlsqft","ttlunit","ressqft","resunit", "comsqft","comunit","AYB","Zone_1","story","fmv", "Street_Num","Street_Nam","Structure","NBHD"];
 
         on(dom.byId("execute"), "click", execute);
 
