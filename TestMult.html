@@ -38,7 +38,7 @@
 		border: solid 1px #001B33;
 		border-radius: 4px;
 		 position: absolute;
-		 top: 2px;
+		 top: 50px;
 		 left: 74px;
 	  }
 	  .esriPopup .action.zoomTo { display: none; }
@@ -55,8 +55,9 @@
    <script>
       require([
         "esri/map","esri/dijit/BasemapToggle",
-		"esri/dijit/Search", "esri/layers/FeatureLayer", "dijit/form/ToggleButton","esri/InfoTemplate", "dojo/domReady!"
-      ], function (Map, BasemapToggle, Search, FeatureLayer, ToggleButton,InfoTemplate) {
+		"esri/dijit/Search", "esri/layers/FeatureLayer", "dijit/form/ToggleButton","esri/InfoTemplate", "dojo/dom", "dojo/on","esri/tasks/query", "esri/tasks/QueryTask",
+		"dojo/domReady!"
+      ], function (Map, BasemapToggle, Search, FeatureLayer, ToggleButton,InfoTemplate,dom, on,Query, QueryTask) {
          var map = new Map("map", {
             basemap: "streets",
             center: [-74.005941, 40.712784], // lon, lat
@@ -84,7 +85,7 @@
 					),
          });
 		 //Condo Suffix layer
-         var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdmainf/FeatureServer/0", {
+         var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_cdmain122015/FeatureServer/0", {
             outFields: ["*"],
             maxScale:1000,
             minScale:5000,
@@ -97,7 +98,7 @@
             minScale:5000
          });
 		//Add layers to map
-        map.addLayers([layer,layercdm,layercds]);
+        map.addLayers([layer,layercdm]);
 		//SET UP BASEMAP TOGGLE
 		var toggle = new BasemapToggle({
 			map: map,
@@ -106,7 +107,8 @@
 		toggle.startup();
 		
 		
-		
+
+
 		//Search
          var s = new Search({
             enableButtonMode: false, //this enables the search widget to display as a single button
@@ -154,13 +156,13 @@
          });
 
          sources.push({
-            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdmainf/FeatureServer/0"),
-            searchFields: ["bl_sp"],
-            displayField: "bl_sp",
+            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_cdmain122015/FeatureServer/0"),
+            searchFields: ["CONDO_KEY"],
+            displayField: "CONDO_KEY",
             exactMatch: true,
-            name: "Search on Condo suffix",
+            name: "Search on Condo main",
             outFields: ["*"],
-            placeholder: "134/7503/R1",
+            placeholder: "1536",
             maxResults: 3,
             maxSuggestions: 3,
 
@@ -205,18 +207,48 @@
 				  },
 				  label: "Show and Search on non Condo"
 				}, "turnOnOff");
-      });
+      
+		 //Query1216
+		 //Initiate Query
+		var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0");
+		var query = new Query();
+		query.returnGeometry = false;
+		query.outFields = ["*"]
+		//Execute Query
+		on(dom.byId("execute"), "click", execute);
+		function execute () {
+		  query.where = "CONDO_KEY = 1536" ;
+		  queryTask.execute(query, showResults,function(error){console.log(error);});
+		}
+		function showResults (results) {
+		  var resultItems = [];
+		  var resultCount = results.features.length;
+		  for (var i = 0; i < resultCount; i++) {
+			var featureAttributes = results.features[i].attributes;
+			for (var attr in featureAttributes) {
+			  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
+			}
+			resultItems.push("<br>");
+		  }
+		  dom.byId("info").innerHTML = resultItems.join("");
+		}
+		
+	  
+	  });
 
 
    </script>
 </head>
 
 <body>
+  <!--input type="text" id="blu_sp" value="134/7503/R1"-->
+    <input id="execute" type="button" value="Get Details">
 	<button id="turnOnOff">Show and Search on non Condo</button>
    <div id="search"></div>
    <div id="map">
 		<div id="BasemapToggle"></div>
-   </div>
+   </div>   
+    <div id="info" style="padding:5px; margin:5px; background-color:#eee;">
 </body>
 
 </html>
