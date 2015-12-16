@@ -168,17 +168,14 @@
 
             //Create an InfoTemplate
 
-            /*              infoTemplate: new InfoTemplate("Parcel: ${Boro}/${Block}/${Lot}/${Unit}",
-					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
-					+"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
-					+"</br>Condo Number:${Parcel_ID}</br>"
-					+"<div></br> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
+                          infoTemplate: new InfoTemplate("Parcel: ${CONDO_KEY}",
+					"<div></br> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
 					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
 					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
 					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
 					+"<div> </br><a href='http://maps.googleapis.com/maps/api/streetview?location=${Street_Num} ${Street_Nam}, new york, ny&size=600x400&fov=360&heading=235&pitch=10' target='_blank'>Google Street View</a></div>"
 					
-					),*/
+					),
             
             enableSuggestions: true,
             minCharacters: 0
@@ -187,6 +184,21 @@
          //Set the sources above to the search widget
          s.set("sources", sources);
 		 s.set("activeSourceIndex", 1);
+		 
+		 var searchcd;
+		 s.on("search-results", function (e) {
+			var rs, h;
+			rs = e.results;
+			h = "";
+			if (rs[1] == null){
+				h = "<div> rs is null</div>";
+				return;
+			};
+			//h = inspect(rs[0][0].feature.attributes, 5, 0);
+			var attrs = rs[1][0].feature.attributes;
+			searchcd=attrs.CONDO_KEY;
+		});
+
          s.startup();
 		 
 		 new ToggleButton({
@@ -217,7 +229,7 @@
 		//Execute Query
 		on(dom.byId("execute"), "click", execute);
 		function execute () {
-		  query.where = "CONDO_KEY = 1536" ;
+		  query.where = "CONDO_KEY = "+searchcd ;
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
 		function showResults (results) {
