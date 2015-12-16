@@ -8,41 +8,48 @@
    <link rel="stylesheet" href="https://js.arcgis.com/3.15/dijit/themes/claro/claro.css">
    <link rel="stylesheet" href="https://js.arcgis.com/3.15/esri/css/esri.css">
    <style>
-      html,
-      body,
-      #map {
-         height: 100%;
-         width: 100%;
-         margin: 0;
-         padding: 0;
-      }
-      #search {
-         display: block;
-         position: absolute;
-         z-index: 2;
-         top: 25px;
-         left: 74px;
-      }
-	  span.dijit.dijitReset.dijitInline.dijitToggleButton {
-			display: inline-block;
-			border: 0;
-			padding: 0;
-			vertical-align: middle;
-			position: absolute;
-		}
-	  #turnOnOff{
-		font-family: "arial" ;
-		font-weight: bolder;
-		z-index: 50;
-		backgound-color:#CEDAE6;
-		border: solid 1px #001B33;
-		border-radius: 4px;
-		 position: absolute;
-		 top: 50px;
-		 left: 74px;
-	  }
-	  .esriPopup .action.zoomTo { display: none; }
-	  #BasemapToggle {
+    html, body, #borderContainer, #map {
+	  width: 100%;
+	  height: 100%;
+	}
+
+	html, body {
+	  margin: 0;
+	  overflow: hidden;
+	}
+
+	#tablePane, #mapPane, #toolsPane {
+	  padding: 0;
+	}
+
+	#toolsPane {
+	  width: 250px;
+	}
+
+	#tablePane {
+	  height: 200px;
+	}
+
+	#map progress {
+	  position: absolute;
+	  z-index: 1;
+	  width: 100%;
+	  bottom: 2em;
+	  left: 0;
+	}
+
+	/* Hide the progress bar when map is not updating */
+	#map:not([data-updating]) progress {
+	  display: none;
+	}
+
+	#search {
+	  position: absolute;
+	  z-index: 1;
+	  right: 0;
+	  top: 0;
+	}
+		  #BasemapToggle {
 		position: absolute;
 		bottom: 20px;
 		left: 20px;
@@ -53,24 +60,45 @@
    </script>
 <script src="https://js.arcgis.com/3.15/"></script>
    <script>
-      require([
-        "esri/map","esri/dijit/BasemapToggle",
-		"esri/dijit/Search", "esri/layers/FeatureLayer", "dijit/form/ToggleButton","esri/InfoTemplate", "dojo/dom", "dojo/on","esri/tasks/query", "esri/tasks/QueryTask",
+		require([
+	  "esri/map",
+	  "esri/dijit/BasemapToggle",
+	  "esri/layers/FeatureLayer",
+	  "esri/dijit/FeatureTable",
+	  "esri/dijit/LayerList",
+	  "esri/dijit/Search",
+	  "esri/InfoTemplate",
+	  "dojo/dom-construct",
+	   "dojo/dom", "dojo/on",
+	   "esri/tasks/query", 
+	  "esri/tasks/QueryTask",
+	  "dojo/parser",
+	  "dijit/TitlePane",
+	  "dijit/registry",
+	  "dijit/layout/BorderContainer",
+	  "dijit/layout/ContentPane",
+	  "dijit/form/ToggleButton",
 		"dojo/domReady!"
-      ], function (Map, BasemapToggle, Search, FeatureLayer, ToggleButton,InfoTemplate,dom, on,Query, QueryTask) {
+	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, parser, TitlePane,registry,
+	ToggleButton) {
+
+        "esri/map","esri/dijit/BasemapToggle",
+
+	  parser.parse();
+
          var map = new Map("map", {
             basemap: "streets",
             center: [-74.005941, 40.712784], // lon, lat
             zoom: 17
          });
-
+	  
 		 //ArcGIS Online feature service showing Mahattan Tc2 lots
          var layer = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd122015/FeatureServer/0", {
             outFields: ["*"],
             maxScale:1000,
             minScale:5000,
 			id:'noncd',
-			infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
+			/*infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
 					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
 					+"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
 					+"</br>Total Units:${resunit}</br>"
@@ -82,7 +110,7 @@
 					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
 					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
 					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
-					)
+					),*/
          });
 		 //Condo Suffix layer
          var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_cdmain122015/FeatureServer/0", {
@@ -91,12 +119,7 @@
             minScale:5000,
 			id:'cd'
          });
-		 //Condo Suffix layer
-         var layercds = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/mhcdsuff/FeatureServer/0", {
-            outFields: ["*"],
-            maxScale:1000,
-            minScale:5000
-         });
+
 		//Add layers to map
         map.addLayers([layer,layercdm]);
 		//SET UP BASEMAP TOGGLE
@@ -106,9 +129,6 @@
 		}, "BasemapToggle");
 		toggle.startup();
 		
-		
-
-
 		//Search
          var s = new Search({
             enableButtonMode: false, //this enables the search widget to display as a single button
@@ -198,28 +218,11 @@
 			var attrs = rs[1][0].feature.attributes;
 			searchcd=attrs.CONDO_KEY;
 		});
+		
 
          s.startup();
+
 		 
-		 new ToggleButton({
-				  showLabel: true,
-				  onChange: function(val){            
-					if(val == true){
-					  layercdm.setVisibility(false);
-					  layer.setVisibility(true);
-					  this.set('label', 'Show and Search on  Condo');
-					  s.set("activeSourceIndex", 0);
-				   }
-				   else{
-					layercdm.setVisibility(true); 
-					layer.setVisibility(false);					
-					this.set('label', 'Show and Search on non Condo');
-					s.set("activeSourceIndex", 1);
-				   }
-				  },
-				  label: "Show and Search on non Condo"
-				}, "turnOnOff");
-      
 		 //Query1216
 		 //Initiate Query
 		var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0");
@@ -229,38 +232,76 @@
 		//Execute Query
 		on(dom.byId("execute"), "click", execute);
 		function execute () {
+		dojo.empty("toolsPane");
 		  query.where = "CONDO_KEY = "+searchcd ;
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
 		function showResults (results) {
 		  var resultItems = [];
 		  var resultCount = results.features.length;
+			domConstruct.empty("toolsPane");
+			var containerNode = dojo.byId("toolsPane");
 		  for (var i = 0; i < resultCount; i++) {
 			var featureAttributes = results.features[i].attributes;
 			for (var attr in featureAttributes) {
 			  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
 			}
 			resultItems.push("<br>");
+			var titlePane1 = new TitlePane({
+				id: "titlePane"+i,
+				open: false, 
+				title: featureAttributes.bblu_sp,
+				content: resultItems           
+			}, domConstruct.create('div', {}, containerNode));
+			//"titlePane"+i);
+			/*var titlePane1= new dijit.TitlePane({
+				title:"This is a title pane",    
+				content: new ContentPane({
+					content:resultItems,
+				})
+			}, domConstruct.create('div', {}, containerNode));*/
 		  }
-		  dom.byId("info").innerHTML = resultItems.join("");
-		}
+		  /*dom.byId("toolsPane").innerHTML = "<div id='titlePane0'></div>"*/
+		};
 		
-	  
-	  });
-
-
+		
+	  /*var layerList = new LayerList({
+		map: map,
+		showLegend: true,
+		showOpacitySlider: true,
+		showSublayers: true
+	  }, "layerList");
+	  layerList.startup();*/
+	});
    </script>
 </head>
 
-<body>
-  <!--input type="text" id="blu_sp" value="134/7503/R1"-->
-    <input id="execute" type="button" value="Get Details">
-	<button id="turnOnOff">Show and Search on non Condo</button>
-   <div id="search"></div>
-   <div id="map">
-		<div id="BasemapToggle"></div>
-   </div>   
-    <div id="info" style="padding:5px; margin:5px; background-color:#eee;">
+
+  <body class="claro">
+  <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false, design:'headline'" id="borderContainer">
+    <div id="topPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">
+      Header
+    </div>
+    <div id="toolsPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'leading', splitter: true">
+      <!--div id="layerList"></div-->
+	
+	<!--div id="titlePane3"></div-->
+    </div>
+    <div id="mapPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'">
+      <div id="map">
+        <div id="BasemapToggle"></div>
+		
+        <div id="search"></div>
+		<div id="info" >
+	<input id="execute" type="button" value="Get Details">
+		<progress>Loading...</progress>
+      </div>
+    </div>
+	
+    <!--div id="tablePane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'bottom', splitter: true">
+      <div id="table"></div>
+    </div-->
+  </div>
 </body>
 
 </html>
