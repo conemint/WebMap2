@@ -113,7 +113,7 @@
 					),*/
          });
 		 //Condo Suffix layer
-         var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_cdmain122015/FeatureServer/0", {
+         var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0", {
             outFields: ["*"],
             maxScale:1000,
             minScale:5000,
@@ -176,9 +176,9 @@
          });
 
          sources.push({
-            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_cdmain122015/FeatureServer/0"),
-            searchFields: ["CONDO_KEY"],
-            displayField: "CONDO_KEY",
+            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0"),
+            searchFields: ["bbl_sp"],
+            displayField: "bbl_sp",
             exactMatch: true,
             name: "Search on Condo main",
             outFields: ["*"],
@@ -188,7 +188,7 @@
 
             //Create an InfoTemplate
 
-                          infoTemplate: new InfoTemplate("Parcel: ${CONDO_KEY}",
+                          infoTemplate: new InfoTemplate("Parcel: ${bbl_sp}",
 					"<div></br> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
 					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
 					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
