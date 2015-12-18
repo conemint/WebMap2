@@ -43,12 +43,32 @@
 	  display: none;
 	}
 
+   
 	#search {
-	  position: absolute;
-	  z-index: 1;
-	  right: 0;
-	  top: 0;
-	}
+         display: block;
+         position: absolute;
+         z-index: 40;
+         top: 90px;
+         left: 100px;
+      }
+	#infobox {
+		top: 31px;
+		color: #444;
+		height: auto;
+		font-family: arial;
+		font-weight: bold;
+		font-size: 12px;
+		left: 60px;
+		margin: 5px;
+		padding: 10px;
+		position: absolute;
+		width: 200px;
+		z-index: 40;
+		border: solid 1px #001B33;
+		border-radius: 4px;
+		background-color: #EBF0F5;
+      }
+
 		  #BasemapToggle {
 		position: absolute;
 		bottom: 20px;
@@ -56,6 +76,25 @@
 		z-index: 45;
 	  }
 	  	  .esriPopup .action.zoomTo { display: none; }
+	#headtable {
+		border: 0px solid #0052A3;
+		background-color: #0052A3;
+		width: 100%;	
+	}
+	.claro .dijitContentPane {
+    padding: 0;
+	}
+	#toolsPane{
+	background-color: #f2f2f2;
+	}
+	.leading, .center {		
+		border: 0px solid #0052A3;
+		background-color: #0052A3;
+		font-family: arial;
+        font-weight: bold;
+		color: white;
+		 }
+
    </style>
 
    </script>
@@ -75,6 +114,7 @@
 	  "esri/tasks/QueryTask",
 	  "esri/symbols/SimpleLineSymbol",
 	  "esri/symbols/SimpleFillSymbol",
+	  "esri/renderers/SimpleRenderer",
 	  "esri/Color",
 	  "esri/graphic",
 	  "esri/lang",
@@ -89,7 +129,7 @@
 	  "dijit/layout/ContentPane",
 	  "dijit/form/ToggleButton",
 		"dojo/domReady!"
-	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, Color, Graphic, esriLang,number, domStyle, parser,TooltipDialog,dijitPopup, TitlePane,registry,
+	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, Color, Graphic, esriLang,number, domStyle, parser,TooltipDialog,dijitPopup, TitlePane,registry,
 	ToggleButton) {
 
         
@@ -122,6 +162,12 @@
 					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
 					)*/
          });
+		 layer.maxScale=500;
+		 layer.minScale=5000;
+         var symbol1 = new SimpleFillSymbol().setColor(new Color([0,108,108,0.15]));
+		 symbol1.setOutline(new SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new Color([0,100,156]), 1));
+		 var renderer = new SimpleRenderer(symbol1);
+ 		 layer.setRenderer(renderer);
 		 //Condo Suffix layer
          var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0", {
             outFields: ["*"],
@@ -318,7 +364,7 @@
 					resultItems.push("<br>");
 					var titlePane1 = new TitlePane({
 						id: "titlePane11",
-						open: false, 
+						open: true, 
 						title: featureAttributes.bbl_sp,
 						content: resultItems           
 					}, domConstruct.create('div', {}, containerNode));
@@ -394,17 +440,26 @@
   <body class="claro">
   <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false, design:'headline'" id="borderContainer">
     <div id="topPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">
-      Header
+      	
+		<table id= headtable>
+			<tr>
+				<td><img class=leading style= "padding-top:2px; padding-left: 5px;" src="http://www1.nyc.gov/assets/home/images/global/nyc_white.png"  height="12" width="37"></td>
+				<td><div class=center>| Tax Class 2 Property Search Map: Manhattan</div></td>
+			</tr>
+		</table>
     </div>
     <div id="toolsPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'leading', splitter: true">
       <!--div id="layerList"></div-->
-	<div>Search for a property to display details</div>
+	<div></br>Search for a property to display details</div>
 	<!--div id="titlePane3"></div-->
     </div>
     <div id="mapPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'">
       <div id="map">
         <div id="BasemapToggle"></div>
-		
+		<div id="infobox">
+			<div>Enter your Block/Lot to search.</div>
+			<div>For Example:  135/11</div>
+		</div>
         <div id="search"></div>
 		<div id="info" >
 	<input id="execute" type="button" value="Get Details">
