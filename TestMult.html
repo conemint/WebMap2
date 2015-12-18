@@ -92,7 +92,7 @@
 	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, Color, Graphic, esriLang,number, domStyle, parser,TooltipDialog,dijitPopup, TitlePane,registry,
 	ToggleButton) {
 
-        "esri/map","esri/dijit/BasemapToggle",
+        
 
 	  parser.parse();
 
@@ -103,7 +103,7 @@
          });
 	  
 		 //ArcGIS Online feature service showing Mahattan Tc2 lots
-         var layer = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd122015/FeatureServer/0", {
+         var layer = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0", {
             outFields: ["*"],
             maxScale:500,
             minScale:5000,
@@ -303,12 +303,32 @@
 			rs = e.results;
 			h = "";
 			if (rs[1] == null){
-				h = "<div> rs is null</div>";
-				return;
+				if( rs[0]==null){
+					h = "<div> rs is null</div>";
+					return;	
+				}else{
+					var resultItems = [];
+					domConstruct.empty("toolsPane");
+					var containerNode = dojo.byId("toolsPane");
+
+					var featureAttributes = rs[0][0].feature.attributes;
+					for (var attr in featureAttributes) {
+					  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
+					}
+					resultItems.push("<br>");
+					var titlePane1 = new TitlePane({
+						id: "titlePane11",
+						open: false, 
+						title: featureAttributes.bbl_sp,
+						content: resultItems           
+					}, domConstruct.create('div', {}, containerNode));
+				};
+			}else{
+				//h = inspect(rs[0][0].feature.attributes, 5, 0);
+				var attrs = rs[1][0].feature.attributes;
+				searchcd=attrs.CONDO_KEY;			
 			};
-			//h = inspect(rs[0][0].feature.attributes, 5, 0);
-			var attrs = rs[1][0].feature.attributes;
-			searchcd=attrs.CONDO_KEY;
+
 		});
 		
 
