@@ -48,7 +48,7 @@
          display: block;
          position: absolute;
          z-index: 40;
-         top: 110px;
+         top: 100px;
          left: 65px;
       }
 	#infobox {
@@ -62,11 +62,11 @@
 		margin: 5px;
 		padding: 10px;
 		position: absolute;
-		width: 300px;
+		width: 400px;
 		z-index: 40;
 		border: solid 1px #001B33;
 		border-radius: 4px;
-		background-color: #EBF0F5;
+		background-color:  #f2f2f2;
       }
 
 		  #BasemapToggle {
@@ -87,14 +87,25 @@
 	#toolsPane{
 	background-color: #f2f2f2;
 	}
-	.leading, .center {		
+	.leading, .center, .tailing {		
 		border: 0px solid #0052A3;
 		background-color: #0052A3;
 		font-family: arial;
         font-weight: bold;
 		color: white;
 		 }
+	a:link {
+		text-decoration: none;
+	}
 
+	a:visited {
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: none;
+		color:  #ff6600;
+	}
    </style>
 
    </script>
@@ -225,13 +236,16 @@
 		///4.b. HOVER FUNCTION
         //listen for when the onMouseOver event fires on the layer
         //when fired, create a new graphic with the geometry from the event.graphic and add it to the maps graphics layer
+ 		var hovergraph = new esri.layers.GraphicsLayer();
         layer.on("mouse-over", function(evt){
 			closeDialog();
           var t = "<b>${BORO}/${BLOCK}/${LOT}</b><hr><b>Adress:</b>${Street_Num}, ${Street_Nam}, New York, NY<br><b>DOF Value 2017 Tentative: $</b>${fmv:NumberFormat}<br>";
           var content = esriLang.substitute(evt.graphic.attributes,t);
-          var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
-          map.graphics.add(highlightGraphic);
-
+          //var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
+          //map.graphics.add(highlightGraphic);
+			map.addLayer(hovergraph);
+			var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
+			hovergraph.add(highlightGraphic);
           dialog.setContent(content);
 
           domStyle.set(dialog.domNode, "opacity", 0.85);
@@ -248,8 +262,14 @@
 			closeDialog();
           var t = "<b>${Boro}/${Block}/${Lot}</b><hr><b>Adress:</b>${Street_Num}, ${Street_Nam}, New York, NY<br>";
           var content = esriLang.substitute(evt.graphic.attributes,t);
-          var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
-          map.graphics.add(highlightGraphic);
+		//var symbol = new esri.symbol.SimpleFillSymbol();
+        //symbol.setColor(new dojo.Color([150,150,150,0.5]));
+        map.addLayer(hovergraph);
+		//var feature = evt.graphic.geometry;
+		//hovergraph.add(feature);
+		var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
+        //map.graphics.add(highlightGraphic);
+		hovergraph.add(highlightGraphic);
           dialog.setContent(content);
           domStyle.set(dialog.domNode, "opacity", 0.65);
           dijitPopup.open({
@@ -262,11 +282,13 @@
        	    map.setMapCursor("pointer"); //Add mouse change at hover
         });
         function closeDialog() {
-          map.graphics.clear();
+          //map.graphics.clear();
+		  if (hovergraph){
+		  hovergraph.clear();
+		  }
           map.setMapCursor("default"); //set mouse pointer back
           dijitPopup.close(dialog);
         }
-
 
 		//Search
          var s = new Search({
@@ -352,7 +374,7 @@
 				if( rs[0]==null){
 					h = "<div> rs is null</div>";
 					return;	
-				}else{
+				}else{//NON CONDO ([0])
 					var resultItems = [];
 					
 					/*if (titlePane11){
@@ -379,7 +401,7 @@
 						content: resultItems           
 					}, domConstruct.create('div', {}, containerNode));
 				};
-			}else{
+			}else{//CONDO ([1])
 				//h = inspect(rs[0][0].feature.attributes, 5, 0);
 				var attrs = rs[1][0].feature.attributes;
 				searchcd=attrs.CONDO_KEY;			
@@ -413,9 +435,12 @@
 		  for (var i = 0; i < resultCount; i++) {
 			var featureAttributes = results.features[i].attributes;
 			for (var attr in featureAttributes) {
-			  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
+			  resultItems.push("<tr><td><div class='datanames'> "+attr +": </div></td><td><div class='dataitem'>"+featureAttributes[attr]+"</div> </td></tr>");
+			  //resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
 			}
+			
 			resultItems.push("<br>");
+			
 			if (i==0){
 				var titlePane1 = new TitlePane({
 					id: "titlePane"+i,
@@ -465,6 +490,7 @@
 			<tr>
 				<td><img class=leading style= "padding-top:2px; padding-left: 5px;" src="http://www1.nyc.gov/assets/home/images/global/nyc_white.png"  height="12" width="37"></td>
 				<td><div class=center>| Tax Class 2 Property Search Map: Manhattan</div></td>
+				<td><a class=tailing href='http://www1.nyc.gov' target='_blank'>| Home</a></td>
 			</tr>
 		</table>
     </div>
@@ -477,7 +503,7 @@
       <div id="map">
         <div id="BasemapToggle"></div>
 		<div id="infobox">
-			<div>Select property type to search.(Default is condo)</div>
+			<div>Click on the Arrow and select property type to search.(Default: condo)</div>
 			<div>Then enter Block/Lot in box.</div>
 			<div>For Example:  1845/7501</div>
 		</div>
