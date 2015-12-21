@@ -48,8 +48,8 @@
          display: block;
          position: absolute;
          z-index: 40;
-         top: 90px;
-         left: 100px;
+         top: 110px;
+         left: 65px;
       }
 	#infobox {
 		top: 31px;
@@ -62,7 +62,7 @@
 		margin: 5px;
 		padding: 10px;
 		position: absolute;
-		width: 200px;
+		width: 300px;
 		z-index: 40;
 		border: solid 1px #001B33;
 		border-radius: 4px;
@@ -354,6 +354,16 @@
 					return;	
 				}else{
 					var resultItems = [];
+					
+					/*if (titlePane11){
+					var ch=1;
+					titlePane11.destroyRecursive();
+					};
+					var widgets = dijit.findWidgets("toolsPane");
+					dojo.forEach(widgets, function(w) {
+						w.destroyRecursive(false);
+					});*/
+					dijit.byId("toolsPane").destroyDescendants(false);
 					domConstruct.empty("toolsPane");
 					var containerNode = dojo.byId("toolsPane");
 
@@ -390,14 +400,15 @@
 		//Execute Query
 		on(dom.byId("execute"), "click", execute);
 		function execute () {
-		dojo.empty("toolsPane");
+		//dojo.empty("toolsPane");
 		  query.where = "CONDO_KEY = "+searchcd ;
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
 		function showResults (results) {
 		  var resultItems = [];
 		  var resultCount = results.features.length;
-			domConstruct.empty("toolsPane");
+		  dijit.byId("toolsPane").destroyDescendants(false);
+			//domConstruct.empty("toolsPane");
 			var containerNode = dojo.byId("toolsPane");
 		  for (var i = 0; i < resultCount; i++) {
 			var featureAttributes = results.features[i].attributes;
@@ -457,8 +468,9 @@
       <div id="map">
         <div id="BasemapToggle"></div>
 		<div id="infobox">
-			<div>Enter your Block/Lot to search.</div>
-			<div>For Example:  135/11</div>
+			<div>Select property type to search.(Default is condo)</div>
+			<div>Then enter Block/Lot in box.</div>
+			<div>For Example:  1845/7501</div>
 		</div>
         <div id="search"></div>
 		<div id="info" >
