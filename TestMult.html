@@ -76,6 +76,30 @@
 		z-index: 45;
 	  }
 	  	  .esriPopup .action.zoomTo { display: none; }
+		  
+		  .searchIcon {
+			  width: 0px;
+			  height: 0px;
+			  line-height: 0px;
+			  display: hide;
+			}
+
+		  /*.searchIcon{
+		  		color:#0052A3;
+				font-size:1px;
+		  }*/
+		  .arcgisSearch  {
+				  color:#0052A3;
+				  font-size:20px;
+			}
+
+		/*  .arcgisSearch .searchGroup .searchInput,
+        .arcgisSearch .searchBtn,
+        .arcgisSearch .noResultsMenu,
+        .arcgisSearch .suggestionsMenu {
+            border: 1px solid #003300;
+            background-color: #E5E5E5;
+        }*/
 	#headtable {
 		border: 0px solid #0052A3;
 		background-color: #0052A3;
@@ -146,7 +170,30 @@
         
 
 	  parser.parse();
+		var curCDkey, curCDkey_s;
+		
+            /*
+			registry.byId("searchValue").on("click", doSearchValue);
+		    function doSearchValue() {
 
+               //highlight symbol
+               var sms = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 12,
+                  new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+                     new Color([255, 0, 0]), 0.8),
+                  new Color([0, 0, 0, 0.35]));
+
+               //label text symbol
+               var ls = new TextSymbol().setColor(new Color([0, 0, 0, 0.9])).setFont(new Font("16px", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, Font.WEIGHT_BOLD, "Arial")).setOffset(15, -5).setAlign(TextSymbol.ALIGN_START);
+
+               s.sources[0].highlightSymbol = sms; //set the symbol for the highlighted symbol
+               s.sources[0].labelSymbol = ls; //set the text symbol for the label
+
+               //If multiple results are found, it will default and select the first.
+               s.search("New York");
+            }
+			*/
+		
+		
          var map = new Map("map", {
             basemap: "streets",
             center: [-74.005941, 40.712784], // lon, lat
@@ -159,19 +206,6 @@
             maxScale:500,
             minScale:5000,
 			id:'noncd'
-			/*infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
-					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
-					+"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
-					+"</br>Total Units:${resunit}</br>"
-					+"</br>Gross SQFT:${ttlsqft} SQFT</br>"
-					+"</br>Stories:${story:NumberFormat}</br>"
-					+"</br>Year Built:${AYB}</br>"
-					+"</br>Residential SQFT:${ressqft} SQFT</br></br>"
-					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
-					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
-					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
-					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
-					)*/
          });
 		 layer.maxScale=500;
 		 layer.minScale=5000;
@@ -185,13 +219,7 @@
             maxScale:500,
             minScale:5000,
 			id:'cd'
-			/*infoTemplate: new InfoTemplate("Parcel: ${Boro}/${Block}/${Lot}",
-				"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
-				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
-				+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
-				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
-				+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
-				)*/
+
          });
 
 		//Add layers to map
@@ -215,6 +243,8 @@
 		
 		//Info Window: set size
         map.infoWindow.resize(245,300);
+
+
 		//4.a. Hover popup window set up
         dialog = new TooltipDialog({
           id: "tooltipDialog",
@@ -285,17 +315,21 @@
           //map.graphics.clear();
 		  if (hovergraph){
 		  hovergraph.clear();
+		  //graphicsLayer1.clear();
+		  //map.graphicsLayer.clear(); 
 		  }
+		  
           map.setMapCursor("default"); //set mouse pointer back
           dijitPopup.close(dialog);
         }
 
 		//Search
-         var s = new Search({
+         var searchvar = new Search({
             enableButtonMode: false, //this enables the search widget to display as a single button
-            enableLabel: true,
+            enableLabel: false,
             enableInfoWindow: true,
             showInfoWindowOnSelect: true,
+			/*hasButtonMode: false,*/
 			zoomScale: 1000,
 			allPlaceholder: "Choose search type",
 			activeSourceIndex:'cd',
@@ -338,8 +372,8 @@
 
          sources.push({
             featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0"),
-            searchFields: ["bl_sp"],
-            displayField: "bl_sp",
+            searchFields: ["CONDO_KEY"],
+            displayField: "CONDO_KEY",
             exactMatch: true,
             name: "Search on Condo main",
             outFields: ["*"],
@@ -362,11 +396,11 @@
          });
 
          //Set the sources above to the search widget
-         s.set("sources", sources);
-		 s.set("activeSourceIndex", 1);
+         searchvar.set("sources", sources);
+		 searchvar.set("activeSourceIndex", 1);
 		 
 		 var searchcd;
-		 s.on("search-results", function (e) {
+		 searchvar.on("search-results", function (e) {
 			var rs, h;
 			rs = e.results;
 			h = "";
@@ -376,15 +410,6 @@
 					return;	
 				}else{//NON CONDO ([0])
 					var resultItems = [];
-					
-					/*if (titlePane11){
-					var ch=1;
-					titlePane11.destroyRecursive();
-					};
-					var widgets = dijit.findWidgets("toolsPane");
-					dojo.forEach(widgets, function(w) {
-						w.destroyRecursive(false);
-					});*/
 					dijit.byId("toolsPane").destroyDescendants(false);
 					domConstruct.empty("toolsPane");
 					var containerNode = dojo.byId("toolsPane");
@@ -410,9 +435,42 @@
 		});
 		
 
-         s.startup();
+         searchvar.startup();
 
 		 
+		on(dom.byId("execute3"), "click", dosearchtest);
+		    function dosearchtest() {
+               //If multiple results are found, it will default and select the first.
+               searchvar.search('1536');
+            }
+		 //Query--condounit
+		 //Initiate Query
+		var queryTaskunit = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2MH_unitlist1_12212015/FeatureServer/0");
+		var queryunit = new Query();
+		queryunit.returnGeometry = false;
+		queryunit.outFields = ["*"]
+		//Execute Query
+		on(dom.byId("execute2"), "click", executeunit);
+		function executeunit () {
+		  queryunit.where = "BL = 18461233";
+		  queryTaskunit.execute(queryunit, showResultsUnit,function(error){console.log(error);});
+		}		 
+		function showResultsUnit (results) {
+		  var resultItems = [];
+		  var resultCount = results.features.length;
+		  if (resultCount==1){
+		  var featureAttributes = results.features[0].attributes;
+		  curCDkey = featureAttributes.CONDO_KEY;		
+		  searchvar.set("activeSourceIndex", 1);
+		  curCDkey_s = curCDkey.toString();
+		  searchvar.set("value", curCDkey_s);
+		  searchvar.search();
+		  }else{
+			return;
+		  };
+
+		};
+
 		 //Query1216
 		 //Initiate Query
 		var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0");
@@ -422,7 +480,6 @@
 		//Execute Query
 		on(dom.byId("execute"), "click", execute);
 		function execute () {
-		//dojo.empty("toolsPane");
 		  query.where = "CONDO_KEY = "+searchcd ;
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
@@ -430,7 +487,6 @@
 		  var resultItems = [];
 		  var resultCount = results.features.length;
 		  dijit.byId("toolsPane").destroyDescendants(false);
-			//domConstruct.empty("toolsPane");
 			var containerNode = dojo.byId("toolsPane");
 		  for (var i = 0; i < resultCount; i++) {
 			var featureAttributes = results.features[i].attributes;
@@ -456,26 +512,13 @@
 					content: resultItems           
 				}, domConstruct.create('div', {}, containerNode));
 			}
-			//"titlePane"+i);
-			/*var titlePane1= new dijit.TitlePane({
-				title:"This is a title pane",    
-				content: new ContentPane({
-					content:resultItems,
-				})
-			}, domConstruct.create('div', {}, containerNode));*/
+
 		  }
 		  /*dom.byId("toolsPane").innerHTML = "<div id='titlePane0'></div>"*/
 		};
 		
 		
-	  /*var layerList = new LayerList({
-		map: map,
-		showLegend: true,
-		showOpacitySlider: true,
-		showSublayers: true
-	  }, "layerList");
-	  layerList.startup();*/
-	  
+
 
 	});
    </script>
@@ -510,6 +553,8 @@
         <div id="search"></div>
 		<div id="info" >
 	<input id="execute" type="button" value="Get Details">
+	<input id="execute2" type="button" value="Get Unit">
+	<input id="execute3" type="button" value="Test Search 1536">
 		<progress>Loading...</progress>
       </div>
     </div>
