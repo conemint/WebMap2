@@ -416,12 +416,21 @@
 			  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
 			}
 			resultItems.push("<br>");
-			var titlePane1 = new TitlePane({
-				id: "titlePane"+i,
-				open: false, 
-				title: featureAttributes.bblu_sp,
-				content: resultItems           
-			}, domConstruct.create('div', {}, containerNode));
+			if (i==0){
+				var titlePane1 = new TitlePane({
+					id: "titlePane"+i,
+					open: true, 
+					title: featureAttributes.bblu_sp,
+					content: resultItems           
+				}, domConstruct.create('div', {}, containerNode));
+			}else{
+				var titlePane1 = new TitlePane({
+					id: "titlePane"+i,
+					open: false, 
+					title: featureAttributes.bblu_sp,
+					content: resultItems           
+				}, domConstruct.create('div', {}, containerNode));
+			}
 			//"titlePane"+i);
 			/*var titlePane1= new dijit.TitlePane({
 				title:"This is a title pane",    
