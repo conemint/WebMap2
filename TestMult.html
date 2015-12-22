@@ -92,12 +92,8 @@
 		border: solid 1px #001B33;
 		border-radius: 4px;
 		background-color:  #f2f2f2;
-      }*/
-
-
-	  	  
-		  
-/*		  .searchIcon {
+      }
+	  .searchIcon {
 			  width: 0px;
 			  height: 0px;
 			  line-height: 0px;
@@ -136,19 +132,27 @@
 		text-shadow:1px 1px 2px #b3d9ff;
 		margin: 0px;
 	}
-	/*table, th, td {
-		border: 1px solid black;
-		border-collapse: collapse;
-	}*/
+	.comments{
+		font-family: arial;
+	    font-size: small;
+		padding: 0px;	
+	}
 	.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
 	.tg td{
-		font-family:Arial, sans-serif;font-size:14px;padding:1px 17px;
+		font-family:Arial, sans-serif;font-size:14px;padding:1px 10px;
 		border-style:solid;border-width:0px;overflow:hidden;word-break:normal;
 		border-top-width:1px;border-bottom-width:0px;}
 	.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:1px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-top-width:1px;border-bottom-width:0px;}
 	.tg .tg-qmme{font-family:Arial, Helvetica, sans-serif  !important;;vertical-align:top}
 	.tg .tg-yw4l{vertical-align:top}
-	.tg:hover {background-color:#e5f2ff;}
+	.tg tr:hover {background-color:#e5f2ff;}
+	
+	
+	.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #0052A3;border-collapse: collapse;}
+	.tftable th {font-size:12px;background-color:#b3d9ff;border-width: 1px;padding: 8px;border-style: solid;border-color: #0052A3;text-align:left;}
+	.tftable tr {background-color:#ffffff;}
+	.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #0052A3;}
+	.tftable tr:hover {background-color:#e5f2ff;}
 	a:link {
 		text-decoration: none;
 	}
@@ -460,35 +464,50 @@
 					  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
 					}*/
 					resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
-					setNullValue("Address", featureAttributes.Street_Number + " "+ featureAttributes.Street_Name , "--");
-					setNullValue("Neighborhood", featureAttributes.NBHD, "--");
-					setNullValue("Property Type", featureAttributes.Structure, "--");
-					setNullValue("Total Gross SQFT", localeNumber.format(featureAttributes.ttlsqft), "--");
-					setNullValue("Total Gross SQFT", featureAttributes.ttlsqft, "--");
-					setNullValue("Total Gross SQFT", localeNumber.format(featureAttributes.ttlsqft), "--");
-					setNullValue("Residential SQFT", localeNumber.format(featureAttributes.ressqft), "--");
-					setNullValue("Commercial SQFT", localeNumber.format(featureAttributes.comsqft), "--");
-					setNullValue("Total Units", localeNumber.format(featureAttributes.ttlunit), "--");
-					setNullValue("Residential Units", localeNumber.format(featureAttributes.resunit), "--");
-					setNullValue("Commercial Units", localeNumber.format(featureAttributes.comunit), "--");
-					setNullValue("Total Story", localeNumber.format(featureAttributes.story), "--");
-					setNullValue("Year Built", featureAttributes.AYB, "--");
-					setNullValue("Zoning", featureAttributes.Zone_1, "--");
-					resultItems.push("<br>");
-							
+					resultItems.push("<table class ='tg'><tr><td> Address: </td><td>"+setNullValue(featureAttributes.Street_Num,"--") + " "
+					+ setNullValue(featureAttributes.Street_Nam,"--") +"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Neighborhood: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.NBHD, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Property Type: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Structure, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Gross SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.ttlsqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Residential SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.ressqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Commercial SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.comsqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.ttlunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Residential Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.resunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Commercial Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.comunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Story: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.story, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Year Built: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.AYB, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Zoning: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
+					+"</table>");
+					resultItems.push("<br><br>");
+						
 					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
-					resultItems.push("<br>");
-					setNullValue("fmv", "$"+localeNumber.format(featureAttributes.fmv), "--");
-					setNullValue("Agi_Pgsf", "$"+localeNumber.format(featureAttributes.Agi_Pgsf), "--");
-					setNullValue("Exp_Pgsf", "$"+localeNumber.format(featureAttributes.Exp_Pgsf), "--");
-					setNullValue("Noi_Pgsf", "$"+localeNumber.format(featureAttributes.Noi_Pgsf), "--");
+					resultItems.push("<table class ='tg'>"
+					+"<tr><td class ='tg-qmme'>fmv: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
+					+"</table>");
 					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
-					function setNullValue(varName, value, defaultValue){
+					resultItems.push("<table class='tftable' border='1'>"
+					+"<tr><td>Bcat:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><th>Header 1</th><th>Low</th><th>Median</th><th>High</th></tr>"
+					+"<tr><td>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
+					+"<tr><td>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
+					+"<tr><td>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
+					+"<tr><td>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
+					+"<tr><td>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
+					+"</table>");
+
+					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
+					
+					function setNullValue(value, defaultValue){
 						if (value == 0 || value ==""||value == "0" ||value == "$0") {
-								resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+varName+": </div></td><td class ='tg-yw4l'><div >"+defaultValue+"</div> </td></tr>");
+								return defaultValue
 						}
 						else {
-								resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+varName+": </div></td><td class ='tg-yw4l'><div >"+value+"</div> </td></tr>");
+								return value;
 						}
 					}
 					resultItems.push("<br>");
@@ -579,45 +598,54 @@
 			var containerNode = dojo.byId("toolsPane");
 		  for (var i = 0; i < resultCount; i++) {
 			var featureAttributes = results.features[i].attributes;
-			resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
 			
-			setNullValue("Address", featureAttributes.Street_Number + " "+ featureAttributes.Street_Name , "--");
-			setNullValue("Neighborhood", featureAttributes.NBHD, "--");
-			setNullValue("Property Type", featureAttributes.Structure, "--");
-			setNullValue("Total Gross SQFT", localeNumber.format(featureAttributes.ttlsqft), "--");
-			setNullValue("Total Gross SQFT", featureAttributes.ttlsqft, "--");
-			setNullValue("Total Gross SQFT", localeNumber.format(featureAttributes.ttlsqft), "--");
-			
-			setNullValue("Residential SQFT", localeNumber.format(featureAttributes.ressqft), "--");
-			setNullValue("Commercial SQFT", localeNumber.format(featureAttributes.comsqft), "--");
-			setNullValue("Total Units", localeNumber.format(featureAttributes.ttlunit), "--");
-			setNullValue("Residential Units", localeNumber.format(featureAttributes.resunit), "--");
-			setNullValue("Commercial Units", localeNumber.format(featureAttributes.comunit), "--");
-			setNullValue("Total Story", localeNumber.format(featureAttributes.story), "--");
-			setNullValue("Year Built", featureAttributes.AYB, "--");
-			setNullValue("Zoning", featureAttributes.Zone_1, "--");
-			
-			resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
-			resultItems.push("<br>");
-			setNullValue("fmv", "$"+localeNumber.format(featureAttributes.fmv), "--");
-			setNullValue("Agi_Pgsf", "$"+localeNumber.format(featureAttributes.Agi_Pgsf), "--");
-			setNullValue("Exp_Pgsf", "$"+localeNumber.format(featureAttributes.Exp_Pgsf), "--");
-			setNullValue("Noi_Pgsf", "$"+localeNumber.format(featureAttributes.Noi_Pgsf), "--");
-			resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
-			/*for (var attr in featureAttributes) {
-			  resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+attr +": </div></td><td class ='tg-yw4l'><div >"+featureAttributes[attr]+"</div> </td></tr>");
-			  //resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
-			}*/
-			
-			resultItems.push("<br>");
-			function setNullValue(varName, value, defaultValue){
-				if (value == 0 || value ==""||value == "0" ||value == "$0") {
-						resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+varName+": </div></td><td class ='tg-yw4l'><div >"+defaultValue+"</div> </td></tr>");
-				}
-				else {
-						resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+varName+": </div></td><td class ='tg-yw4l'><div >"+value+"</div> </td></tr>");
-				}
-			}
+					resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
+					resultItems.push("<table class ='tg'><tr><td> Address: </td><td>"+setNullValue(featureAttributes.Street_Number,"--") + " "
+					+ setNullValue(featureAttributes.Street_Name,"--") +"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Neighborhood: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.NBHD, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Property Type: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Structure, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Gross SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.ttlsqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Residential SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.ressqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Commercial SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.comsqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.ttlunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Residential Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.resunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Commercial Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.comunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Story: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.story, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Year Built: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.AYB, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Zoning: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
+					+"</table>");
+					resultItems.push("<br><br>");
+						
+					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
+					resultItems.push("<table class ='tg'>"
+					+"<tr><td class ='tg-qmme'>fmv: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
+					+"</table>");
+					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
+					resultItems.push("<table class='tftable' border='1'>"
+					+"<tr><td>Bcat:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><th>Header 1</th><th>Low</th><th>Median</th><th>High</th></tr>"
+					+"<tr><td>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
+					+"<tr><td>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
+					+"<tr><td>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
+					+"<tr><td>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
+					+"<tr><td>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
+					+"</table>");
+
+					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
+					
+					function setNullValue(value, defaultValue){
+						if (value == 0 || value ==""||value == "0" ||value == "$0") {
+								return defaultValue
+						}
+						else {
+								return value;
+						}
+					}
 			if (i==0){
 				var titlePane1 = new TitlePane({
 					id: "titlePane"+i,
