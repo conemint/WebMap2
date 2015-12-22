@@ -58,7 +58,7 @@
          z-index: 40;
 		 border: solid 1px #001B33;
 		 border-radius: 4px;
-		 background-color:  #f2f2f2;
+		 background-color:  #fcfcfc;
       }
          .shadow {
          box-shadow: 0 0 5px #888;
@@ -459,9 +459,10 @@
 
          searchvar.startup();
 
-		 
+		 //Search NonCD
 		on(dom.byId("execute3"), "click", dosearchtest);
 		    function dosearchtest() {
+			document.getElementById("execute").disabled = true;
                //If multiple results are found, it will default and select the first.
                searchvar.set("activeSourceIndex", 0);
 				var search_block = dom.byId("searchtext_Block").value;
@@ -486,6 +487,7 @@
 		  //var searchx= dom.byId("searchtext").value;
 		  queryunit.where = "bl_sp = '"+searchx+"'";
 		  queryTaskunit.execute(queryunit, showResultsUnit,function(error){console.log(error);});
+		  document.getElementById("execute").disabled = false;
 		}		 
 		function showResultsUnit (results) {
 		  var resultItems = [];
@@ -589,11 +591,12 @@
                   Enter Block and Lot to Search on, and click on the correct button to search.
                </div>
 			   </br>
-			   <input type="text" id="searchtext_Block" size="20" value="" placeholder="Block"/> 
-			   <input type="text" id="searchtext_Lot" size="20" value="" placeholder="Lot" /> 
+			   <input type="search" class="clearable" id="searchtext_Block" size="20" value="" placeholder="Block" maxlength="4" size="4"/> 
+			   <input type="search" class="clearable" id="searchtext_Lot" size="20" value="" placeholder="Lot" maxlength="4" size="4"/> 
+			   </br>
 			   <input id="execute3" type="button" value="Get Non Condo">
                <input id="execute2" type="button" value="Get Condo Unit">
-			   <input id="execute" type="button" value="Get Condo Suffix Details">
+			   <input id="execute" type="button" value="Get Condo Suffix Details" disabled= true>
                </button>
             </div>
          </div>
