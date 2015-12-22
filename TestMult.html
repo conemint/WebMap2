@@ -152,6 +152,7 @@
 		text-decoration: none;
 		color:  #ff6600;
 	}
+	.button:hover { background-color: #66b3ff; }
    </style>
 
    </script>
@@ -192,7 +193,7 @@
         
 
 	  parser.parse();
-		var curCDkey, curCDkey_s;
+		var curCDkey, curCDkey_s, curCDunit;
 		
             /*
 			registry.byId("searchValue").on("click", doSearchValue);
@@ -426,6 +427,10 @@
 			var rs, h;
 			rs = e.results;
 			h = "";
+			if (rs == null){
+			document.getElementById("alerttext").innerHTML = "BBL cannot be find\nPlease enter a valid block and lot.";
+					return;	
+			}
 			if (rs[1] == null){
 				if( rs[0]==null){
 					h = "<div> rs is null</div>";
@@ -462,6 +467,7 @@
 		 //Search NonCD
 		on(dom.byId("execute3"), "click", dosearchtest);
 		    function dosearchtest() {
+			document.getElementById("alerttext").innerHTML="";
 			document.getElementById("execute").disabled = true;
                //If multiple results are found, it will default and select the first.
                searchvar.set("activeSourceIndex", 0);
@@ -481,31 +487,34 @@
 		//Execute Query
 		on(dom.byId("execute2"), "click", executeunit);
 		function executeunit () {
+		  document.getElementById("alerttext").innerHTML="";
 		  var search_block = dom.byId("searchtext_Block").value;
 		  var search_lot = dom.byId("searchtext_Lot").value;
 		  var searchx = search_block + "/" + search_lot;
 		  //var searchx= dom.byId("searchtext").value;
 		  queryunit.where = "bl_sp = '"+searchx+"'";
-		  queryTaskunit.execute(queryunit, showResultsUnit,function(error){console.log(error);});
+		  queryTaskunit.execute(queryunit, GetResultsUnit,function(error){console.log(error);});
 		  document.getElementById("execute").disabled = false;
 		}		 
-		function showResultsUnit (results) {
+		function GetResultsUnit (results) {
 		  var resultItems = [];
 		  var resultCount = results.features.length;
 		  if (resultCount==1){
 		  var featureAttributes = results.features[0].attributes;
 		  curCDkey = featureAttributes.CONDO_KEY;		
+		  curCDunit = featureAttributes.unit;
 		  searchvar.set("activeSourceIndex", 1);
 		  curCDkey_s = curCDkey.toString();
 		  searchvar.set("value", curCDkey_s);
 		  searchvar.search();
 		  }else{
+			document.getElementById("alerttext").innerHTML = "BBL cannot be find\nPlease enter a valid block and lot for Condominium Unit.";
 			return;
 		  };
 
 		};
 
-		 //Query1216
+		 //Query--Get detail for Condo
 		 //Initiate Query
 		var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0");
 		var query = new Query();
@@ -514,7 +523,7 @@
 		//Execute Query
 		on(dom.byId("execute"), "click", execute);
 		function execute () {
-		  query.where = "CONDO_KEY = "+searchcd ;
+		  query.where = "CONDO_KEY = "+searchcd +" and Unit='"+curCDunit+"'";
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
 		function showResults (results) {
@@ -594,19 +603,13 @@
 			   <input type="search" class="clearable" id="searchtext_Block" size="20" value="" placeholder="Block" maxlength="4" size="4"/> 
 			   <input type="search" class="clearable" id="searchtext_Lot" size="20" value="" placeholder="Lot" maxlength="4" size="4"/> 
 			   </br>
-			   <input id="execute3" type="button" value="Get Non Condo">
+			   <input id="execute3" type="button" value="Get Non Condo" >
                <input id="execute2" type="button" value="Get Condo Unit">
 			   <input id="execute" type="button" value="Get Condo Suffix Details" disabled= true>
-               </button>
+               </br>
+			   <p id="alerttext" style="font-family:verdana;color: red;text-shadow:1px 1px 2px white;"></p>
             </div>
          </div>
-		
-			<!--input type="text" id="searchtext" size="20" value="" /-->  
-			
-			
-			<!--input id="execute" type="button" value="Get Details">
-			<input id="execute2" type="button" value="Get Unit">
-			<input id="execute3" type="button" value="Test Search NonCD"-->
 		<div id="info" >
 		<progress>Loading...</progress>
         </div>
