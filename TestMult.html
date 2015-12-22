@@ -23,7 +23,7 @@
 	}
 
 	#toolsPane {
-	  width: 250px;
+	  width: 350px;
 	}
 
 	#tablePane {
@@ -37,12 +37,12 @@
 	  bottom: 2em;
 	  left: 0;
 	}
-
+	.esriPopup .action.zoomTo { display: none; }
 	/* Hide the progress bar when map is not updating */
 	#map:not([data-updating]) progress {
 	  display: none;
 	}
-      #feedback {
+    #SearchBox {
          background: #fff;
          color: #444;
          position: absolute;
@@ -60,10 +60,16 @@
 		 border-radius: 4px;
 		 background-color:  #fcfcfc;
       }
-         .shadow {
+    .shadow {
          box-shadow: 0 0 5px #888;
-      }
-	/*#search {
+    }
+	#BasemapToggle {
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+		z-index: 45;
+	}
+	  /*#search {
          display: block;
          position: absolute;
          z-index: 40;
@@ -88,40 +94,23 @@
 		background-color:  #f2f2f2;
       }*/
 
-		  #BasemapToggle {
-		position: absolute;
-		bottom: 20px;
-		left: 20px;
-		z-index: 45;
-	  }
-	  	  .esriPopup .action.zoomTo { display: none; }
+
+	  	  
 		  
-		  .searchIcon {
+/*		  .searchIcon {
 			  width: 0px;
 			  height: 0px;
 			  line-height: 0px;
 			  display: hide;
 			}
 
-		  /*.searchIcon{
-		  		color:#0052A3;
-				font-size:1px;
-		  }*/
           .arcgisSearch .searchBtn {
             display: none;
           }
-		  /*.arcgisSearch  {
-				  color:#0052A3;
-				  font-size:20px;
-			}*/
-
-		/*  .arcgisSearch .searchGroup .searchInput,
-        .arcgisSearch .searchBtn,
-        .arcgisSearch .noResultsMenu,
-        .arcgisSearch .suggestionsMenu {
-            border: 1px solid #003300;
-            background-color: #E5E5E5;
-        }*/
+*/
+	#intro{
+		padding: 10px;
+	}
 	#headtable {
 		border: 0px solid #0052A3;
 		background-color: #0052A3;
@@ -140,6 +129,26 @@
         font-weight: bold;
 		color: white;
 		 }
+	#tableheadtext{
+		font-family: arial;
+        font-weight: bold;
+		color:#003366;
+		text-shadow:1px 1px 2px #b3d9ff;
+		margin: 0px;
+	}
+	/*table, th, td {
+		border: 1px solid black;
+		border-collapse: collapse;
+	}*/
+	.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+	.tg td{
+		font-family:Arial, sans-serif;font-size:14px;padding:1px 17px;
+		border-style:solid;border-width:0px;overflow:hidden;word-break:normal;
+		border-top-width:1px;border-bottom-width:0px;}
+	.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:1px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-top-width:1px;border-bottom-width:0px;}
+	.tg .tg-qmme{font-family:Arial, Helvetica, sans-serif  !important;;vertical-align:top}
+	.tg .tg-yw4l{vertical-align:top}
+	.tg:hover {background-color:#e5f2ff;}
 	a:link {
 		text-decoration: none;
 	}
@@ -152,7 +161,7 @@
 		text-decoration: none;
 		color:  #ff6600;
 	}
-	.button:hover { background-color: #66b3ff; }
+	.button:hover { background-color: #b5d7e3; }
    </style>
 
    </script>
@@ -179,6 +188,7 @@
 	  "dojo/number",
       "dojo/dom-style",
 	  "dojo/parser",
+	  "dojo/number",
 	  "dijit/TooltipDialog",
 	  "dijit/popup",
 	  "dijit/TitlePane",
@@ -187,7 +197,7 @@
 	  "dijit/layout/ContentPane",
 	  "dijit/form/ToggleButton",
 		"dojo/domReady!"
-	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, Color, Graphic, esriLang,number, domStyle, parser,TooltipDialog,dijitPopup, TitlePane,registry,
+	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, Color, Graphic, esriLang,number, domStyle, parser,localeNumber,TooltipDialog,dijitPopup, TitlePane,registry,
 	ToggleButton) {
 
         
@@ -244,6 +254,10 @@
 			id:'cd'
 
          });
+		 layercdm.maxScale=500;
+		 layercdm.minScale=5000;
+		 var renderer = new SimpleRenderer(symbol1);
+ 		 layercdm.setRenderer(renderer);
 
 		//Add layers to map
         map.addLayers([layer,layercdm]);
@@ -442,8 +456,40 @@
 					var containerNode = dojo.byId("toolsPane");
 
 					var featureAttributes = rs[0][0].feature.attributes;
-					for (var attr in featureAttributes) {
+					/*for (var attr in featureAttributes) {
 					  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
+					}*/
+					resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
+					setNullValue("Address", featureAttributes.Street_Number + " "+ featureAttributes.Street_Name , "--");
+					setNullValue("Neighborhood", featureAttributes.NBHD, "--");
+					setNullValue("Property Type", featureAttributes.Structure, "--");
+					setNullValue("Total Gross SQFT", localeNumber.format(featureAttributes.ttlsqft), "--");
+					setNullValue("Total Gross SQFT", featureAttributes.ttlsqft, "--");
+					setNullValue("Total Gross SQFT", localeNumber.format(featureAttributes.ttlsqft), "--");
+					setNullValue("Residential SQFT", localeNumber.format(featureAttributes.ressqft), "--");
+					setNullValue("Commercial SQFT", localeNumber.format(featureAttributes.comsqft), "--");
+					setNullValue("Total Units", localeNumber.format(featureAttributes.ttlunit), "--");
+					setNullValue("Residential Units", localeNumber.format(featureAttributes.resunit), "--");
+					setNullValue("Commercial Units", localeNumber.format(featureAttributes.comunit), "--");
+					setNullValue("Total Story", localeNumber.format(featureAttributes.story), "--");
+					setNullValue("Year Built", featureAttributes.AYB, "--");
+					setNullValue("Zoning", featureAttributes.Zone_1, "--");
+					resultItems.push("<br>");
+							
+					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
+					resultItems.push("<br>");
+					setNullValue("fmv", "$"+localeNumber.format(featureAttributes.fmv), "--");
+					setNullValue("Agi_Pgsf", "$"+localeNumber.format(featureAttributes.Agi_Pgsf), "--");
+					setNullValue("Exp_Pgsf", "$"+localeNumber.format(featureAttributes.Exp_Pgsf), "--");
+					setNullValue("Noi_Pgsf", "$"+localeNumber.format(featureAttributes.Noi_Pgsf), "--");
+					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
+					function setNullValue(varName, value, defaultValue){
+						if (value == 0 || value ==""||value == "0" ||value == "$0") {
+								resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+varName+": </div></td><td class ='tg-yw4l'><div >"+defaultValue+"</div> </td></tr>");
+						}
+						else {
+								resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+varName+": </div></td><td class ='tg-yw4l'><div >"+value+"</div> </td></tr>");
+						}
 					}
 					resultItems.push("<br>");
 					var titlePane1 = new TitlePane({
@@ -533,13 +579,45 @@
 			var containerNode = dojo.byId("toolsPane");
 		  for (var i = 0; i < resultCount; i++) {
 			var featureAttributes = results.features[i].attributes;
-			for (var attr in featureAttributes) {
-			  resultItems.push("<tr><td><div class='datanames'> "+attr +": </div></td><td><div class='dataitem'>"+featureAttributes[attr]+"</div> </td></tr>");
+			resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
+			
+			setNullValue("Address", featureAttributes.Street_Number + " "+ featureAttributes.Street_Name , "--");
+			setNullValue("Neighborhood", featureAttributes.NBHD, "--");
+			setNullValue("Property Type", featureAttributes.Structure, "--");
+			setNullValue("Total Gross SQFT", localeNumber.format(featureAttributes.ttlsqft), "--");
+			setNullValue("Total Gross SQFT", featureAttributes.ttlsqft, "--");
+			setNullValue("Total Gross SQFT", localeNumber.format(featureAttributes.ttlsqft), "--");
+			
+			setNullValue("Residential SQFT", localeNumber.format(featureAttributes.ressqft), "--");
+			setNullValue("Commercial SQFT", localeNumber.format(featureAttributes.comsqft), "--");
+			setNullValue("Total Units", localeNumber.format(featureAttributes.ttlunit), "--");
+			setNullValue("Residential Units", localeNumber.format(featureAttributes.resunit), "--");
+			setNullValue("Commercial Units", localeNumber.format(featureAttributes.comunit), "--");
+			setNullValue("Total Story", localeNumber.format(featureAttributes.story), "--");
+			setNullValue("Year Built", featureAttributes.AYB, "--");
+			setNullValue("Zoning", featureAttributes.Zone_1, "--");
+			
+			resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
+			resultItems.push("<br>");
+			setNullValue("fmv", "$"+localeNumber.format(featureAttributes.fmv), "--");
+			setNullValue("Agi_Pgsf", "$"+localeNumber.format(featureAttributes.Agi_Pgsf), "--");
+			setNullValue("Exp_Pgsf", "$"+localeNumber.format(featureAttributes.Exp_Pgsf), "--");
+			setNullValue("Noi_Pgsf", "$"+localeNumber.format(featureAttributes.Noi_Pgsf), "--");
+			resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
+			/*for (var attr in featureAttributes) {
+			  resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+attr +": </div></td><td class ='tg-yw4l'><div >"+featureAttributes[attr]+"</div> </td></tr>");
 			  //resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
-			}
+			}*/
 			
 			resultItems.push("<br>");
-			
+			function setNullValue(varName, value, defaultValue){
+				if (value == 0 || value ==""||value == "0" ||value == "$0") {
+						resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+varName+": </div></td><td class ='tg-yw4l'><div >"+defaultValue+"</div> </td></tr>");
+				}
+				else {
+						resultItems.push("<tr class ='tg'><td class ='tg-qmme'><div> "+varName+": </div></td><td class ='tg-yw4l'><div >"+value+"</div> </td></tr>");
+				}
+			}
 			if (i==0){
 				var titlePane1 = new TitlePane({
 					id: "titlePane"+i,
@@ -559,6 +637,7 @@
 		  }
 		  /*dom.byId("toolsPane").innerHTML = "<div id='titlePane0'></div>"*/
 		};
+
 		
 		
 
@@ -582,7 +661,14 @@
     </div>
     <div id="toolsPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'leading', splitter: true">
       <!--div id="layerList"></div-->
-	<div></br>Search for a property to display details</div>
+	<div id="intro">
+		<h4>This is an interactive map for Tax Class 2 Properties in New York City.</h4>
+		<p>You are currently in the Borough Map of Manhattan.</p>
+		<p>Enter a Block and Lot number in the box and click "Get Non Condo" to search for rental buildings or Coop buildings .</p>
+		<p>Or click "Get Condo Unit" to search for units in Condominium Buidlings or Development .</p>
+		<p>Then click on "Get Condo Suffix Details" for information on the Condominium Buidlings or Development.</p>
+		</br>Search for a property to display details
+	</div>
 	<!--div id="titlePane3"></div-->
     </div>
     <div id="mapPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'">
@@ -594,7 +680,7 @@
 			<div>For Example:  1845/7501</div>
 		</div-->
         <!--div id="search"></div-->
-		<div id="feedback" class="shadow">
+		<div id="SearchBox" class="shadow">
             <div id="infos">
                <div id="note">
                   Enter Block and Lot to Search on, and click on the correct button to search.
