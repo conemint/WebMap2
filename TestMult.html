@@ -9,7 +9,7 @@
    <link rel="stylesheet" href="https://js.arcgis.com/3.15/esri/css/esri.css">
    <style>
     html, body, #borderContainer, #map {
-	  width: 100%;
+      width: 100%;
 	  height: 100%;
 	}
 
@@ -23,7 +23,7 @@
 	}
 
 	#toolsPane {
-	  width: 250px;
+	  width: 350px;
 	}
 
 	#tablePane {
@@ -37,14 +37,39 @@
 	  bottom: 2em;
 	  left: 0;
 	}
-
+	.esriPopup .action.zoomTo { display: none; }
 	/* Hide the progress bar when map is not updating */
 	#map:not([data-updating]) progress {
 	  display: none;
 	}
-
-   
-	#search {
+    #SearchBox {
+         background: #fff;
+         color: #444;
+         position: absolute;
+		 font-family: arial;
+		 font-weight: bold;
+		 font-size: 12px;
+         height: 125px;
+         left: 50px;
+         margin: 5px;
+         padding: 10px;
+         top: 10px;
+         width: 350px;
+         z-index: 40;
+		 border: solid 1px #001B33;
+		 border-radius: 4px;
+		 background-color:  #fcfcfc;
+      }
+    .shadow {
+         box-shadow: 0 0 5px #888;
+    }
+	#BasemapToggle {
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+		z-index: 45;
+	}
+	  /*#search {
          display: block;
          position: absolute;
          z-index: 40;
@@ -68,14 +93,20 @@
 		border-radius: 4px;
 		background-color:  #f2f2f2;
       }
+	  .searchIcon {
+			  width: 0px;
+			  height: 0px;
+			  line-height: 0px;
+			  display: hide;
+			}
 
-		  #BasemapToggle {
-		position: absolute;
-		bottom: 20px;
-		left: 20px;
-		z-index: 45;
-	  }
-	  	  .esriPopup .action.zoomTo { display: none; }
+          .arcgisSearch .searchBtn {
+            display: none;
+          }
+*/
+	#intro{
+		padding: 10px;
+	}
 	#headtable {
 		border: 0px solid #0052A3;
 		background-color: #0052A3;
@@ -94,6 +125,34 @@
         font-weight: bold;
 		color: white;
 		 }
+	#tableheadtext{
+		font-family: arial;
+        font-weight: bold;
+		color:#003366;
+		text-shadow:1px 1px 2px #b3d9ff;
+		margin: 0px;
+	}
+	.comments{
+		font-family: arial;
+	    font-size: small;
+		padding: 0px;	
+	}
+	.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+	.tg td{
+		font-family:Arial, sans-serif;font-size:14px;padding:1px 10px;
+		border-style:solid;border-width:0px;overflow:hidden;word-break:normal;
+		border-top-width:1px;border-bottom-width:0px;}
+	.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:1px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-top-width:1px;border-bottom-width:0px;}
+	.tg .tg-qmme{font-family:Arial, Helvetica, sans-serif  !important;;vertical-align:top}
+	.tg .tg-yw4l{vertical-align:top}
+	.tg tr:hover {background-color:#e5f2ff;}
+	
+	
+	.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #0052A3;border-collapse: collapse;}
+	.tftable th {font-size:12px;background-color:#b3d9ff;border-width: 1px;padding: 8px;border-style: solid;border-color: #0052A3;text-align:left;}
+	.tftable tr {background-color:#ffffff;}
+	.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #0052A3;}
+	.tftable tr:hover {background-color:#e5f2ff;}
 	a:link {
 		text-decoration: none;
 	}
@@ -106,6 +165,7 @@
 		text-decoration: none;
 		color:  #ff6600;
 	}
+	.button:hover { background-color: #b5d7e3; }
    </style>
 
    </script>
@@ -132,6 +192,7 @@
 	  "dojo/number",
       "dojo/dom-style",
 	  "dojo/parser",
+	  "dojo/number",
 	  "dijit/TooltipDialog",
 	  "dijit/popup",
 	  "dijit/TitlePane",
@@ -140,13 +201,36 @@
 	  "dijit/layout/ContentPane",
 	  "dijit/form/ToggleButton",
 		"dojo/domReady!"
-	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, Color, Graphic, esriLang,number, domStyle, parser,TooltipDialog,dijitPopup, TitlePane,registry,
+	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, Color, Graphic, esriLang,number, domStyle, parser,localeNumber,TooltipDialog,dijitPopup, TitlePane,registry,
 	ToggleButton) {
 
         
 
 	  parser.parse();
+		var curCDkey, curCDkey_s, curCDunit;
+		
+            /*
+			registry.byId("searchValue").on("click", doSearchValue);
+		    function doSearchValue() {
 
+               //highlight symbol
+               var sms = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 12,
+                  new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+                     new Color([255, 0, 0]), 0.8),
+                  new Color([0, 0, 0, 0.35]));
+
+               //label text symbol
+               var ls = new TextSymbol().setColor(new Color([0, 0, 0, 0.9])).setFont(new Font("16px", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, Font.WEIGHT_BOLD, "Arial")).setOffset(15, -5).setAlign(TextSymbol.ALIGN_START);
+
+               s.sources[0].highlightSymbol = sms; //set the symbol for the highlighted symbol
+               s.sources[0].labelSymbol = ls; //set the text symbol for the label
+
+               //If multiple results are found, it will default and select the first.
+               s.search("New York");
+            }
+			*/
+		
+		
          var map = new Map("map", {
             basemap: "streets",
             center: [-74.005941, 40.712784], // lon, lat
@@ -159,19 +243,6 @@
             maxScale:500,
             minScale:5000,
 			id:'noncd'
-			/*infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
-					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
-					+"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
-					+"</br>Total Units:${resunit}</br>"
-					+"</br>Gross SQFT:${ttlsqft} SQFT</br>"
-					+"</br>Stories:${story:NumberFormat}</br>"
-					+"</br>Year Built:${AYB}</br>"
-					+"</br>Residential SQFT:${ressqft} SQFT</br></br>"
-					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
-					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
-					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
-					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
-					)*/
          });
 		 layer.maxScale=500;
 		 layer.minScale=5000;
@@ -185,14 +256,12 @@
             maxScale:500,
             minScale:5000,
 			id:'cd'
-			/*infoTemplate: new InfoTemplate("Parcel: ${Boro}/${Block}/${Lot}",
-				"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
-				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
-				+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
-				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
-				+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
-				)*/
+
          });
+		 layercdm.maxScale=500;
+		 layercdm.minScale=5000;
+		 var renderer = new SimpleRenderer(symbol1);
+ 		 layercdm.setRenderer(renderer);
 
 		//Add layers to map
         map.addLayers([layer,layercdm]);
@@ -215,6 +284,8 @@
 		
 		//Info Window: set size
         map.infoWindow.resize(245,300);
+
+
 		//4.a. Hover popup window set up
         dialog = new TooltipDialog({
           id: "tooltipDialog",
@@ -285,17 +356,23 @@
           //map.graphics.clear();
 		  if (hovergraph){
 		  hovergraph.clear();
+		  //graphicsLayer1.clear();
+		  //map.graphicsLayer.clear(); 
 		  }
+		  
           map.setMapCursor("default"); //set mouse pointer back
           dijitPopup.close(dialog);
         }
+          //Clear: set mouse pointer back to default after move-out;
+         hovergraph.on("mouse-out", closeDialog);
 
 		//Search
-         var s = new Search({
+         var searchvar = new Search({
             enableButtonMode: false, //this enables the search widget to display as a single button
-            enableLabel: true,
+            enableLabel: false,
             enableInfoWindow: true,
             showInfoWindowOnSelect: true,
+			/*hasButtonMode: false,*/
 			zoomScale: 1000,
 			allPlaceholder: "Choose search type",
 			activeSourceIndex:'cd',
@@ -338,8 +415,8 @@
 
          sources.push({
             featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0"),
-            searchFields: ["bl_sp"],
-            displayField: "bl_sp",
+            searchFields: ["CONDO_KEY"],
+            displayField: "CONDO_KEY",
             exactMatch: true,
             name: "Search on Condo main",
             outFields: ["*"],
@@ -362,36 +439,78 @@
          });
 
          //Set the sources above to the search widget
-         s.set("sources", sources);
-		 s.set("activeSourceIndex", 1);
+         searchvar.set("sources", sources);
+		 searchvar.set("activeSourceIndex", 1);
 		 
 		 var searchcd;
-		 s.on("search-results", function (e) {
+		 searchvar.on("search-results", function (e) {
 			var rs, h;
 			rs = e.results;
 			h = "";
+			if (rs == null){
+			document.getElementById("alerttext").innerHTML = "BBL cannot be find\nPlease enter a valid block and lot.";
+					return;	
+			}
 			if (rs[1] == null){
 				if( rs[0]==null){
 					h = "<div> rs is null</div>";
 					return;	
 				}else{//NON CONDO ([0])
 					var resultItems = [];
-					
-					/*if (titlePane11){
-					var ch=1;
-					titlePane11.destroyRecursive();
-					};
-					var widgets = dijit.findWidgets("toolsPane");
-					dojo.forEach(widgets, function(w) {
-						w.destroyRecursive(false);
-					});*/
 					dijit.byId("toolsPane").destroyDescendants(false);
 					domConstruct.empty("toolsPane");
 					var containerNode = dojo.byId("toolsPane");
 
 					var featureAttributes = rs[0][0].feature.attributes;
-					for (var attr in featureAttributes) {
+					/*for (var attr in featureAttributes) {
 					  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
+					}*/
+					resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
+					resultItems.push("<table class ='tg'><tr><td> Address: </td><td>"+setNullValue(featureAttributes.Street_Num,"--") + " "
+					+ setNullValue(featureAttributes.Street_Nam,"--") +"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Neighborhood: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.NBHD, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Property Type: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Structure, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Gross SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.ttlsqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Residential SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.ressqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Commercial SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.comsqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.ttlunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Residential Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.resunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Commercial Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.comunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Story: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.story, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Year Built: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.AYB, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Zoning: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
+					+"</table>");
+					resultItems.push("<br><br>");
+						
+					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
+					resultItems.push("<table class ='tg'>"
+					+"<tr><td class ='tg-qmme'>fmv: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
+					+"</table>");
+					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
+					resultItems.push("<table class='tftable' border='1'>"
+					+"<tr><td>Bcat:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><th>Header 1</th><th>Low</th><th>Median</th><th>High</th></tr>"
+					+"<tr><td>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
+					+"<tr><td>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
+					+"<tr><td>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
+					+"<tr><td>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
+					+"<tr><td>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
+					+"</table>");
+
+					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
+					
+					function setNullValue(value, defaultValue){
+						if (value == 0 || value ==""||value == "0" ||value == "$0") {
+								return defaultValue
+						}
+						else {
+								return value;
+						}
 					}
 					resultItems.push("<br>");
 					var titlePane1 = new TitlePane({
@@ -410,10 +529,61 @@
 		});
 		
 
-         s.startup();
+         searchvar.startup();
 
-		 
-		 //Query1216
+		 //Search NonCD
+		on(dom.byId("execute3"), "click", dosearchtest);
+		    function dosearchtest() {
+			document.getElementById("alerttext").innerHTML="";
+			document.getElementById("execute").disabled = true;
+               //If multiple results are found, it will default and select the first.
+               searchvar.set("activeSourceIndex", 0);
+				var search_block = dom.byId("searchtext_Block").value;
+				var search_lot = dom.byId("searchtext_Lot").value;
+				var searchx = search_block + "/" + search_lot;
+				//var searchx= dom.byId("searchtext").value;
+				//queryunit.where = "bl_sp = '"+searchx+"'";
+               searchvar.search(searchx);
+            }
+		 //Query--condounit
+		 //Initiate Query
+		var queryTaskunit = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2MH_unitlist1_12212015/FeatureServer/0");
+		var queryunit = new Query();
+		queryunit.returnGeometry = false;
+		queryunit.outFields = ["*"]
+		//Execute Query
+		on(dom.byId("execute2"), "click", executeunit);
+		function executeunit () {
+			dijit.byId("toolsPane").destroyDescendants(false);
+			domConstruct.empty("toolsPane");
+			document.getElementById("alerttext").innerHTML="";
+			var search_block = dom.byId("searchtext_Block").value;
+			var search_lot = dom.byId("searchtext_Lot").value;
+			var searchx = search_block + "/" + search_lot;
+			//var searchx= dom.byId("searchtext").value;
+			queryunit.where = "bl_sp = '"+searchx+"'";
+			queryTaskunit.execute(queryunit, GetResultsUnit,function(error){console.log(error);});
+			document.getElementById("execute").disabled = false;
+		}		 
+		function GetResultsUnit (results) {
+		  var resultItems = [];
+		  var resultCount = results.features.length;
+		  if (resultCount==1){
+		  var featureAttributes = results.features[0].attributes;
+		  curCDkey = featureAttributes.CONDO_KEY;		
+		  curCDunit = featureAttributes.unit;
+		  searchvar.set("activeSourceIndex", 1);
+		  curCDkey_s = curCDkey.toString();
+		  searchvar.set("value", curCDkey_s);
+		  searchvar.search();
+		  }else{
+			document.getElementById("alerttext").innerHTML = "BBL cannot be find\nPlease enter a valid block and lot for Condominium Unit.";
+			return;
+		  };
+
+		};
+
+		 //Query--Get detail for Condo
 		 //Initiate Query
 		var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0");
 		var query = new Query();
@@ -422,25 +592,64 @@
 		//Execute Query
 		on(dom.byId("execute"), "click", execute);
 		function execute () {
-		//dojo.empty("toolsPane");
-		  query.where = "CONDO_KEY = "+searchcd ;
+		  query.where = "CONDO_KEY = "+searchcd +" and Unit='"+curCDunit+"'";
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
 		function showResults (results) {
 		  var resultItems = [];
 		  var resultCount = results.features.length;
 		  dijit.byId("toolsPane").destroyDescendants(false);
-			//domConstruct.empty("toolsPane");
 			var containerNode = dojo.byId("toolsPane");
 		  for (var i = 0; i < resultCount; i++) {
 			var featureAttributes = results.features[i].attributes;
-			for (var attr in featureAttributes) {
-			  resultItems.push("<tr><td><div class='datanames'> "+attr +": </div></td><td><div class='dataitem'>"+featureAttributes[attr]+"</div> </td></tr>");
-			  //resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
-			}
 			
-			resultItems.push("<br>");
-			
+					resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
+					resultItems.push("<table class ='tg'><tr><td> Address: </td><td>"+setNullValue(featureAttributes.Street_Number,"--") + " "
+					+ setNullValue(featureAttributes.Street_Name,"--") +"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Neighborhood: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.NBHD, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Property Type: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Structure, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Gross SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.ttlsqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Residential SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.ressqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Commercial SQFT: </td><td class ='tg-yw4l'>"+setNullValue(localeNumber.format(featureAttributes.comsqft), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.ttlunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Residential Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.resunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Commercial Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.comunit, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Total Story: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.story, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Year Built: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.AYB, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Zoning: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
+					+"</table>");
+					resultItems.push("<br><br>");
+						
+					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
+					resultItems.push("<table class ='tg'>"
+					+"<tr><td class ='tg-qmme'>fmv: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
+					+"</table>");
+					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
+					resultItems.push("<table class='tftable' border='1'>"
+					+"<tr><td>Bcat:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><th>Header 1</th><th>Low</th><th>Median</th><th>High</th></tr>"
+					+"<tr><td>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
+					+"<tr><td>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
+					+"<tr><td>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
+					+"<tr><td>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
+					+"<tr><td>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
+					+"</table>");
+
+					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
+					
+					function setNullValue(value, defaultValue){
+						if (value == 0 || value ==""||value == "0" ||value == "$0") {
+								return defaultValue
+						}
+						else {
+								return value;
+						}
+					}
 			if (i==0){
 				var titlePane1 = new TitlePane({
 					id: "titlePane"+i,
@@ -456,26 +665,14 @@
 					content: resultItems           
 				}, domConstruct.create('div', {}, containerNode));
 			}
-			//"titlePane"+i);
-			/*var titlePane1= new dijit.TitlePane({
-				title:"This is a title pane",    
-				content: new ContentPane({
-					content:resultItems,
-				})
-			}, domConstruct.create('div', {}, containerNode));*/
+
 		  }
 		  /*dom.byId("toolsPane").innerHTML = "<div id='titlePane0'></div>"*/
 		};
+
 		
 		
-	  /*var layerList = new LayerList({
-		map: map,
-		showLegend: true,
-		showOpacitySlider: true,
-		showSublayers: true
-	  }, "layerList");
-	  layerList.startup();*/
-	  
+
 
 	});
    </script>
@@ -496,22 +693,44 @@
     </div>
     <div id="toolsPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'leading', splitter: true">
       <!--div id="layerList"></div-->
-	<div></br>Search for a property to display details</div>
+	<div id="intro">
+		<h4>This is an interactive map for Tax Class 2 Properties in New York City.</h4>
+		<p>You are currently in the Borough Map of Manhattan.</p>
+		<p>Enter a Block and Lot number in the box and click "Get Non Condo" to search for rental buildings or Coop buildings .</p>
+		<p>Or click "Get Condo Unit" to search for units in Condominium Buidlings or Development .</p>
+		<p>Then click on "Get Condo Suffix Details" for information on the Condominium Buidlings or Development.</p>
+		</br>Search for a property to display details
+	</div>
 	<!--div id="titlePane3"></div-->
     </div>
     <div id="mapPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'">
       <div id="map">
         <div id="BasemapToggle"></div>
-		<div id="infobox">
+		<!--div id="infobox">
 			<div>Click on the Arrow and select property type to search.(Default: condo)</div>
 			<div>Then enter Block/Lot in box.</div>
 			<div>For Example:  1845/7501</div>
-		</div>
-        <div id="search"></div>
+		</div-->
+        <!--div id="search"></div-->
+		<div id="SearchBox" class="shadow">
+            <div id="infos">
+               <div id="note">
+                  Enter Block and Lot to Search on, and click on the correct button to search.
+               </div>
+			   </br>
+			   <input type="search" class="clearable" id="searchtext_Block" size="20" value="" placeholder="Block" maxlength="4" size="4"/> 
+			   <input type="search" class="clearable" id="searchtext_Lot" size="20" value="" placeholder="Lot" maxlength="4" size="4"/> 
+			   </br>
+			   <input id="execute3" type="button" value="Get Non Condo" >
+               <input id="execute2" type="button" value="Get Condo Unit">
+			   <input id="execute" type="button" value="Get Condo Suffix Details" disabled= true>
+               </br>
+			   <p id="alerttext" style="font-family:verdana;color: red;text-shadow:1px 1px 2px white;"></p>
+            </div>
+         </div>
 		<div id="info" >
-	<input id="execute" type="button" value="Get Details">
 		<progress>Loading...</progress>
-      </div>
+        </div>
     </div>
 	
     <!--div id="tablePane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'bottom', splitter: true">
