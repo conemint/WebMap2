@@ -363,6 +363,8 @@
           map.setMapCursor("default"); //set mouse pointer back
           dijitPopup.close(dialog);
         }
+          //Clear: set mouse pointer back to default after move-out;
+         hovergraph.on("mouse-out", closeDialog);
 
 		//Search
          var searchvar = new Search({
