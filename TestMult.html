@@ -554,14 +554,16 @@
 		//Execute Query
 		on(dom.byId("execute2"), "click", executeunit);
 		function executeunit () {
-		  document.getElementById("alerttext").innerHTML="";
-		  var search_block = dom.byId("searchtext_Block").value;
-		  var search_lot = dom.byId("searchtext_Lot").value;
-		  var searchx = search_block + "/" + search_lot;
-		  //var searchx= dom.byId("searchtext").value;
-		  queryunit.where = "bl_sp = '"+searchx+"'";
-		  queryTaskunit.execute(queryunit, GetResultsUnit,function(error){console.log(error);});
-		  document.getElementById("execute").disabled = false;
+			dijit.byId("toolsPane").destroyDescendants(false);
+			domConstruct.empty("toolsPane");
+			document.getElementById("alerttext").innerHTML="";
+			var search_block = dom.byId("searchtext_Block").value;
+			var search_lot = dom.byId("searchtext_Lot").value;
+			var searchx = search_block + "/" + search_lot;
+			//var searchx= dom.byId("searchtext").value;
+			queryunit.where = "bl_sp = '"+searchx+"'";
+			queryTaskunit.execute(queryunit, GetResultsUnit,function(error){console.log(error);});
+			document.getElementById("execute").disabled = false;
 		}		 
 		function GetResultsUnit (results) {
 		  var resultItems = [];
