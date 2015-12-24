@@ -10,7 +10,7 @@
    <style>
     html, body, #borderContainer, #map {
       width: 100%;
-	  height: 100%;
+      height: 100%;
 	}
 
 	html, body {
@@ -314,7 +314,7 @@
 		var flag=0;
         layer.on("mouse-over", function(evt){
 			closeDialog();
-			var t = "<b>${BORO}/${BLOCK}/${LOT}</b><hr><b>Adress:</b>${Street_Num}, ${Street_Nam}, New York, NY<br><b>DOF Value 2017 Tentative: $</b>${fmv:NumberFormat}<br>";
+			var t = "<b>${BORO}/${BLOCK}/${LOT}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, New York, NY<br><b>DOF Value 2017 Tentative: $</b>${fmv:NumberFormat}<br>";
 			var content = esriLang.substitute(evt.graphic.attributes,t);
 			//var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
 			//map.graphics.add(highlightGraphic);
@@ -332,7 +332,7 @@
 			var t2 = "${BORO}/${BLOCK}/${LOT}"; //add for search on click
 			curLot = esriLang.substitute(evt.graphic.attributes, "${LOT}");
 			curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click(4.b)
-
+            curCDkey = "";
 			map.setMapCursor("pointer"); //Add mouse change at hover
 			if (flag==0){
 				hovergraph.enableMouseEvents();
@@ -343,7 +343,7 @@
 		});        
 		layercdm.on("mouse-over", function(evt){
 			closeDialog();
-          var t = "<b>${Boro}/${Block}/${Lot}</b><hr><b>Adress:</b>${Street_Num}, ${Street_Nam}, New York, NY<br>";
+          var t = "<b>${Boro}/${Block}/${Lot}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, New York, NY<br>";
           var content = esriLang.substitute(evt.graphic.attributes,t);
 		//var symbol = new esri.symbol.SimpleFillSymbol();
         //symbol.setColor(new dojo.Color([150,150,150,0.5]));
@@ -363,6 +363,7 @@
           var t2 = "${Boro}/${Block}/${Lot}"; //add for search on click
 		  curLot = esriLang.substitute(evt.graphic.attributes, "${Lot}");
 		  curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click(4.b)
+          curCDkey = esriLang.substitute(evt.graphic.attributes, "${CONDO_KEY}");
        	    map.setMapCursor("pointer"); //Add mouse change at hover
         });
         function closeDialog() {
@@ -411,7 +412,7 @@
             //Create an InfoTemplate and include three fields
             infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
 					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
-					+"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
+					+"</br>Adress:${Street_Num} ${Street_Nam}, New York, NY</br>"
 					+"</br>Total Units:${resunit}</br>"
 					+"</br>Gross SQFT:${ttlsqft} SQFT</br>"
 					+"</br>Stories:${story:NumberFormat}</br>"
@@ -440,7 +441,7 @@
             //Create an InfoTemplate
 
 			infoTemplate: new InfoTemplate("Parcel: ${Boro}/${Block}/${Lot}",
-				"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
+				"</br>Adress:${Street_Num} ${Street_Nam}, New York, NY</br>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
@@ -553,8 +554,10 @@
 		 //Search NonCD
 		on(dom.byId("execute3"), "click", dosearchtest);
 		    function dosearchtest() {
+            dijit.byId("toolsPane").destroyDescendants(false);
+			domConstruct.empty("toolsPane");
 			document.getElementById("alerttext").innerHTML="";
-			document.getElementById("execute").disabled = true;
+			document.getElementById("execute2").disabled = true;
                //If multiple results are found, it will default and select the first.
                searchvar.set("activeSourceIndex", 0);
 				var search_block = dom.byId("searchtext_Block").value;
@@ -620,7 +623,7 @@
 				}*/
 				query.where = "CONDO_KEY = "+curCDkey +" and Unit='"+curCDunit+"'";
 			}else{
-				query.where = "bl_sp = '"+ curBL +"'" ;
+				query.where = "CONDO_KEY = "+curCDkey ;
 			}
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
@@ -679,7 +682,7 @@
 								return value;
 						}
 					}
-			if (i==0){
+			if (resultCount==1/*i==0*/){
 				var titlePane1 = new TitlePane({
 					id: "titlePane"+i,
 					open: true, 
@@ -705,17 +708,21 @@
 		
           
 		function MapClickSearchHanlder(evt){
-			curCDkey="";
 			curCDkey_s="";
 			curCDunit="";
 			searchcd="";
+            var bbl= curBBL.split("/");
+            var block = bbl[1];
+            var lot = bbl[2];
 			document.getElementById("alerttext").innerHTML = "";
-			if (curLot>7500){
+            document.getElementById("searchtext_Block").setAttribute("value", block);
+            document.getElementById("searchtext_Lot").setAttribute("value", lot);
+			if (curCDkey/*curLot>7500*/){
 				//executeunit();
-				curBL = curBBL.substring(2,curBBL.length);
+				//curBL = curBBL.substring(2,curBBL.length);
 				searchvar.set("activeSourceIndex", 1);
-				searchvar.search(curBL);
-				//document.getElementById("execute").disabled = false;
+				searchvar.search(curCDkey);
+				document.getElementById("execute2").disabled = true;
 				execute();
 				//searchcd=attrs.CONDO_KEY;
 			}else{
@@ -728,6 +735,7 @@
 			  searchvar.search(curBL);
 			}
 		}
+
 
 
 	});
@@ -774,12 +782,12 @@
                   Enter Block and Lot to Search on, and click on the correct button to search.
                </div>
 			   </br>
-			   <input type="search" class="clearable" id="searchtext_Block" size="20" value="" placeholder="Block" maxlength="4" size="4"/> 
-			   <input type="search" class="clearable" id="searchtext_Lot" size="20" value="" placeholder="Lot" maxlength="4" size="4"/> 
+			   <input type="search" class="clearable" id="searchtext_Block" size="20" value="" placeholder="Block" maxlength="4" size="4" onfocus="setDefault(this)"/> 
+			   <input type="search" class="clearable" id="searchtext_Lot" size="20" value="" placeholder="Lot" maxlength="4" size="4" onfocus="setDefault(this)"/> 
 			   </br>
 			   <input id="execute3" type="button" value="Get Non Condo" >
                <input id="execute2" type="button" value="Get Condo Unit">
-			   <input id="execute" type="button" value="Get Condo Suffix Details" disabled= true>
+			   <!--input id="execute" type="button" value="Get Condo Suffix Details" disabled= true-->
                </br>
 
 			   <p id="alerttext" style="font-family:verdana;color: red;text-shadow:1px 1px 2px white;"></p>
@@ -794,6 +802,17 @@
       <div id="table"></div>
     </div-->
   </div>
+  
+  <script>
+          function setDefault(x) {
+            /*curBBL=""; 
+            curCDkey_s="";
+			curCDunit="";
+			searchcd="";*/
+            //x.style.background = "yellow";
+            document.getElementById("execute2").disabled = false;
+        }
+  </script>
 </body>
 
 </html>
