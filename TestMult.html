@@ -312,6 +312,13 @@
         //when fired, create a new graphic with the geometry from the event.graphic and add it to the maps graphics layer
  		var hovergraph = new esri.layers.GraphicsLayer();
 		var flag=0;
+        function loadmouse(){
+            if (flag==0){
+            	hovergraph.enableMouseEvents();
+				hovergraph.on("click", MapClickSearchHanlder);
+                flag=1;
+            }
+        };
         layer.on("mouse-over", function(evt){
 			closeDialog();
 			var t = "<b>${BORO}/${BLOCK}/${LOT}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, New York, NY<br><b>DOF Value 2017 Tentative: $</b>${fmv:NumberFormat}<br>";
@@ -334,11 +341,12 @@
 			curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click(4.b)
             curCDkey = "";
 			map.setMapCursor("pointer"); //Add mouse change at hover
-			if (flag==0){
+			/*if (flag==0){
 				hovergraph.enableMouseEvents();
 				hovergraph.on("click", MapClickSearchHanlder);	
 				flag=1;
-			}
+			}*/
+            loadmouse();
 
 		});        
 		layercdm.on("mouse-over", function(evt){
@@ -365,6 +373,7 @@
 		  curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click(4.b)
           curCDkey = esriLang.substitute(evt.graphic.attributes, "${CONDO_KEY}");
        	    map.setMapCursor("pointer"); //Add mouse change at hover
+            loadmouse();
         });
         function closeDialog() {
           //map.graphics.clear();
