@@ -10,7 +10,7 @@
    <style>
     html, body, #borderContainer, #map {
       width: 100%;
-	  height: 100%;
+      height: 100%;
 	}
 
 	html, body {
@@ -38,6 +38,7 @@
 	  left: 0;
 	}
 	.esriPopup .action.zoomTo { display: none; }
+	.esriPopup .titleButton.maximize { display: none; }
 	/* Hide the progress bar when map is not updating */
 	#map:not([data-updating]) progress {
 	  display: none;
@@ -100,9 +101,10 @@
 			  display: hide;
 			}
 
-          .arcgisSearch .searchBtn {
+    .arcgisSearch .searchBtn {
             display: none;
           }
+
 */
 	#intro{
 		padding: 10px;
@@ -141,18 +143,18 @@
 	.tg td{
 		font-family:Arial, sans-serif;font-size:14px;padding:1px 10px;
 		border-style:solid;border-width:0px;overflow:hidden;word-break:normal;
-		border-top-width:1px;border-bottom-width:0px;}
-	.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:1px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-top-width:1px;border-bottom-width:0px;}
-	.tg .tg-qmme{font-family:Arial, Helvetica, sans-serif  !important;;vertical-align:top}
+		border-top-width:1px;border-bottom-width:0px;border-color: #0052A3;}
+	.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:bold;padding:1px 17px;background-color:#b3d9ff;text-align:left;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-top-width:1px;border-bottom-width:0px;border-color: #0052A3;}
+	.tg .tg-qmme{font-family:Arial, Helvetica, sans-serif  !important;;font-color:#808080;vertical-align:top;  font-weight: bold; }
 	.tg .tg-yw4l{vertical-align:top}
 	.tg tr:hover {background-color:#e5f2ff;}
 	
 	
-	.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #0052A3;border-collapse: collapse;}
-	.tftable th {font-size:12px;background-color:#b3d9ff;border-width: 1px;padding: 8px;border-style: solid;border-color: #0052A3;text-align:left;}
-	.tftable tr {background-color:#ffffff;}
-	.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #0052A3;}
-	.tftable tr:hover {background-color:#e5f2ff;}
+	/*.tftable {font-family:Arial, sans-serif;font-size:14px;font-weight:normal;color:#333333;width:100%;border-width: 0px;border-color: #0052A3;border-collapse: collapse;}
+	.tftable th {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #0052A3;text-align:left;}
+	.tftable tr {background-color:#ffffff; border-width:0px;}
+	.tftable td {font-size:12px;border-width: 1px;padding:1px 10px; border-style: solid;border-color: #0052A3;}
+	.tftable tr:hover {background-color:#e5f2ff;}*/
 	a:link {
 		text-decoration: none;
 	}
@@ -207,8 +209,12 @@
         
 
 	  parser.parse();
-		var curCDkey, curCDkey_s, curCDunit;
-		
+		var curCDkey, curCDkey_s, curCDunit, curBBL,curLot;
+		var noncdlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0";
+		var cdmainlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0";
+		var cdsufftable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0";
+		var cdunittable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2MH_unitlist1_12212015/FeatureServer/0";
+		var Date = "Jan 2016";
             /*
 			registry.byId("searchValue").on("click", doSearchValue);
 		    function doSearchValue() {
@@ -238,27 +244,27 @@
          });
 	  
 		 //ArcGIS Online feature service showing Mahattan Tc2 lots
-         var layer = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0", {
+         var layer = new FeatureLayer(noncdlayer, {
             outFields: ["*"],
-            maxScale:500,
-            minScale:5000,
+            maxScale:100,
+            minScale:8000,
 			id:'noncd'
          });
-		 layer.maxScale=500;
-		 layer.minScale=5000;
+		 layer.maxScale=100;
+		 layer.minScale=8000;
          var symbol1 = new SimpleFillSymbol().setColor(new Color([0,108,108,0.15]));
 		 symbol1.setOutline(new SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new Color([0,100,156]), 1));
 		 var renderer = new SimpleRenderer(symbol1);
  		 layer.setRenderer(renderer);
 		 //Condo Suffix layer
-         var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0", {
+         var layercdm = new FeatureLayer(cdmainlayer, {
             outFields: ["*"],
-            maxScale:500,
+            maxScale:100,
             minScale:5000,
 			id:'cd'
 
          });
-		 layercdm.maxScale=500;
+		 layercdm.maxScale=100;
 		 layercdm.minScale=5000;
 		 var renderer = new SimpleRenderer(symbol1);
  		 layercdm.setRenderer(renderer);
@@ -285,7 +291,8 @@
 		//Info Window: set size
         map.infoWindow.resize(245,300);
 
-
+		
+		
 		//4.a. Hover popup window set up
         dialog = new TooltipDialog({
           id: "tooltipDialog",
@@ -308,30 +315,47 @@
         //listen for when the onMouseOver event fires on the layer
         //when fired, create a new graphic with the geometry from the event.graphic and add it to the maps graphics layer
  		var hovergraph = new esri.layers.GraphicsLayer();
+		var flag=0;
+        function loadmouse(){
+            if (flag==0){
+            	hovergraph.enableMouseEvents();
+				hovergraph.on("click", MapClickSearchHanlder);
+                flag=1;
+            }
+        };
         layer.on("mouse-over", function(evt){
 			closeDialog();
-          var t = "<b>${BORO}/${BLOCK}/${LOT}</b><hr><b>Adress:</b>${Street_Num}, ${Street_Nam}, New York, NY<br><b>DOF Value 2017 Tentative: $</b>${fmv:NumberFormat}<br>";
-          var content = esriLang.substitute(evt.graphic.attributes,t);
-          //var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
-          //map.graphics.add(highlightGraphic);
+			var t = "<b>${BORO}/${BLOCK}/${LOT}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, New York, NY<br><b>DOF Value 2017 Tentative: $</b>${fmv:NumberFormat}<br>";
+			var content = esriLang.substitute(evt.graphic.attributes,t);
+			//var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
+			//map.graphics.add(highlightGraphic);
 			map.addLayer(hovergraph);
 			var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
 			hovergraph.add(highlightGraphic);
-          dialog.setContent(content);
+			dialog.setContent(content);
 
-          domStyle.set(dialog.domNode, "opacity", 0.85);
-          dijitPopup.open({
-            popup: dialog,
-            x: evt.pageX,
-            y: evt.pageY
-          });
-          var t2 = "${BORO}/${BLOCK}/${LOT}"; //add for search on click
-		  curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click(4.b)
-       	    map.setMapCursor("pointer"); //Add mouse change at hover
-        });        
+			domStyle.set(dialog.domNode, "opacity", 0.80);
+			dijitPopup.open({
+				popup: dialog,
+				x: evt.pageX,
+				y: evt.pageY
+			});
+			var t2 = "${BORO}/${BLOCK}/${LOT}"; //add for search on click
+			curLot = esriLang.substitute(evt.graphic.attributes, "${LOT}");
+			curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click(4.b)
+            curCDkey = "";
+			map.setMapCursor("pointer"); //Add mouse change at hover
+			/*if (flag==0){
+				hovergraph.enableMouseEvents();
+				hovergraph.on("click", MapClickSearchHanlder);	
+				flag=1;
+			}*/
+            loadmouse();
+
+		});        
 		layercdm.on("mouse-over", function(evt){
 			closeDialog();
-          var t = "<b>${Boro}/${Block}/${Lot}</b><hr><b>Adress:</b>${Street_Num}, ${Street_Nam}, New York, NY<br>";
+          var t = "<b>${Boro}/${Block}/${Lot}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, New York, NY<br>";
           var content = esriLang.substitute(evt.graphic.attributes,t);
 		//var symbol = new esri.symbol.SimpleFillSymbol();
         //symbol.setColor(new dojo.Color([150,150,150,0.5]));
@@ -342,15 +366,18 @@
         //map.graphics.add(highlightGraphic);
 		hovergraph.add(highlightGraphic);
           dialog.setContent(content);
-          domStyle.set(dialog.domNode, "opacity", 0.65);
+          domStyle.set(dialog.domNode, "opacity", 0.80);
           dijitPopup.open({
             popup: dialog,
             x: evt.pageX,
             y: evt.pageY
           });
-          var t2 = "{Boro}/${Block}/${Lot}"; //add for search on click
+          var t2 = "${Boro}/${Block}/${Lot}"; //add for search on click
+		  curLot = esriLang.substitute(evt.graphic.attributes, "${Lot}");
 		  curBBL = esriLang.substitute(evt.graphic.attributes, t2);//add for search on click(4.b)
+          curCDkey = esriLang.substitute(evt.graphic.attributes, "${CONDO_KEY}");
        	    map.setMapCursor("pointer"); //Add mouse change at hover
+            loadmouse();
         });
         function closeDialog() {
           //map.graphics.clear();
@@ -365,7 +392,7 @@
         }
           //Clear: set mouse pointer back to default after move-out;
          hovergraph.on("mouse-out", closeDialog);
-
+		 
 		//Search
          var searchvar = new Search({
             enableButtonMode: false, //this enables the search widget to display as a single button
@@ -385,7 +412,7 @@
          //Push the sources used to search, by default the ArcGIS Online World geocoder is included. In addition there is a feature layer of US congressional districts. The districts search is set up to find the "DISTRICTID". Also, a feature layer of senator information is set up to find based on the senator name. 
 
          sources.push({
-            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0"),
+            featureLayer: new FeatureLayer(noncdlayer),
             searchFields: ["bl_sp"],
             displayField: "bl_sp",
             exactMatch: true,
@@ -398,7 +425,7 @@
             //Create an InfoTemplate and include three fields
             infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
 					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
-					+"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
+					+"</br>Adress:${Street_Num} ${Street_Nam}, New York, NY</br>"
 					+"</br>Total Units:${resunit}</br>"
 					+"</br>Gross SQFT:${ttlsqft} SQFT</br>"
 					+"</br>Stories:${story:NumberFormat}</br>"
@@ -414,8 +441,8 @@
          });
 
          sources.push({
-            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0"),
-            searchFields: ["CONDO_KEY"],
+            featureLayer: new FeatureLayer(cdmainlayer),
+            searchFields: ["CONDO_KEY","bl_sp"],
             displayField: "CONDO_KEY",
             exactMatch: true,
             name: "Search on Condo main",
@@ -427,7 +454,7 @@
             //Create an InfoTemplate
 
 			infoTemplate: new InfoTemplate("Parcel: ${Boro}/${Block}/${Lot}",
-				"</br>Adress:${Street_Num}, ${Street_Nam}, New York, NY</br>"
+				"</br>Adress:${Street_Num} ${Street_Nam}, New York, NY</br>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
@@ -441,7 +468,7 @@
          //Set the sources above to the search widget
          searchvar.set("sources", sources);
 		 searchvar.set("activeSourceIndex", 1);
-		 
+
 		 var searchcd;
 		 searchvar.on("search-results", function (e) {
 			var rs, h;
@@ -466,7 +493,7 @@
 					  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
 					}*/
 					resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
-					resultItems.push("<table class ='tg'><tr><td> Address: </td><td>"+setNullValue(featureAttributes.Street_Num,"--") + " "
+					resultItems.push("<table class ='tg'><tr><td class ='tg-qmme'> Address: </td><td>"+setNullValue(featureAttributes.Street_Num,"--") + " "
 					+ setNullValue(featureAttributes.Street_Nam,"--") +"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Neighborhood: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.NBHD, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Property Type: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Structure, "--")+"</td></tr>"
@@ -478,31 +505,36 @@
 					+"<tr><td class ='tg-qmme'>Commercial Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.comunit, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Total Story: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.story, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Year Built: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.AYB, "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Zoning: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Zoning Code: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
 					+"</table>");
 					resultItems.push("<br><br>");
 						
 					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
 					resultItems.push("<table class ='tg'>"
-					+"<tr><td class ='tg-qmme'>fmv: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'  title='as of "+Date+"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
 					+"</table>");
 					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
-					resultItems.push("<table class='tftable' border='1'>"
-					+"<tr><td>Bcat:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><td>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><td>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><th>Header 1</th><th>Low</th><th>Median</th><th>High</th></tr>"
-					+"<tr><td>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
-					+"<tr><td>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
-					+"<tr><td>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
-					+"<tr><td>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
-					+"<tr><td>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
+					resultItems.push("<table class='tg' >"
+					+"<tr><td class ='tg-qmme' >Bcat:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td class ='tg-qmme'>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td  class ='tg-qmme'>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><th></th><th>Low</th><th>Median</th><th>High</th></tr>"
+					+"<tr><td class ='tg-qmme'>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
 					+"</table>");
 
 					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
+					resultItems.push("<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
+						+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
+						+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
+						+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>");
+					
 					
 					function setNullValue(value, defaultValue){
 						if (value == 0 || value ==""||value == "0" ||value == "$0") {
@@ -516,14 +548,15 @@
 					var titlePane1 = new TitlePane({
 						id: "titlePane11",
 						open: true, 
-						title: featureAttributes.bbl_sp,
+						title: "Boro/Block/Lot:"+featureAttributes.bbl_sp,
 						content: resultItems           
 					}, domConstruct.create('div', {}, containerNode));
 				};
 			}else{//CONDO ([1])
 				//h = inspect(rs[0][0].feature.attributes, 5, 0);
 				var attrs = rs[1][0].feature.attributes;
-				searchcd=attrs.CONDO_KEY;			
+				searchcd=attrs.CONDO_KEY;	
+				//curCDunit = "";
 			};
 
 		});
@@ -534,8 +567,10 @@
 		 //Search NonCD
 		on(dom.byId("execute3"), "click", dosearchtest);
 		    function dosearchtest() {
+            dijit.byId("toolsPane").destroyDescendants(false);
+			domConstruct.empty("toolsPane");
 			document.getElementById("alerttext").innerHTML="";
-			document.getElementById("execute").disabled = true;
+			document.getElementById("execute2").disabled = true;
                //If multiple results are found, it will default and select the first.
                searchvar.set("activeSourceIndex", 0);
 				var search_block = dom.byId("searchtext_Block").value;
@@ -563,36 +598,46 @@
 			//var searchx= dom.byId("searchtext").value;
 			queryunit.where = "bl_sp = '"+searchx+"'";
 			queryTaskunit.execute(queryunit, GetResultsUnit,function(error){console.log(error);});
-			document.getElementById("execute").disabled = false;
+			//document.getElementById("execute").disabled = false;
 		}		 
 		function GetResultsUnit (results) {
-		  var resultItems = [];
-		  var resultCount = results.features.length;
-		  if (resultCount==1){
-		  var featureAttributes = results.features[0].attributes;
-		  curCDkey = featureAttributes.CONDO_KEY;		
-		  curCDunit = featureAttributes.unit;
-		  searchvar.set("activeSourceIndex", 1);
-		  curCDkey_s = curCDkey.toString();
-		  searchvar.set("value", curCDkey_s);
-		  searchvar.search();
-		  }else{
+			var resultItems = [];
+			var resultCount = results.features.length;
+			if (resultCount==1){
+			var featureAttributes = results.features[0].attributes;
+			curCDkey = featureAttributes.CONDO_KEY;		
+			curCDunit = featureAttributes.unit;
+			searchvar.set("activeSourceIndex", 1);
+			curCDkey_s = curCDkey.toString();
+			searchvar.set("value", curCDkey_s);
+			searchvar.search();
+			execute();
+			}else{
 			document.getElementById("alerttext").innerHTML = "BBL cannot be find\nPlease enter a valid block and lot for Condominium Unit.";
 			return;
-		  };
+			};
 
 		};
 
 		 //Query--Get detail for Condo
 		 //Initiate Query
-		var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0");
+		var queryTask = new QueryTask(cdsufftable);
 		var query = new Query();
 		query.returnGeometry = false;
 		query.outFields = ["*"]
 		//Execute Query
-		on(dom.byId("execute"), "click", execute);
+		//on(dom.byId("execute"), "click", execute);
 		function execute () {
-		  query.where = "CONDO_KEY = "+searchcd +" and Unit='"+curCDunit+"'";
+			if (curCDunit){
+				/*if (searchcd){
+					query.where = "CONDO_KEY = "+searchcd +" and Unit='"+curCDunit+"'";
+				}else{
+					query.where = "CONDO_KEY = "+curCDkey +" and Unit='"+curCDunit+"'";
+				}*/
+				query.where = "CONDO_KEY = "+curCDkey +" and Unit='"+curCDunit+"'";
+			}else{
+				query.where = "CONDO_KEY = "+curCDkey ;
+			}
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
 		function showResults (results) {
@@ -604,7 +649,7 @@
 			var featureAttributes = results.features[i].attributes;
 			
 					resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
-					resultItems.push("<table class ='tg'><tr><td> Address: </td><td>"+setNullValue(featureAttributes.Street_Number,"--") + " "
+					resultItems.push("<table class ='tg'><tr><td class ='tg-qmme'> Address: </td><td>"+setNullValue(featureAttributes.Street_Number,"--") + " "
 					+ setNullValue(featureAttributes.Street_Name,"--") +"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Neighborhood: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.NBHD, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Property Type: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Structure, "--")+"</td></tr>"
@@ -616,28 +661,28 @@
 					+"<tr><td class ='tg-qmme'>Commercial Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.comunit, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Total Story: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.story, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Year Built: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.AYB, "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Zoning: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Zoning Code: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
 					+"</table>");
 					resultItems.push("<br><br>");
 						
 					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
 					resultItems.push("<table class ='tg'>"
-					+"<tr><td class ='tg-qmme'>fmv: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme' title='as of "+ Date +"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
 					+"</table>");
 					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
-					resultItems.push("<table class='tftable' border='1'>"
-					+"<tr><td>Bcat:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><td>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><td>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><th>Header 1</th><th>Low</th><th>Median</th><th>High</th></tr>"
-					+"<tr><td>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
-					+"<tr><td>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
-					+"<tr><td>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
-					+"<tr><td>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
-					+"<tr><td>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
+					resultItems.push("<table class='tg' >"
+					+"<tr><td class ='tg-qmme'>Bcat:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td class ='tg-qmme'>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td  class ='tg-qmme'>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><th></th><th>Low</th><th>Median</th><th>High</th></tr>"
+					+"<tr><td class ='tg-qmme'>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
 					+"</table>");
 
 					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
@@ -650,18 +695,18 @@
 								return value;
 						}
 					}
-			if (i==0){
+			if (resultCount==1/*i==0*/){
 				var titlePane1 = new TitlePane({
 					id: "titlePane"+i,
 					open: true, 
-					title: featureAttributes.bblu_sp,
+					title: "Boro/Block/Lot:"+featureAttributes.bblu_sp,
 					content: resultItems           
 				}, domConstruct.create('div', {}, containerNode));
 			}else{
 				var titlePane1 = new TitlePane({
 					id: "titlePane"+i,
 					open: false, 
-					title: featureAttributes.bblu_sp,
+					title: "Boro/Block/Lot:"+featureAttributes.bblu_sp,
 					content: resultItems           
 				}, domConstruct.create('div', {}, containerNode));
 			}
@@ -672,6 +717,38 @@
 
 		
 		
+		//6. add for search on click
+		
+          
+		function MapClickSearchHanlder(evt){
+			curCDkey_s="";
+			curCDunit="";
+			searchcd="";
+            var bbl= curBBL.split("/");
+            var block = bbl[1];
+            var lot = bbl[2];
+			document.getElementById("alerttext").innerHTML = "";
+            document.getElementById("searchtext_Block").setAttribute("value", block);
+            document.getElementById("searchtext_Lot").setAttribute("value", lot);
+			if (curCDkey/*curLot>7500*/){
+				//executeunit();
+				//curBL = curBBL.substring(2,curBBL.length);
+				searchvar.set("activeSourceIndex", 1);
+				searchvar.search(curCDkey);
+				document.getElementById("execute2").disabled = true;
+				execute();
+				//searchcd=attrs.CONDO_KEY;
+			}else{
+			 curBL = curBBL.substring(2,curBBL.length);
+			 searchvar.set("activeSourceIndex", 0);
+			  //searchvar.value = curBL;
+			  //dojo.attr("search_input", "value", curBL);
+			  //search.search(curBBL);
+			  //searchvar.search();
+			  searchvar.search(curBL);
+			}
+		}
+
 
 
 	});
@@ -718,13 +795,14 @@
                   Enter Block and Lot to Search on, and click on the correct button to search.
                </div>
 			   </br>
-			   <input type="search" class="clearable" id="searchtext_Block" size="20" value="" placeholder="Block" maxlength="4" size="4"/> 
-			   <input type="search" class="clearable" id="searchtext_Lot" size="20" value="" placeholder="Lot" maxlength="4" size="4"/> 
+			   <input type="search" class="clearable" id="searchtext_Block" size="20" value="" placeholder="Block" maxlength="4" size="4" onfocus="setDefault(this)"/> 
+			   <input type="search" class="clearable" id="searchtext_Lot" size="20" value="" placeholder="Lot" maxlength="4" size="4" onfocus="setDefault(this)"/> 
 			   </br>
 			   <input id="execute3" type="button" value="Get Non Condo" >
                <input id="execute2" type="button" value="Get Condo Unit">
-			   <input id="execute" type="button" value="Get Condo Suffix Details" disabled= true>
+			   <!--input id="execute" type="button" value="Get Condo Suffix Details" disabled= true-->
                </br>
+
 			   <p id="alerttext" style="font-family:verdana;color: red;text-shadow:1px 1px 2px white;"></p>
             </div>
          </div>
@@ -737,6 +815,17 @@
       <div id="table"></div>
     </div-->
   </div>
+  
+  <script>
+          function setDefault(x) {
+            /*curBBL=""; 
+            curCDkey_s="";
+			curCDunit="";
+			searchcd="";*/
+            //x.style.background = "yellow";
+            document.getElementById("execute2").disabled = false;
+        }
+  </script>
 </body>
 
 </html>
