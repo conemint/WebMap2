@@ -210,7 +210,11 @@
 
 	  parser.parse();
 		var curCDkey, curCDkey_s, curCDunit, curBBL,curLot;
-		
+		var noncdlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0";
+		var cdmainlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0";
+		var cdsufftable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0";
+		var cdunittable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2MH_unitlist1_12212015/FeatureServer/0";
+		var Date = "Jan 2016";
             /*
 			registry.byId("searchValue").on("click", doSearchValue);
 		    function doSearchValue() {
@@ -240,27 +244,27 @@
          });
 	  
 		 //ArcGIS Online feature service showing Mahattan Tc2 lots
-         var layer = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0", {
+         var layer = new FeatureLayer(noncdlayer, {
             outFields: ["*"],
-            maxScale:500,
-            minScale:5000,
+            maxScale:100,
+            minScale:8000,
 			id:'noncd'
          });
-		 layer.maxScale=500;
-		 layer.minScale=5000;
+		 layer.maxScale=100;
+		 layer.minScale=8000;
          var symbol1 = new SimpleFillSymbol().setColor(new Color([0,108,108,0.15]));
 		 symbol1.setOutline(new SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new Color([0,100,156]), 1));
 		 var renderer = new SimpleRenderer(symbol1);
  		 layer.setRenderer(renderer);
 		 //Condo Suffix layer
-         var layercdm = new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0", {
+         var layercdm = new FeatureLayer(cdmainlayer, {
             outFields: ["*"],
-            maxScale:500,
+            maxScale:100,
             minScale:5000,
 			id:'cd'
 
          });
-		 layercdm.maxScale=500;
+		 layercdm.maxScale=100;
 		 layercdm.minScale=5000;
 		 var renderer = new SimpleRenderer(symbol1);
  		 layercdm.setRenderer(renderer);
@@ -330,7 +334,7 @@
 			hovergraph.add(highlightGraphic);
 			dialog.setContent(content);
 
-			domStyle.set(dialog.domNode, "opacity", 0.85);
+			domStyle.set(dialog.domNode, "opacity", 0.80);
 			dijitPopup.open({
 				popup: dialog,
 				x: evt.pageX,
@@ -362,7 +366,7 @@
         //map.graphics.add(highlightGraphic);
 		hovergraph.add(highlightGraphic);
           dialog.setContent(content);
-          domStyle.set(dialog.domNode, "opacity", 0.65);
+          domStyle.set(dialog.domNode, "opacity", 0.80);
           dijitPopup.open({
             popup: dialog,
             x: evt.pageX,
@@ -408,7 +412,7 @@
          //Push the sources used to search, by default the ArcGIS Online World geocoder is included. In addition there is a feature layer of US congressional districts. The districts search is set up to find the "DISTRICTID". Also, a feature layer of senator information is set up to find based on the senator name. 
 
          sources.push({
-            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0"),
+            featureLayer: new FeatureLayer(noncdlayer),
             searchFields: ["bl_sp"],
             displayField: "bl_sp",
             exactMatch: true,
@@ -437,7 +441,7 @@
          });
 
          sources.push({
-            featureLayer: new FeatureLayer("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0"),
+            featureLayer: new FeatureLayer(cdmainlayer),
             searchFields: ["CONDO_KEY","bl_sp"],
             displayField: "CONDO_KEY",
             exactMatch: true,
@@ -507,7 +511,7 @@
 						
 					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
 					resultItems.push("<table class ='tg'>"
-					+"<tr><td class ='tg-qmme'  title='as of Jan 2016'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'  title='as of "+Date+"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
@@ -617,7 +621,7 @@
 
 		 //Query--Get detail for Condo
 		 //Initiate Query
-		var queryTask = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0");
+		var queryTask = new QueryTask(cdsufftable);
 		var query = new Query();
 		query.returnGeometry = false;
 		query.outFields = ["*"]
@@ -663,7 +667,7 @@
 						
 					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
 					resultItems.push("<table class ='tg'>"
-					+"<tr><td class ='tg-qmme' title='as of Jan 2016'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme' title='as of "+ Date +"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
