@@ -4,7 +4,7 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
-   <title>ArcGIS API for JavaScript | Search widget with multiple sources</title>
+   <title>DOF | TC2 Property Search Map: Manhattan</title>
    <link rel="stylesheet" href="https://js.arcgis.com/3.15/dijit/themes/claro/claro.css">
    <link rel="stylesheet" href="https://js.arcgis.com/3.15/esri/css/esri.css">
    <link rel="stylesheet" href="/tc2map.css"><!--Css-->
@@ -47,17 +47,49 @@
 	  "dijit/TooltipDialog",
 	  "dijit/popup",
 	  "dijit/TitlePane",
+	  "dojo/ready",
 	  "dijit/registry",
+	  "dojo/aspect",
 	  "dijit/layout/BorderContainer",
 	  "dijit/layout/ContentPane",
 	  "dijit/form/ToggleButton",
 		"dojo/domReady!"
-	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, Color, Graphic, esriLang,number, domStyle, parser,localeNumber,TooltipDialog,dijitPopup, TitlePane,registry,
+	], function(Map, BasemapToggle, FeatureLayer, FeatureTable, LayerList, Search,InfoTemplate,domConstruct, dom, on, Query, QueryTask, SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer, Color, Graphic, esriLang,number, domStyle, parser,localeNumber,TooltipDialog,dijitPopup, TitlePane,ready,registry,aspect,
 	ToggleButton) {
-
-        
-
-	  parser.parse();
+		dojo.extend(dijit.Tooltip, {
+			startup: function() {
+				dojo.forEach(this.connectId, function(id) {
+					var node = dojo.byId(id);
+					dojo.connect(node, 'onclick', this, function(e) {
+						node.blur();
+					});
+					dijit._Widget.prototype.startup.apply(this, arguments);
+				});
+			}
+		});
+				
+		var guideline = {
+		  "Variables":["Vacancy Rate","Effective Tax Rate","HighIncome","HighExpense","HighExpense Ratio","HighCap Rate","HighApproximate Market Value Range","HighIncome","MedianExpense","MedianExpense Ratio","MedianCap Rate","MedianApproximate Market Value Range","MedianIncome","LowExpense","LowExpense Ratio","LowCap Rate","LowApproximate Market Value Range","dispBcat"],
+		  "RR31":["4.00%","5.797%"," $44.84 "," $18.42 ","41%","6.70%"," $211 "," $26.08 "," $13.21 ","51%","6.70%"," $103 "," $14.62 "," $9.29 ","64%","8.33%"," $38 ","Rental Walk-Ups"],
+		  "RR32":["3.00%","5.797%"," $40.52 "," $17.31 ","43%","6.70%"," $186 "," $20.81 "," $11.52 ","55%","7.11%"," $72 "," $12.51 "," $8.46 ","68%","9.12%"," $27 ","Pre-1974 Rental Elevator Buildings"],
+		  "RR33":["4.00%","5.797%"," $55.10 "," $20.93 ","38%","6.70%"," $273 "," $36.44 "," $16.22 ","45%","6.70%"," $162 "," $16.70 "," $10.08 ","60%","7.78%"," $49 ","Post-1973 Rental Elevator Buildings"],
+		  "RU31":["5.00%","5.797%"," $58.70 "," $21.77 ","37%","6.70%"," $296 "," $40.89 "," $17.41 ","43%","6.70%"," $188 "," $21.02 "," $11.59 ","55%","7.08%"," $73 ","Rental Walk-Ups"],
+		  "RU32":["5.00%","5.797%"," $55.00 "," $20.91 ","38%","6.70%"," $273 "," $39.45 "," $17.03 ","43%","6.70%"," $179 "," $20.81 "," $11.52 ","55%","7.11%"," $72 ","Pre-1974 Rental Elevator Buildings"],
+		  "RU33":["4.00%","5.797%"," $54.87 "," $20.87 ","38%","6.70%"," $272 "," $40.39 "," $17.28 ","43%","6.70%"," $185 "," $20.75 "," $11.50 ","55%","7.11%"," $72 ","Post-1973 Rental Elevator Buildings"],
+		  "CR31":["4.00%","5.797%"," $44.84 "," $18.42 ","41%","6.70%"," $211 "," $26.08 "," $13.21 ","51%","6.70%"," $103 "," $14.62 "," $9.29 ","64%","8.33%"," $38 ","Cooperative Walk-Ups"],
+		  "CR32":["3.00%","5.797%"," $40.52 "," $17.31 ","43%","6.70%"," $186 "," $20.81 "," $11.52 ","55%","7.11%"," $72 "," $12.51 "," $8.46 ","68%","9.12%"," $27 ","Pre-1974 Cooperative Elevator Buildings"],
+		  "CR33":["4.00%","5.797%"," $55.10 "," $20.93 ","38%","6.70%"," $273 "," $36.44 "," $16.22 ","45%","6.70%"," $162 "," $16.70 "," $10.08 ","60%","7.78%"," $49 ","Post-1973 Cooperative Elevator Buildings"],
+		  "CU31":["5.00%","5.797%"," $58.70 "," $21.77 ","37%","6.70%"," $296 "," $40.89 "," $17.41 ","43%","6.70%"," $188 "," $21.02 "," $11.59 ","55%","7.08%"," $73 ","Cooperative Walk-Ups"],
+		  "CU32":["5.00%","5.797%"," $55.00 "," $20.91 ","38%","6.70%"," $273 "," $39.45 "," $17.03 ","43%","6.70%"," $179 "," $20.81 "," $11.52 ","55%","7.11%"," $72 ","Pre-1974 Cooperative Elevator Buildings"],
+		  "CU33":["4.00%","5.797%"," $54.87 "," $20.87 ","38%","6.70%"," $272 "," $40.39 "," $17.28 ","43%","6.70%"," $185 "," $20.75 "," $11.50 ","55%","7.11%"," $72 ","Post-1973 Cooperative Elevator Buildings"],
+		  "EU31":["5.00%","5.797%"," $58.70 "," $21.77 ","37%","6.70%"," $296 "," $40.89 "," $17.41 ","43%","6.70%"," $188 "," $21.02 "," $11.59 ","55%","7.08%"," $73 ","Condominium Walk-Ups"],
+		  "EU32":["5.00%","5.797%"," $55.00 "," $20.91 ","38%","6.70%"," $273 "," $39.45 "," $17.03 ","43%","6.70%"," $179 "," $20.81 "," $11.52 ","55%","7.11%"," $72 ","Pre-1974 Condominium Elevator Buildings"],
+		  "EU33":["4.00%","5.797%"," $54.87 "," $20.87 ","38%","6.70%"," $272 "," $40.39 "," $17.28 ","43%","6.70%"," $185 "," $20.75 "," $11.50 ","55%","7.11%"," $72 ","Post-1973 Condominium Elevator Buildings"],
+		  "DU31":["5.00%","5.797%"," $58.70 "," $21.77 ","37%","6.70%"," $296 "," $40.89 "," $17.41 ","43%","6.70%"," $188 "," $21.02 "," $11.59 ","55%","7.08%"," $73 ","Condo-Coops/Condo-Rental Walk-Ups"],
+		  "DU32":["5.00%","5.797%"," $55.00 "," $20.91 ","38%","6.70%"," $273 "," $39.45 "," $17.03 ","43%","6.70%"," $179 "," $20.81 "," $11.52 ","55%","7.11%"," $72 ","Pre-1974 Condo-Coops/Condo-Rental Elevator Buildings"],
+		  "DU33":["4.00%","5.797%"," $54.87 "," $20.87 ","38%","6.70%"," $272 "," $40.39 "," $17.28 ","43%","6.70%"," $185 "," $20.75 "," $11.50 ","55%","7.11%"," $72 ","Post-1973 Condo-Coops/Condo-Rental Elevator Buildings"]
+		}
+		parser.parse();
 		var curCDkey, curCDkey_s, curCDunit, curBBL,curLot;
 		var noncdlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0";
 		var cdmainlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0";
@@ -361,29 +393,31 @@
 						
 					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
 					resultItems.push("<table class ='tg'>"
-					+"<tr><td class ='tg-qmme'  title='as of "+Date+"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
+					+"<tr><td ></td><td class ='tg-qmme'>This Parcel</td><td class ='tg-qmme'> Neighborhood Median</td></tr>"
+					+"<tr><td class ='tg-qmme'  title='as of "+Date+"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_agi), "--")+" </td></tr>"
+					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_exp), "--")+" </td></tr>"
+					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_noi), "--")+" </td></tr>"
 					+"</table>");
 					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
 					resultItems.push("<table class='tg' >"
-					+"<tr><td class ='tg-qmme' >Bcat:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><td class ='tg-qmme'>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><td  class ='tg-qmme'>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td class ='tg-qmme'>Building Category:</td><td colspan='3' style='font-size:10px;font-weight: bold;'>"+guideline[featureAttributes.bcat][17] +"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Max Vacancy Rate:</td><td colspan='3'>"+guideline[featureAttributes.bcat][0]+" </td></tr>"
+					+"<tr><td  class ='tg-qmme'>Effective Tax Rate:</td><td colspan='3'>"+guideline[featureAttributes.bcat][1]+"</td></tr>"
 					+"<tr><th></th><th>Low</th><th>Median</th><th>High</th></tr>"
-					+"<tr><td class ='tg-qmme'>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
-					+"<tr><td class ='tg-qmme'>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
-					+"<tr><td class ='tg-qmme'>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
-					+"<tr><td class ='tg-qmme'>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
-					+"<tr><td class ='tg-qmme'>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Income</td><td>"+guideline[featureAttributes.bcat][12]+"</td><td>"+guideline[featureAttributes.bcat][7]+"</td><td>"+guideline[featureAttributes.bcat][2]+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Expense</td><td>"+guideline[featureAttributes.bcat][13]+"</td><td>"+guideline[featureAttributes.bcat][8]+"</td><td>"+guideline[featureAttributes.bcat][3]+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Expense Ratio</td><td>"+guideline[featureAttributes.bcat][14]+"</td><td>"+guideline[featureAttributes.bcat][9]+"</td><td>"+guideline[featureAttributes.bcat][4]+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Cap Rate</td><td>"+guideline[featureAttributes.bcat][15]+"</td><td>"+guideline[featureAttributes.bcat][10]+"</td><td>"+guideline[featureAttributes.bcat][5]+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Approximate Market Value Range</td><td>"+guideline[featureAttributes.bcat][16]+"</td><td>"+guideline[featureAttributes.bcat][11]+"</td><td>"+guideline[featureAttributes.bcat][6]+"</td></tr>"
 					+"</table>");
 
 					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
-					resultItems.push("<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
-						+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
-						+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
-						+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>");
+					resultItems.push("<br><div><h3 id='tableheadtext'>Useful Links</h3></div>");
+					resultItems.push("<table class ='tg'><tr><td > <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></td></tr>"
+						+"<tr><td ><a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></td></tr>"
+						+"<tr><td ><a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></td></tr>"
+						+"<tr><td ><a style='font-weight: bold;' href='http://maps.google.com/?q="+featureAttributes.Street_Num+" "+featureAttributes.Street_Nam +", new york, ny' target='_blank'>Search on Google Map</a></td></tr></table>");
 					
 					
 					function setNullValue(value, defaultValue){
@@ -529,15 +563,15 @@
 					+"</table>");
 					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
 					resultItems.push("<table class='tg' >"
-					+"<tr><td class ='tg-qmme'>Bcat:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><td class ='tg-qmme'>Vacancy Rate:</td><td colspan='3'>Row:1 </td></tr>"
-					+"<tr><td  class ='tg-qmme'>Effective Tax Rate:</td><td colspan='3'>Row:1 </td></tr>"
+					+"<tr><td class ='tg-qmme'>Building Category:</td><td colspan='3' style='font-size:10px;font-weight: bold;'>"+guideline[featureAttributes.bcat][17] +"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Max Vacancy Rate:</td><td colspan='3'>"+guideline[featureAttributes.bcat][0]+" </td></tr>"
+					+"<tr><td  class ='tg-qmme'>Effective Tax Rate:</td><td colspan='3'>"+guideline[featureAttributes.bcat][1]+"</td></tr>"
 					+"<tr><th></th><th>Low</th><th>Median</th><th>High</th></tr>"
-					+"<tr><td class ='tg-qmme'>Income</td><td>Row:4 Cell:2</td><td>Row:4 Cell:3</td><td>Row:4 Cell:4</td></tr>"
-					+"<tr><td class ='tg-qmme'>Expense</td><td>Row:5 Cell:2</td><td>Row:5 Cell:3</td><td>Row:5 Cell:4</td></tr>"
-					+"<tr><td class ='tg-qmme'>Expense Ratio</td><td>Row:6 Cell:2</td><td>Row:6 Cell:3</td><td>Row:6 Cell:4</td></tr>"
-					+"<tr><td class ='tg-qmme'>Cap Rate</td><td>Row:7 Cell:2</td><td>Row:7 Cell:3</td><td>Row:7 Cell:4</td></tr>"
-					+"<tr><td class ='tg-qmme'>Approximate Market Value Range</td><td>Row:8 Cell:2</td><td>Row:8 Cell:3</td><td>Row:8 Cell:4</td></tr>"
+					+"<tr><td class ='tg-qmme'>Income</td><td>"+guideline[featureAttributes.bcat][12]+"</td><td>"+guideline[featureAttributes.bcat][7]+"</td><td>"+guideline[featureAttributes.bcat][2]+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Expense</td><td>"+guideline[featureAttributes.bcat][13]+"</td><td>"+guideline[featureAttributes.bcat][8]+"</td><td>"+guideline[featureAttributes.bcat][3]+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Expense Ratio</td><td>"+guideline[featureAttributes.bcat][14]+"</td><td>"+guideline[featureAttributes.bcat][9]+"</td><td>"+guideline[featureAttributes.bcat][4]+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Cap Rate</td><td>"+guideline[featureAttributes.bcat][15]+"</td><td>"+guideline[featureAttributes.bcat][10]+"</td><td>"+guideline[featureAttributes.bcat][5]+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Approximate Market Value Range</td><td>"+guideline[featureAttributes.bcat][16]+"</td><td>"+guideline[featureAttributes.bcat][11]+"</td><td>"+guideline[featureAttributes.bcat][6]+"</td></tr>"
 					+"</table>");
 
 					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
@@ -586,6 +620,7 @@
 			document.getElementById('SearchBox').style.height = "100px";
             document.getElementById("searchtext_Block").setAttribute("value", block);
             document.getElementById("searchtext_Lot").setAttribute("value", lot);
+			//add here
 			if (curCDkey/*curLot>7500*/){
 				//executeunit();
 				//curBL = curBBL.substring(2,curBBL.length);
@@ -606,6 +641,26 @@
 		}
 
 
+        var splitter = registry.byId("borderContainer").getSplitter("leading");
+        var moveHandle = null;
+        
+        aspect.after(splitter, "_startDrag", function() {
+            moveHandle = aspect.after(splitter.domNode, "onmousemove", function() {
+                var coords = {
+                    x: !splitter.horizontal ? splitter.domNode.style.left : 0,
+                    y: splitter.horizontal ? splitter.domNode.style.top : 0
+                }
+                //dom.byId("dndOutput").textContent = JSON.stringify(coords);
+            })
+        });  
+        aspect.after(splitter, "_stopDrag", function() {
+            moveHandle && moveHandle.remove();
+        });
+            
+        aspect.after(registry.byId("toolsPane"), "resize", function(duno, size) {
+            //dom.byId("resizeOutput").textContent = JSON.stringify(size);
+        });   
+
 
 	});
    </script>
@@ -613,7 +668,7 @@
 
 
   <body class="claro">
-  <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false, design:'headline'" id="borderContainer">
+  <div  data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false, design:'headline'" id="borderContainer">
     <div id="topPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">
       	
 		<table id= headtable>
@@ -624,7 +679,7 @@
 			</tr>
 		</table>
     </div>
-    <div id="toolsPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'leading', splitter: true">
+    <div id="toolsPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'leading', splitter: true, style:  {overflow: 'auto'}">
       <!--div id="layerList"></div-->
 	<div id="intro">
 		<h4>This is an interactive map for Tax Class 2 Properties in New York City.</h4>
@@ -645,6 +700,7 @@
 			<div>For Example:  1845/7501</div>
 		</div-->
         <!--div id="search"></div-->
+		<div id="SearchBox_sh" ></div>
 		<div id="SearchBox" class="shadow">
             <div id="infos">
                <div id="note">
