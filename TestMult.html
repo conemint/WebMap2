@@ -575,6 +575,11 @@
 					+"</table>");
 
 					resultItems.push("<p class='comments'>Income= Gross Income per sq.ft.</p><p class='comments'>Expense= Total Expense per sq.ft.</p>");
+					resultItems.push("<br><div><h3 id='tableheadtext'>Useful Links</h3></div>");
+					resultItems.push("<table class ='tg'><tr><td > <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></td></tr>"
+						+"<tr><td ><a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></td></tr>"
+						+"<tr><td ><a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></td></tr>"
+						+"<tr><td ><a style='font-weight: bold;' href='http://maps.google.com/?q="+featureAttributes.Street_Num+" "+featureAttributes.Street_Nam +", new york, ny' target='_blank'>Search on Google Map</a></td></tr></table>");
 					
 					function setNullValue(value, defaultValue){
 						if (value == 0 || value ==""||value == "0" ||value == "$0") {
