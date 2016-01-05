@@ -91,11 +91,12 @@
 		}
 		parser.parse();
 		var curCDkey, curCDkey_s, curCDunit, curBBL,curLot;
-		var noncdlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd1210/FeatureServer/0";
-		var cdmainlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdmain/FeatureServer/0";
-		var cdsufftable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix/FeatureServer/0";
-		var cdunittable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2MH_unitlist1_12212015/FeatureServer/0";
+		var noncdlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd12016/FeatureServer/0";
+		var cdmainlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_cdmain12016/FeatureServer/0";
+		var cdsufftable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix0104/FeatureServer/0";
+		var cdunittable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2MH_unitlist1_01042016/FeatureServer/0";
 		var Date = "Jan 2016";
+		var latlong = [-74.005941, 40.712784]; // lon, lat: Manhattan
             /*
 			registry.byId("searchValue").on("click", doSearchValue);
 		    function doSearchValue() {
@@ -120,11 +121,11 @@
 		
          var map = new Map("map", {
             basemap: "streets",
-            center: [-74.005941, 40.712784], // lon, lat
+            center: latlong, // lon, lat
             zoom: 17
          });
 	  
-		 //ArcGIS Online feature service showing Mahattan Tc2 lots
+		 //ArcGIS Online feature service showing Manhattan Tc2 lots
          var layer = new FeatureLayer(noncdlayer, {
             outFields: ["*"],
             maxScale:100,
@@ -467,7 +468,7 @@
             }
 		 //Query--condounit
 		 //Initiate Query
-		var queryTaskunit = new QueryTask("//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2MH_unitlist1_12212015/FeatureServer/0");
+		var queryTaskunit = new QueryTask(cdunittable);
 		var queryunit = new Query();
 		queryunit.returnGeometry = false;
 		queryunit.outFields = ["*"]
