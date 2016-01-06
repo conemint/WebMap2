@@ -198,6 +198,7 @@ var map, url;
 		var rpts = false;
 		on(dojo.byId("divtagp1"),"click",function(e){
 			dom.byId('ReportPage').style.display = "none";
+			dom.byId('ReportPage').style.visibility = "hidden";
 			dom.byId('map').style.display = "block";
 			if(!pmapOn){
 				domStyle.set("divtagp1",{"background-color": "#0052A3","color":"white"});
@@ -214,7 +215,8 @@ var map, url;
 		on(dojo.byId("divtagp2"),"click",function(e){
 			if(!rpts){
 				dom.byId('map').style.display = "none";
-				dom.byId('ReportPage').style.display = "block";				
+				dom.byId('ReportPage').style.display = "block";		
+				dom.byId('ReportPage').style.visibility = "visible";				
 				domStyle.set("divtagp2",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp1",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp3",{"background-color": "white","color":"#0052A3"});
@@ -226,6 +228,7 @@ var map, url;
 		on(dojo.byId("divtagp3"),"click",function(e){
 		    var workable = isWorkable();
 			dom.byId('ReportPage').style.display = "none";
+			dom.byId('ReportPage').style.visibility = "hidden";
 			dom.byId('map').style.display = "block";
 			if((pmapOn || rpts)&& workable){
 				domStyle.set("divtagp3",{"background-color": "#0052A3","color":"white"});
@@ -236,7 +239,9 @@ var map, url;
 				dom.byId('divnyctitle').innerHTML = "| Comparable Sales Tool for Tax Class 1 Single to Three Family Homes";
 				dom.byId('instruction').innerHTML = "Please click on a borough to find comparable sales:";
 				
-				dom.byId('SelectMap').display = "none";
+				dom.byId('SelectMap').style.display = "none";
+				dom.byId('alerttext').style.display = "none";
+				
 			}
 		});
 		on(dojo.byId("SelectMap"),"change",function(e){
@@ -248,6 +253,12 @@ var map, url;
 				dom.byId('alerttext').style.display = "block";
 			}else if (MapSelected=="tc2"){
 				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 2 properties"
+				dom.byId('alerttext').innerHTML = "You have selected <mark>Tax Class 2 Maps</mark>. \nGo ahead and click on the borough to start navigate."
+				dom.byId('alerttext').style.display = "block";
 			}
+		});
+		
+		on(dojo.byId("linkReport1img"),"click",function(e){
+			window.open("/LinkPage_work/docs/report1.pdf");
 		});
       });
