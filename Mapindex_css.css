@@ -1,0 +1,132 @@
+ html, body, #map {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: #FFF;
+        overflow: hidden;
+        font-family: "arial";
+        font-size:12px;
+        font-style:bold;
+        color:black;
+        
+      }
+	  #divtags{
+		position: relative;
+		width: 100%;
+		height: 50px;
+		margin: 0;
+		padding: 0;
+		vertical-align:middle;
+	  }
+	  #divtagp1{
+		position: absolute;
+		left:0;
+		margin-left:2px;
+		margin-top:2px;
+		padding:0;
+		width: 200px;
+		height: 30px;
+		font-family: arial;
+		font-size: 16px;
+		color: white;
+		font-weight:bold;
+		background-color: #0052A3;
+		border: 1px solid #0052A3;
+		border-radius: 5px;
+		cursor: pointer;
+	  }
+	  #divpmap,#divctool{
+		position: absolute;
+		left:3px;
+		top: 5px;
+	  }
+	  #divtagp2{
+		position: absolute;
+		left:203px;
+		top: 0;
+		margin-left:2px;
+		margin-top:2px;
+		padding:0;
+		width: 200px;
+		height: 30px;
+		font-family: arial;
+		font-size: 16px;
+		color: #6A767A;
+		font-weight:bold;
+		border: 1px solid #0052A3;
+		border-radius: 5px;
+		cursor: pointer;
+	  }	  
+	  #divtagp3{
+		position: absolute;
+		left:406px;
+		top: 0;
+		margin-left:2px;
+		margin-top:2px;
+		padding:0;
+		width: 200px;
+		height: 30px;
+		font-family: arial;
+		font-size: 16px;
+		color: #6A767A;
+		font-weight:bold;
+		border: 1px solid #0052A3;
+		border-radius: 5px;
+		cursor: pointer;
+	  }	  
+		#ReportPage{
+			position: absolute;
+			font-family: arial;
+			font-weight: bold;
+			font-size: 12px;
+			height: 100%;
+			width: 100%;
+			left: 100px;
+			top: 60px;
+			z-index: 50;
+			background-color:  white;	
+			display: none;
+		}
+	  #divnyccontainer{
+		position: absolute;
+		left: 0;
+		top: 30px;
+		margin: 0;
+		padding: 0;
+		height: 30px;
+		width: 100%;
+	  }
+	  #map{
+		position: relative;
+		height: 100%;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+	  }
+      #instruction{
+          position: absolute;
+          top:30px;
+		  width: 250px;
+          left: 15px;
+          z-index:50;
+          padding: 5px;
+          background-color: rgba(250,250,250,0.7);
+          border: solid 1px #001B33;
+          border-radius: 8px;
+      }
+	  
+	  #Title{
+	   position: absolute;
+	   top: 0px;
+	   z-index:50;
+		border: 0px solid #0052A3;
+		background-color: #0052A3;
+		width: 100%;
+	  }
+	.tg  {border-collapse:collapse;border-spacing:0;border-color:#999;border:none;}
+	.tg td{font-family:Arial, sans-serif;font-size:14px;padding:1px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:#444;background-color:#F7FDFA;}
+	.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:1px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:black;background-color:#e5f2ff;}
+	.tg .tg-yw4l{vertical-align:top}
