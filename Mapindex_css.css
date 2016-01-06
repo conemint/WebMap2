@@ -28,10 +28,10 @@
 	  }
 	  #divtagp1{
 		position: absolute;
-		left:0;
 		margin-left:2px;
 		margin-top:2px;
 		padding:0;
+		left:0;
 		width: 200px;
 		height: 30px;
 		font-family: arial;
@@ -49,25 +49,16 @@
 		top: 5px;
 	  }
 	  #divtagp2{
-		position: absolute;
-		left:203px;
-		top: 0;
-		margin-left:2px;
-		margin-top:2px;
-		padding:0;
-		width: 200px;
-		height: 30px;
-		font-family: arial;
-		font-size: 16px;
-		color: #6A767A;
-		font-weight:bold;
-		border: 1px solid #0052A3;
-		border-radius: 5px;
-		cursor: pointer;
-	  }	  
+		  left:203px;
+	  }
 	  #divtagp3{
+		  left:406px;
+	  }
+	  #divtagp4{
+		  left:609px;
+	  }
+	  #divtagp2, #divtagp3, #divtagp4{
 		position: absolute;
-		left:406px;
 		top: 0;
 		margin-left:2px;
 		margin-top:2px;
@@ -82,17 +73,17 @@
 		border-radius: 5px;
 		cursor: pointer;
 	  }	  
-		#ReportPage{
+		#ReportPage, #ResearchPage{
 			position: absolute;
 			font-family: arial;
 			font-weight: bold;
 			font-size: 12px;
 			height: 100%;
 			width: 100%;
-			left: 100px;
+			left: 70px;
 			top: 60px;
 			z-index: 50;
-			background-color:  white;	
+			background-color:  #f2f2f2;	
 			display: none;
 		}
 	  #divnyccontainer{
