@@ -196,16 +196,21 @@ var map, url;
 		}
 		var pmapOn = true;
 		var rpts = false;
+		var tabloc = 0;
 		on(dojo.byId("divtagp1"),"click",function(e){
 			dom.byId('ReportPage').style.display = "none";
 			dom.byId('ReportPage').style.visibility = "hidden";
+			
+			dom.byId('ResearchPage').style.display = "none";
+			dom.byId('ResearchPage').style.visibility = "hidden";
 			dom.byId('map').style.display = "block";
-			if(!pmapOn){
+			if(tabloc!=1){
 				domStyle.set("divtagp1",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp3",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp2",{"background-color": "white","color":"#0052A3"});
 				pmapOn = true;
 				rpts = false;
+				tabloc = 1;
 				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 1 Single to Three Family Homes";
 				dom.byId('instruction').innerHTML = "Please <mark>select a tax class</mark> and click on the borough to search:";
 				
@@ -213,15 +218,21 @@ var map, url;
 			}
 		});
 		on(dojo.byId("divtagp2"),"click",function(e){
-			if(!rpts){
+			if(tabloc!=2){
 				dom.byId('map').style.display = "none";
 				dom.byId('ReportPage').style.display = "block";		
-				dom.byId('ReportPage').style.visibility = "visible";				
+				dom.byId('ReportPage').style.visibility = "visible";	
+
+				dom.byId('ResearchPage').style.display = "none";
+				dom.byId('ResearchPage').style.visibility = "hidden";				
 				domStyle.set("divtagp2",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp1",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp3",{"background-color": "white","color":"#0052A3"});
+				domStyle.set("divtagp4",{"background-color": "white","color":"#0052A3"});
 				rpts=true;
 				pmapOn = false;
+				tabloc = 2;
+				dom.byId('divnyctitle').innerHTML = "| Trend Reports on NYC Properties for FY16/17 Tentative Roll";
 				
 				}
 		});
@@ -229,13 +240,18 @@ var map, url;
 		    var workable = isWorkable();
 			dom.byId('ReportPage').style.display = "none";
 			dom.byId('ReportPage').style.visibility = "hidden";
+			
+			dom.byId('ResearchPage').style.display = "none";
+			dom.byId('ResearchPage').style.visibility = "hidden";
 			dom.byId('map').style.display = "block";
-			if((pmapOn || rpts)&& workable){
+			if((tabloc!=3)&& workable){
 				domStyle.set("divtagp3",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp1",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp2",{"background-color": "white","color":"#0052A3"});
+				domStyle.set("divtagp4",{"background-color": "white","color":"#0052A3"});
 				pmapOn = false;
 				rpts = false;
+				tabloc = 3;
 				dom.byId('divnyctitle').innerHTML = "| Comparable Sales Tool for Tax Class 1 Single to Three Family Homes";
 				dom.byId('instruction').innerHTML = "Please click on a borough to find comparable sales:";
 				
@@ -243,6 +259,26 @@ var map, url;
 				dom.byId('alerttext').style.display = "none";
 				
 			}
+		});
+		on(dojo.byId("divtagp4"),"click",function(e){
+			if(tabloc!=4){
+				dom.byId('map').style.display = "none";
+				dom.byId('ResearchPage').style.display = "block";		
+				dom.byId('ResearchPage').style.visibility = "visible";
+
+			dom.byId('ReportPage').style.display = "none";
+			dom.byId('ReportPage').style.visibility = "hidden";
+							
+				domStyle.set("divtagp4",{"background-color": "#0052A3","color":"white"});
+				domStyle.set("divtagp1",{"background-color": "white","color":"#0052A3"});
+				domStyle.set("divtagp2",{"background-color": "white","color":"#0052A3"});
+				domStyle.set("divtagp3",{"background-color": "white","color":"#0052A3"});
+				rpts=true;
+				pmapOn = false;
+				tabloc = 4;
+				dom.byId('divnyctitle').innerHTML = "| Relavant Research and Publications";
+				
+				}
 		});
 		on(dojo.byId("SelectMap"),"change",function(e){
 
