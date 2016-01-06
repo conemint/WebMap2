@@ -244,6 +244,8 @@ var map, url;
 		    var MapSelected = document.getElementById("SelectMap").value;
 			if (MapSelected=="tc1"){
 				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 1 Single to Three Family "
+				dom.byId('alerttext').innerHTML = "You have selected <mark>Tax Class 1 Maps</mark>. \nGo ahead and click on the borough to start navigate."
+				dom.byId('alerttext').style.display = "block";
 			}else if (MapSelected=="tc2"){
 				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 2 properties"
 			}
