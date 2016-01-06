@@ -122,6 +122,18 @@
           border: solid 1px #001B33;
           border-radius: 8px;
       }
+      #alerttext{
+          position: absolute;
+          top: 130px;
+          left: 15px;
+          z-index:50;
+          padding: 5px;
+          background-color: transparent;
+          border: 0px;
+		  color: #4d4d4d;
+		  width: 250px;
+		  font-weight: bold;
+      }
 	  
 	  #Title{
 	   position: absolute;
