@@ -53,7 +53,12 @@
 		</div>
 	</div>
     <div id="map">
-        <div id="instruction">Please click on a borough to continue searching:</div>
+        <div id="instruction">Please <mark>select a tax class</mark> and click on the borough to search:</div>
+		<select id="SelectMap" >
+		  <option value="tc1">Tax Class 1 Maps</option>
+		  <option value="tc2">Tax Class 2 Maps</option>
+		</select>
+		<div id="alerttext"></div>
     </div>
 	<table class="tg" id="ReportPage" >
 	  <tr>
@@ -62,14 +67,14 @@
 	  </tr>
 	  <tr>
 		<td class="tg-yw4l">
-			<a href="/LinkPage_work/docs/report1.pdf" target="_blank">
-				<img src="/LinkPage_work/docs/Report1.gif" alt="HTML tutorial" style="width:230px;height:300px;border:0;">
+			<a id="linkReport1" target="_blank">
+				<img src="/LinkPage_work/docs/Report1.gif" alt="HTML tutorial" style="width:230px;height:300px;border:0;" onclick="ClickImage()">
 			</a>
 		</td>
 		<td class="tg-yw4l">
-			<a href="/LinkPage_work/docs/report1.pdf" target="_blank">
+			<!--a href="/LinkPage_work/docs/report1.pdf" target="_blank"-->
 				<img src="/LinkPage_work/docs/Report1.gif" alt="HTML tutorial" style="width:230px;height:300px;border:0;">
-			</a>
+			<!--/a-->
 		</td>
 	  </tr>
 	  <tr>
@@ -77,6 +82,14 @@
 		<td class="tg-yw4l"></td>
 	  </tr>
 	</table>
+<script>
 
+		function ClickImage()
+		  {
+		   /*alert("Hello World!");
+		   dom.byId('linkReport1').href="/LinkPage_work/docs/report1.pdf";*/
+		   window.open("/LinkPage_work/docs/report1.pdf");
+		  }
+</script>
   </body>
 </html>
