@@ -125,24 +125,50 @@ var map, url;
 			};
 			var newURL="";
 			if (pmapOn){
-				if (boroName == "Manhattan"){
-					newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/mh_fy16final.html";
+				var MapSelected = document.getElementById("SelectMap").value;
+				if (MapSelected=="tc1"){
+					if (boroName == "Manhattan"){
+						newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/mh_fy16final.html";
+					}
+					else if (boroName == "Bronx"){
+						newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/bx_fy16final.html";
+					}
+					else if (boroName == "Brooklyn"){
+						newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/bk_fy16final.html";
+					}
+					else if (boroName == "Queens"){
+						newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/qn_fy16final.html";
+					}
+					else if (boroName == "Staten Island"){
+						newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/si_fy16final.html";
+					}
+					else {
+						newURL = url;
+					}			
+				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 1 Single to Three Family Homes";					
 				}
-				else if (boroName == "Bronx"){
-					newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/bx_fy16final.html";
+				else if (MapSelected=="tc2"){
+					if (boroName == "Manhattan"){
+						newURL = "/DojoPanel_1.html";
+					}
+					else if (boroName == "Bronx"){
+						newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/bx_fy16final.html";
+					}
+					else if (boroName == "Brooklyn"){
+						newURL = "/TC2Map0105_BK.html";
+					}
+					else if (boroName == "Queens"){
+						newURL = "/TC2Map0105_QN.html";
+					}
+					else if (boroName == "Staten Island"){
+						newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/si_fy16final.html";
+					}
+					else {
+						newURL = url;
+					}	
+				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 2 Properties";
 				}
-				else if (boroName == "Brooklyn"){
-					newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/bk_fy16final.html";
-				}
-				else if (boroName == "Queens"){
-					newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/qn_fy16final.html";
-				}
-				else if (boroName == "Staten Island"){
-					newURL = "http://www1.nyc.gov/assets/finance/jump/property-maps/si_fy16final.html";
-				}
-				else {
-					newURL = url;
-				}
+
 			}
 			else {
 				if (url.indexOf("mh")>=0){
@@ -180,7 +206,9 @@ var map, url;
 				pmapOn = true;
 				rpts = false;
 				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 1 Single to Three Family Homes";
-				dom.byId('instruction').innerHTML = "Please click on a borough to continue searching:";
+				dom.byId('instruction').innerHTML = "Please <mark>select a tax class</mark> and click on the borough to search:";
+				
+				dom.byId('SelectMap').style.display = "block";
 			}
 		});
 		on(dojo.byId("divtagp2"),"click",function(e){
@@ -192,6 +220,7 @@ var map, url;
 				domStyle.set("divtagp3",{"background-color": "white","color":"#0052A3"});
 				rpts=true;
 				pmapOn = false;
+				
 				}
 		});
 		on(dojo.byId("divtagp3"),"click",function(e){
@@ -206,6 +235,17 @@ var map, url;
 				rpts = false;
 				dom.byId('divnyctitle').innerHTML = "| Comparable Sales Tool for Tax Class 1 Single to Three Family Homes";
 				dom.byId('instruction').innerHTML = "Please click on a borough to find comparable sales:";
+				
+				dom.byId('SelectMap').display = "none";
+			}
+		});
+		on(dojo.byId("SelectMap"),"change",function(e){
+
+		    var MapSelected = document.getElementById("SelectMap").value;
+			if (MapSelected=="tc1"){
+				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 1 Single to Three Family "
+			}else if (MapSelected=="tc2"){
+				dom.byId('divnyctitle').innerHTML = "| Search Map for Tax Class 2 properties"
 			}
 		});
       });
