@@ -25,6 +25,7 @@
 		margin: 0;
 		padding: 0;
 		vertical-align:middle;
+		z-index: 100;
 	  }
 	  #divtagp1{
 		position: absolute;
@@ -42,6 +43,7 @@
 		border: 1px solid #0052A3;
 		border-radius: 5px;
 		cursor: pointer;
+		z-index: 100;
 	  }
 	  #divpmap,#divctool{
 		position: absolute;
@@ -72,6 +74,7 @@
 		border: 1px solid #0052A3;
 		border-radius: 5px;
 		cursor: pointer;
+		z-index: 100;
 	  }	  
 		#ReportPage, #ResearchPage{
 			position: absolute;
@@ -80,11 +83,17 @@
 			font-size: 12px;
 			height: 100%;
 			width: 100%;
-			left: 50px;
-			top: 70px;
+			left: 0px;
+			top: 0px;
 			z-index: 50;
 			background-color:  white;	
-			display: none;
+			margin:0px;
+			padding:0px;
+		}
+		.HideClass{
+			   position: absolute !important;
+			   top: -9999px !important;
+			   left: -9999px !important;
 		}
 	  #divnyccontainer{
 		position: absolute;
@@ -94,6 +103,7 @@
 		padding: 0;
 		height: 30px;
 		width: 100%;
+		z-index: 100;
 	  }
 	  #map{
 		position: relative;
@@ -145,7 +155,7 @@
           border: solid 1px #001B33;
           border-radius: 2px;
 	  }
-	.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc; margin:0px auto;}
+	.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc; margin:0px auto;margin-top:60px}
 	.tg td{font-family:Arial, Helvetica, sans-serif;font-size:14px;padding:15px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:#444;background-color:transparent;}
 	.tg th{font-family:Arial, Helvetica, sans-serif;font-size:14px;font-weight:bold;padding:1px 17px;border-style:solid;overflow:hidden;word-break:normal;color:black;background-color:#e5f2ff;border-style:solid;border-width:0px;border-top-width:1px;border-bottom-width:1px;border-color: #0052A3;}
 	.tg .tg-yw4l{vertical-align:top}
