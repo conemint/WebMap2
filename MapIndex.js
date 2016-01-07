@@ -1,42 +1,27 @@
 var map, url;
 
       require([
-	        "esri/map",
+	  "esri/map",
       "esri/layers/FeatureLayer",
-      
-      "esri/dijit/Search",
-      "esri/InfoTemplate",
-      
-      "esri/symbols/SimpleLineSymbol",
-      "esri/symbols/SimpleFillSymbol",
-      "esri/symbols/TextSymbol",
-      "esri/renderers/SimpleRenderer",
-
       "esri/layers/LabelLayer",
-
-      "esri/Color",
-      
-      "esri/graphic", 
-      "esri/lang",
-      
-      "dojo/number", 
-      "dojo/dom-style", 
-      "dijit/TooltipDialog", 
-      "dijit/popup", 
-	  "dijit/layout/ContentPane", 
-	  "dojo/number",
-	  "dijit/form/ToggleButton",
-	  "dojo/fx/Toggler", "dojo/fx", "dojo/dom", "dojo/on",
-	  
 	  "esri/geometry/Extent",
 	  "esri/SpatialReference",
-	  
-      "dojo/cookie", "dojo/json", "dojo/domReady!"
-		], function(Map, FeatureLayer, Search, InfoTemplate,
-        SimpleLineSymbol, SimpleFillSymbol, TextSymbol, SimpleRenderer,
-        LabelLayer, Color, Graphic, esriLang, number, domStyle, 
-        TooltipDialog, dijitPopup, ContentPane, localeNumber,ToggleButton,
-		Toggler, coreFx, dom, on, Extent, SpatialReference, cookie, json) {
+      "esri/symbols/SimpleLineSymbol",
+      "esri/symbols/SimpleFillSymbol",
+      "esri/renderers/SimpleRenderer",
+
+      "esri/Color",
+      "esri/graphic", 
+      "dojo/number", 
+      "dojo/dom-style", 
+      "dojo/dom-class",
+	  "dojo/dom", "dojo/on",
+
+      "dojo/cookie", "dojo/domReady!"
+		], function(Map, FeatureLayer, LabelLayer,Extent, SpatialReference,
+        SimpleLineSymbol, SimpleFillSymbol,  SimpleRenderer,
+         Color, Graphic, number, domStyle,domClass, 
+          dom, on,  cookie) {
         map = new Map("map", {
           basemap: "gray",  //For full list of pre-defined basemaps, navigate to //arcg.is/1JVo6Wd
           center: [-74.005941, 40.712784] //, // longitude, latitude
@@ -198,14 +183,16 @@ var map, url;
 		var rpts = false;
 		var tabloc = 0;
 		on(dojo.byId("divtagp1"),"click",function(e){
-			dom.byId('ReportPage').style.display = "none";
-			dom.byId('ReportPage').style.visibility = "hidden";
+			//dom.byId('ReportPage').style.display = "none";
+			//dom.byId('ReportPage').style.visibility = "hidden";
 			
-			dom.byId('ResearchPage').style.display = "none";
-			dom.byId('ResearchPage').style.visibility = "hidden";
-			dom.byId('map').style.display = "block";
+			//dom.byId('ResearchPage').style.display = "none";
+			//dom.byId('ResearchPage').style.visibility = "hidden";
+			//dom.byId('map').style.display = "block";
 			if(tabloc!=1){
-				map.setExtent(myExtent);
+				dom.byId('ReportPage').setAttribute( 'class', 'HideClass' );
+				dom.byId('ResearchPage').setAttribute( 'class', 'HideClass' );
+				//map.setExtent(myExtent);
 				domStyle.set("divtagp1",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp3",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp2",{"background-color": "white","color":"#0052A3"});
@@ -221,12 +208,14 @@ var map, url;
 		});
 		on(dojo.byId("divtagp2"),"click",function(e){
 			if(tabloc!=2){
-				dom.byId('map').style.display = "none";
-				dom.byId('ReportPage').style.display = "block";		
-				dom.byId('ReportPage').style.visibility = "visible";	
+				//dom.byId('map').style.display = "none";
+				//dom.byId('ReportPage').style.display = "block";		
+				//dom.byId('ReportPage').style.visibility = "visible";	
 
-				dom.byId('ResearchPage').style.display = "none";
-				dom.byId('ResearchPage').style.visibility = "hidden";				
+				//dom.byId('ResearchPage').style.display = "none";
+				//dom.byId('ResearchPage').style.visibility = "hidden";
+				dom.byId('ReportPage').setAttribute( 'class', '' );
+				dom.byId('ResearchPage').setAttribute( 'class', 'HideClass' );				
 				domStyle.set("divtagp2",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp1",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp3",{"background-color": "white","color":"#0052A3"});
@@ -240,14 +229,17 @@ var map, url;
 		});
 		on(dojo.byId("divtagp3"),"click",function(e){
 		    var workable = isWorkable();
-			map.setExtent(myExtent);
+			/*map.setExtent(myExtent);
 			dom.byId('ReportPage').style.display = "none";
 			dom.byId('ReportPage').style.visibility = "hidden";
 			
 			dom.byId('ResearchPage').style.display = "none";
 			dom.byId('ResearchPage').style.visibility = "hidden";
-			dom.byId('map').style.display = "block";
+			dom.byId('map').style.display = "block";*/
 			if((tabloc!=3)&& workable){
+				
+				dom.byId('ReportPage').setAttribute( 'class', 'HideClass' );
+				dom.byId('ResearchPage').setAttribute( 'class', 'HideClass' );		
 				domStyle.set("divtagp3",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp1",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp2",{"background-color": "white","color":"#0052A3"});
@@ -265,13 +257,14 @@ var map, url;
 		});
 		on(dojo.byId("divtagp4"),"click",function(e){
 			if(tabloc!=4){
-				dom.byId('map').style.display = "none";
+				/*dom.byId('map').style.display = "none";
 				dom.byId('ResearchPage').style.display = "block";		
 				dom.byId('ResearchPage').style.visibility = "visible";
 
-			dom.byId('ReportPage').style.display = "none";
-			dom.byId('ReportPage').style.visibility = "hidden";
-							
+				dom.byId('ReportPage').style.display = "none";
+				dom.byId('ReportPage').style.visibility = "hidden";*/
+				dom.byId('ReportPage').setAttribute( 'class', 'HideClass' );
+				dom.byId('ResearchPage').setAttribute( 'class', '' );			
 				domStyle.set("divtagp4",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp1",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp2",{"background-color": "white","color":"#0052A3"});
