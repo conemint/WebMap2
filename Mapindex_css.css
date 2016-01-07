@@ -32,10 +32,10 @@
 		margin-top:2px;
 		padding:0;
 		left:0;
-		width: 200px;
+		width: 150px;
 		height: 30px;
 		font-family: arial;
-		font-size: 16px;
+		font-size: 15px;
 		color: white;
 		font-weight:bold;
 		background-color: #0052A3;
@@ -49,13 +49,13 @@
 		top: 5px;
 	  }
 	  #divtagp2{
-		  left:203px;
+		  left:152px;
 	  }
 	  #divtagp3{
-		  left:406px;
+		  left:304px;
 	  }
 	  #divtagp4{
-		  left:609px;
+		  left:456px;
 	  }
 	  #divtagp2, #divtagp3, #divtagp4{
 		position: absolute;
@@ -63,10 +63,10 @@
 		margin-left:2px;
 		margin-top:2px;
 		padding:0;
-		width: 200px;
+		width: 150px;
 		height: 30px;
 		font-family: arial;
-		font-size: 16px;
+		font-size: 15px;
 		color: #6A767A;
 		font-weight:bold;
 		border: 1px solid #0052A3;
@@ -80,10 +80,10 @@
 			font-size: 12px;
 			height: 100%;
 			width: 100%;
-			left: 70px;
-			top: 60px;
+			left: 50px;
+			top: 70px;
 			z-index: 50;
-			background-color:  #f2f2f2;	
+			background-color:  white;	
 			display: none;
 		}
 	  #divnyccontainer{
@@ -145,7 +145,23 @@
           border: solid 1px #001B33;
           border-radius: 2px;
 	  }
-	.tg  {border-collapse:collapse;border-spacing:0;border-color:#999;border:none;}
-	.tg td{font-family:Arial, sans-serif;font-size:14px;padding:1px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:#444;background-color:#F7FDFA;}
-	.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:1px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:black;background-color:#e5f2ff;}
+	.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc; margin:0px auto;}
+	.tg td{font-family:Arial, Helvetica, sans-serif;font-size:14px;padding:15px 17px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:#444;background-color:transparent;}
+	.tg th{font-family:Arial, Helvetica, sans-serif;font-size:14px;font-weight:bold;padding:1px 17px;border-style:solid;overflow:hidden;word-break:normal;color:black;background-color:#e5f2ff;border-style:solid;border-width:0px;border-top-width:1px;border-bottom-width:1px;border-color: #0052A3;}
 	.tg .tg-yw4l{vertical-align:top}
+
+	
+		a:link {
+		text-decoration: none;
+		color: black;
+		font-weight:normal;
+	}
+
+	a:visited {
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: none;
+		color:  #ff6600;
+	}
