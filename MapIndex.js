@@ -205,9 +205,11 @@ var map, url;
 			dom.byId('ResearchPage').style.visibility = "hidden";
 			dom.byId('map').style.display = "block";
 			if(tabloc!=1){
+				map.setExtent(myExtent);
 				domStyle.set("divtagp1",{"background-color": "#0052A3","color":"white"});
 				domStyle.set("divtagp3",{"background-color": "white","color":"#0052A3"});
 				domStyle.set("divtagp2",{"background-color": "white","color":"#0052A3"});
+				domStyle.set("divtagp4",{"background-color": "white","color":"#0052A3"});
 				pmapOn = true;
 				rpts = false;
 				tabloc = 1;
@@ -238,6 +240,7 @@ var map, url;
 		});
 		on(dojo.byId("divtagp3"),"click",function(e){
 		    var workable = isWorkable();
+			map.setExtent(myExtent);
 			dom.byId('ReportPage').style.display = "none";
 			dom.byId('ReportPage').style.visibility = "hidden";
 			
