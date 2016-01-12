@@ -4,17 +4,17 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
-   <title>DOF | TC2 Property Search Map: Manhattan</title>
+   <title>DOF | TC2 Property Search Map: Queens</title>
    <link rel="stylesheet" href="https://js.arcgis.com/3.15/dijit/themes/claro/claro.css">
    <link rel="stylesheet" href="https://js.arcgis.com/3.15/esri/css/esri.css">
-   <link rel="stylesheet" href="/tc2map.css"><!--Css-->
+   <link rel="stylesheet" href="https://www.googledrive.com/host/0BxV-BVJ4ihosWGxYNy1XOU5JTTg"><!--Css-->
    <!--Css for ie9-->
    	<!--[if IE 9]>
-	<link rel="stylesheet" href="/tc2map_ie.css">
+	<link rel="stylesheet" href="https://www.googledrive.com/host/0BxV-BVJ4ihosWGxYNy1XOU5JTTg">
 	<![endif]-->
 	<!--IE lower than 9-->
 	<!--[if lt IE 9]>
-	<link rel="stylesheet" href="/tc2map_ie.css">
+	<link rel="stylesheet" href="https://www.googledrive.com/host/0BxV-BVJ4ihosWGxYNy1XOU5JTTg">
 	<![endif]-->
    <style>
    </style>
@@ -69,34 +69,35 @@
 		});
 				
 		var guideline = {
-		  "Variables":["Vacancy Rate","Effective Tax Rate","HighIncome","HighExpense","HighExpense Ratio","HighCap Rate","HighApproximate Market Value Range","HighIncome","MedianExpense","MedianExpense Ratio","MedianCap Rate","MedianApproximate Market Value Range","MedianIncome","LowExpense","LowExpense Ratio","LowCap Rate","LowApproximate Market Value Range","dispBcat"],
-		  "RR31":["4.00%","5.797%"," $44.84 "," $18.42 ","41%","6.70%"," $211 "," $26.08 "," $13.21 ","51%","6.70%"," $103 "," $14.62 "," $9.29 ","64%","8.33%"," $38 ","Rental Walk-Ups"],
-		  "RR32":["3.00%","5.797%"," $40.52 "," $17.31 ","43%","6.70%"," $186 "," $20.81 "," $11.52 ","55%","7.11%"," $72 "," $12.51 "," $8.46 ","68%","9.12%"," $27 ","Pre-1974 Rental Elevator Buildings"],
-		  "RR33":["4.00%","5.797%"," $55.10 "," $20.93 ","38%","6.70%"," $273 "," $36.44 "," $16.22 ","45%","6.70%"," $162 "," $16.70 "," $10.08 ","60%","7.78%"," $49 ","Post-1973 Rental Elevator Buildings"],
-		  "RU31":["5.00%","5.797%"," $58.70 "," $21.77 ","37%","6.70%"," $296 "," $40.89 "," $17.41 ","43%","6.70%"," $188 "," $21.02 "," $11.59 ","55%","7.08%"," $73 ","Rental Walk-Ups"],
-		  "RU32":["5.00%","5.797%"," $55.00 "," $20.91 ","38%","6.70%"," $273 "," $39.45 "," $17.03 ","43%","6.70%"," $179 "," $20.81 "," $11.52 ","55%","7.11%"," $72 ","Pre-1974 Rental Elevator Buildings"],
-		  "RU33":["4.00%","5.797%"," $54.87 "," $20.87 ","38%","6.70%"," $272 "," $40.39 "," $17.28 ","43%","6.70%"," $185 "," $20.75 "," $11.50 ","55%","7.11%"," $72 ","Post-1973 Rental Elevator Buildings"],
-		  "CR31":["4.00%","5.797%"," $44.84 "," $18.42 ","41%","6.70%"," $211 "," $26.08 "," $13.21 ","51%","6.70%"," $103 "," $14.62 "," $9.29 ","64%","8.33%"," $38 ","Cooperative Walk-Ups"],
-		  "CR32":["3.00%","5.797%"," $40.52 "," $17.31 ","43%","6.70%"," $186 "," $20.81 "," $11.52 ","55%","7.11%"," $72 "," $12.51 "," $8.46 ","68%","9.12%"," $27 ","Pre-1974 Cooperative Elevator Buildings"],
-		  "CR33":["4.00%","5.797%"," $55.10 "," $20.93 ","38%","6.70%"," $273 "," $36.44 "," $16.22 ","45%","6.70%"," $162 "," $16.70 "," $10.08 ","60%","7.78%"," $49 ","Post-1973 Cooperative Elevator Buildings"],
-		  "CU31":["5.00%","5.797%"," $58.70 "," $21.77 ","37%","6.70%"," $296 "," $40.89 "," $17.41 ","43%","6.70%"," $188 "," $21.02 "," $11.59 ","55%","7.08%"," $73 ","Cooperative Walk-Ups"],
-		  "CU32":["5.00%","5.797%"," $55.00 "," $20.91 ","38%","6.70%"," $273 "," $39.45 "," $17.03 ","43%","6.70%"," $179 "," $20.81 "," $11.52 ","55%","7.11%"," $72 ","Pre-1974 Cooperative Elevator Buildings"],
-		  "CU33":["4.00%","5.797%"," $54.87 "," $20.87 ","38%","6.70%"," $272 "," $40.39 "," $17.28 ","43%","6.70%"," $185 "," $20.75 "," $11.50 ","55%","7.11%"," $72 ","Post-1973 Cooperative Elevator Buildings"],
-		  "EU31":["5.00%","5.797%"," $58.70 "," $21.77 ","37%","6.70%"," $296 "," $40.89 "," $17.41 ","43%","6.70%"," $188 "," $21.02 "," $11.59 ","55%","7.08%"," $73 ","Condominium Walk-Ups"],
-		  "EU32":["5.00%","5.797%"," $55.00 "," $20.91 ","38%","6.70%"," $273 "," $39.45 "," $17.03 ","43%","6.70%"," $179 "," $20.81 "," $11.52 ","55%","7.11%"," $72 ","Pre-1974 Condominium Elevator Buildings"],
-		  "EU33":["4.00%","5.797%"," $54.87 "," $20.87 ","38%","6.70%"," $272 "," $40.39 "," $17.28 ","43%","6.70%"," $185 "," $20.75 "," $11.50 ","55%","7.11%"," $72 ","Post-1973 Condominium Elevator Buildings"],
-		  "DU31":["5.00%","5.797%"," $58.70 "," $21.77 ","37%","6.70%"," $296 "," $40.89 "," $17.41 ","43%","6.70%"," $188 "," $21.02 "," $11.59 ","55%","7.08%"," $73 ","Condo-Coops/Condo-Rental Walk-Ups"],
-		  "DU32":["5.00%","5.797%"," $55.00 "," $20.91 ","38%","6.70%"," $273 "," $39.45 "," $17.03 ","43%","6.70%"," $179 "," $20.81 "," $11.52 ","55%","7.11%"," $72 ","Pre-1974 Condo-Coops/Condo-Rental Elevator Buildings"],
-		  "DU33":["4.00%","5.797%"," $54.87 "," $20.87 ","38%","6.70%"," $272 "," $40.39 "," $17.28 ","43%","6.70%"," $185 "," $20.75 "," $11.50 ","55%","7.11%"," $72 ","Post-1973 Condo-Coops/Condo-Rental Elevator Buildings"]
+		  "Variables":["Vacancy Rate","Effective Tax Rate","HighIncome","HighExpense","HighExpense Ratio","HighCap Rate","HighApproximate Market Value Range","MedianIncome","MedianExpense","MedianExpense Ratio","MedianCap Rate","MedianApproximate Market Value Range","LowIncome","LowExpense","LowExpense Ratio","LowCap Rate","LowApproximate Market Value Range","dispBcat"],
+		  "RR31":["3.00%","5.797%"," $21.61 "," $12.43 ","58%","7.02%"," $72 "," $14.60 "," $9.05 ","62%","8.33%"," $39 "," $10.46 "," $6.91 ","66%","10.27%"," $22 ","Rental Walk-Ups"],
+		  "RR32":["2.00%","5.797%"," $19.77 "," $11.56 ","58%","7.24%"," $63 "," $14.44 "," $8.97 ","62%","8.38%"," $39 "," $10.42 "," $6.89 ","66%","10.30%"," $22 ","Pre-1974 Rental Elevator Buildings"],
+		  "RR33":["2.00%","5.797%"," $29.00 "," $15.77 ","54%","6.70%"," $106 "," $17.49 "," $10.47 ","60%","7.62%"," $52 "," $10.42 "," $6.89 ","66%","10.30%"," $22 ","Post-1973 Rental Elevator Buildings"],
+		  "RU31":["2.00%","5.797%"," $30.45 "," $16.40 ","54%","6.70%"," $112 "," $17.28 "," $10.37 ","60%","7.66%"," $51 "," $11.54 "," $7.48 ","65%","9.60%"," $26 ","Rental Walk-Ups"],
+		  "RU32":["2.00%","5.797%"," $25.59 "," $14.25 ","56%","6.70%"," $91 "," $16.51 "," $10.00 ","61%","7.82%"," $48 "," $12.20 "," $7.83 ","64%","9.26%"," $29 ","Pre-1974 Rental Elevator Buildings"],
+		  "RU33":["3.00%","5.797%"," $32.84 "," $17.44 ","53%","6.70%"," $123 "," $20.69 "," $12.00 ","58%","7.12%"," $67 "," $12.28 "," $7.87 ","64%","9.23%"," $29 ","Post-1973 Rental Elevator Buildings"],
+		  "CR31":["3.00%","5.797%"," $21.61 "," $12.43 ","58%","7.02%"," $72 "," $14.60 "," $9.05 ","62%","8.33%"," $39 "," $10.46 "," $6.91 ","66%","10.27%"," $22 ","Cooperative Walk-Ups"],
+		  "CR32":["2.00%","5.797%"," $19.77 "," $11.56 ","58%","7.24%"," $63 "," $14.44 "," $8.97 ","62%","8.38%"," $39 "," $10.42 "," $6.89 ","66%","10.30%"," $22 ","Pre-1974 Cooperative Elevator Buildings"],
+		  "CR33":["2.00%","5.797%"," $29.00 "," $15.77 ","54%","6.70%"," $106 "," $17.49 "," $10.47 ","60%","7.62%"," $52 "," $10.42 "," $6.89 ","66%","10.30%"," $22 ","Post-1973 Cooperative Elevator Buildings"],
+		  "CU31":["2.00%","5.797%"," $30.45 "," $16.40 ","54%","6.70%"," $112 "," $17.28 "," $10.37 ","60%","7.66%"," $51 "," $11.54 "," $7.48 ","65%","9.60%"," $26 ","Cooperative Walk-Ups"],
+		  "CU32":["2.00%","5.797%"," $25.59 "," $14.25 ","56%","6.70%"," $91 "," $16.51 "," $10.00 ","61%","7.82%"," $48 "," $12.20 "," $7.83 ","64%","9.26%"," $29 ","Pre-1974 Cooperative Elevator Buildings"],
+		  "CU33":["3.00%","5.797%"," $32.84 "," $17.44 ","53%","6.70%"," $123 "," $20.69 "," $12.00 ","58%","7.12%"," $67 "," $12.28 "," $7.87 ","64%","9.23%"," $29 ","Post-1973 Cooperative Elevator Buildings"],
+		  "EU31":["2.00%","5.797%"," $30.45 "," $16.40 ","54%","6.70%"," $112 "," $17.28 "," $10.37 ","60%","7.66%"," $51 "," $11.54 "," $7.48 ","65%","9.60%"," $26 ","Condominium Walk-Ups"],
+		  "EU32":["2.00%","5.797%"," $25.59 "," $14.25 ","56%","6.70%"," $91 "," $16.51 "," $10.00 ","61%","7.82%"," $48 "," $12.20 "," $7.83 ","64%","9.26%"," $29 ","Pre-1974 Condominium Elevator Buildings"],
+		  "EU33":["3.00%","5.797%"," $32.84 "," $17.44 ","53%","6.70%"," $123 "," $20.69 "," $12.00 ","58%","7.12%"," $67 "," $12.28 "," $7.87 ","64%","9.23%"," $29 ","Post-1973 Condominium Elevator Buildings"],
+		  "DU31":["2.00%","5.797%"," $30.45 "," $16.40 ","54%","6.70%"," $112 "," $17.28 "," $10.37 ","60%","7.66%"," $51 "," $11.54 "," $7.48 ","65%","9.60%"," $26 ","Condo-Coops/Condo-Rental Walk-Ups"],
+		  "DU32":["2.00%","5.797%"," $25.59 "," $14.25 ","56%","6.70%"," $91 "," $16.51 "," $10.00 ","61%","7.82%"," $48 "," $12.20 "," $7.83 ","64%","9.26%"," $29 ","Pre-1974 Condo-Coops/Condo-Rental Elevator Buildings"],
+		  "DU33":["3.00%","5.797%"," $32.84 "," $17.44 ","53%","6.70%"," $123 "," $20.69 "," $12.00 ","58%","7.12%"," $67 "," $12.28 "," $7.87 ","64%","9.23%"," $29 ","Post-1973 Condo-Coops/Condo-Rental Elevator Buildings"]
 		}
 		parser.parse();
 		var curCDkey, curCDkey_s, curCDunit, curBBL,curLot;
-		var noncdlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_noncd12016/FeatureServer/0";
-		var cdmainlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_MH_cdmain12016/FeatureServer/0";
-		var cdsufftable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/MHcdsuffix0104/FeatureServer/0";
-		var cdunittable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2MH_unitlist1_01042016/FeatureServer/0";
+		var noncdlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_QN_noncd12016c/FeatureServer/0";
+		var cdmainlayer = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/TC2_QN_cdmain12016/FeatureServer/0";
+		var cdsufftable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/QNcdsuffix0104/FeatureServer/0";
+		var cdunittable = "//services3.arcgis.com/aD88pT4hjL80xq0F/arcgis/rest/services/tc2QN_unitlist1_01042016/FeatureServer/0";
 		var Date = "Jan 2016";
-		var latlong = [-74.005941, 40.712784]; // lon, lat: Manhattan
+		var latlong = [-73.828399, 40.713812]; // lon, lat: Queens
+		var addressTown = "Queens";
             /*
 			registry.byId("searchValue").on("click", doSearchValue);
 		    function doSearchValue() {
@@ -125,7 +126,7 @@
             zoom: 17
          });
 	  
-		 //ArcGIS Online feature service showing Manhattan Tc2 lots
+		 //ArcGIS Online feature service showing Queens Tc2 lots
          var layer = new FeatureLayer(noncdlayer, {
             outFields: ["*"],
             maxScale:100,
@@ -207,7 +208,7 @@
         };
         layer.on("mouse-over", function(evt){
 			closeDialog();
-			var t = "<b>${BORO}/${BLOCK}/${LOT}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, New York, NY<br><b>DOF Value 2017 Tentative: $</b>${fmv:NumberFormat}<br>";
+			var t = "<b>${BORO}/${BLOCK}/${LOT}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, "+addressTown+", NY<br><b>DOF Value 2017 Tentative: $</b>${fmv:NumberFormat}<br>";
 			var content = esriLang.substitute(evt.graphic.attributes,t);
 			//var highlightGraphic = new Graphic(evt.graphic.geometry,highlightSymbol);
 			//map.graphics.add(highlightGraphic);
@@ -237,7 +238,7 @@
 		});        
 		layercdm.on("mouse-over", function(evt){
 			closeDialog();
-          var t = "<b>${Boro}/${Block}/${Lot}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, New York, NY<br>";
+          var t = "<b>${Boro}/${Block}/${Lot}</b><hr><b>Adress:</b>${Street_Num} ${Street_Nam}, "+addressTown+", NY<br>";
           var content = esriLang.substitute(evt.graphic.attributes,t);
 		//var symbol = new esri.symbol.SimpleFillSymbol();
         //symbol.setColor(new dojo.Color([150,150,150,0.5]));
@@ -307,7 +308,7 @@
             //Create an InfoTemplate and include three fields
             infoTemplate: new InfoTemplate("Parcel: ${BORO}/${BLOCK}/${LOT}",
 					"</br>DOF Value 2016 Tentative: $</b>${fmv:NumberFormat}</br>"
-					+"</br>Adress:${Street_Num} ${Street_Nam}, New York, NY</br>"
+					+"</br>Adress:${Street_Num} ${Street_Nam}, "+addressTown+", NY</br>"
 					+"</br>Total Units:${resunit}</br>"
 					+"</br>Gross SQFT:${ttlsqft} SQFT</br>"
 					+"</br>Stories:${story:NumberFormat}</br>"
@@ -316,7 +317,7 @@
 					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
 					+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
 					+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
-					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
+					+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, "+addressTown+", ny' target='_blank'>Search on Google Map</a></div>"
 					),
             enableSuggestions: true,
             minCharacters: 0
@@ -336,11 +337,11 @@
             //Create an InfoTemplate
 
 			infoTemplate: new InfoTemplate("Parcel: ${Boro}/${Block}/${Lot}",
-				"</br>Adress:${Street_Num} ${Street_Nam}, New York, NY</br>"
+				"</br>Adress:${Street_Num} ${Street_Nam}, "+addressTown+", NY</br>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></div>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></div>"
 				+"<div> <a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></div>"
-				+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, new york, ny' target='_blank'>Search on Google Map</a></div>"
+				+"<div> </br><a href='http://maps.google.com/?q=${Street_Num} ${Street_Nam}, "+addressTown+", ny' target='_blank'>Search on Google Map</a></div>"
 				),
             
             enableSuggestions: true,
@@ -367,6 +368,10 @@
 					return;	
 				}else{//NON CONDO ([0])
 					var resultItems = [];
+                            
+                    document.getElementById('toolsPane').style.width="30vw";
+                    document.getElementById('toolsPane').style.zindex="300";
+                    dijit.byId("borderContainer").resize();
 					dijit.byId("toolsPane").destroyDescendants(false);
 					domConstruct.empty("toolsPane");
 					var containerNode = dojo.byId("toolsPane");
@@ -375,8 +380,10 @@
 					/*for (var attr in featureAttributes) {
 					  resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
 					}*/
-					resultItems.push("<div><h3 id='tableheadtext'>Building Information</h3></div>");
-					resultItems.push("<table class ='tg'><tr><td class ='tg-qmme'> Address: </td><td>"+setNullValue(featureAttributes.Street_Num,"--") + " "
+					
+					resultItems.push("<div><img style='margin-left: 5px; margin-top:-10px;' src='http://www1.nyc.gov/assets/finance/images/content/header/nyc_finance_logo.png' height='80' width='200' ></div>");
+					resultItems.push("<div><h3 id='tableheadtext' >Building Information</h3></div>");
+					resultItems.push("<table class ='tg'><tr><td class ='tg-qmme' style='border-top-width:1px;'> Address: </td><td style='border-top-width:1px;'>"+setNullValue(featureAttributes.Street_Num,"--") + " "
 					+ setNullValue(featureAttributes.Street_Nam,"--") +"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Neighborhood: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.NBHD, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Property Type: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Structure, "--")+"</td></tr>"
@@ -388,14 +395,15 @@
 					+"<tr><td class ='tg-qmme'>Commercial Units: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.comunit, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Total Story: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.story, "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Year Built: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.AYB, "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Zoning Code: </td><td class ='tg-yw4l'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme' style='border-bottom-width:1px;'>Zoning Code: </td><td class ='tg-yw4l' style='border-bottom-width:1px;'>"+setNullValue(featureAttributes.Zone_1, "--")+"</td></tr>"
 					+"</table>");
 					resultItems.push("<br><br>");
 						
 					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
 					resultItems.push("<table class ='tg'>"
-					+"<tr><td ></td><td class ='tg-qmme'>This Parcel</td><td class ='tg-qmme'> Neighborhood Median</td></tr>"
+					+"<tr><td style='border-bottom-width:1px;'></td><td class ='tg-qmme' style='border-bottom-width:1px;'>This Parcel</td><td class ='tg-qmme' style='border-bottom-width:1px;'> Neighborhood Median</td></tr>"
 					+"<tr><td class ='tg-qmme'  title='as of "+Date+"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>DOF Value pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv_pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_fmvpsf), "--")+"</td></tr>"
 					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_agi), "--")+" </td></tr>"
 					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_exp), "--")+" </td></tr>"
 					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_noi), "--")+" </td></tr>"
@@ -418,7 +426,7 @@
 					resultItems.push("<table class ='tg'><tr><td > <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></td></tr>"
 						+"<tr><td ><a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></td></tr>"
 						+"<tr><td ><a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></td></tr>"
-						+"<tr><td ><a style='font-weight: bold;' href='http://maps.google.com/?q="+featureAttributes.Street_Num+" "+featureAttributes.Street_Nam +", new york, ny' target='_blank'>Search on Google Map</a></td></tr></table>");
+						+"<tr><td ><a style='font-weight: bold;' href='http://maps.google.com/?q="+featureAttributes.Street_Num+" "+featureAttributes.Street_Nam +", "+addressTown+", ny' target='_blank'>Search on Google Map</a></td></tr></table>");
 					
 					
 					function setNullValue(value, defaultValue){
@@ -531,6 +539,10 @@
 		  queryTask.execute(query, showResults,function(error){console.log(error);});
 		}
 		function showResults (results) {
+            
+            document.getElementById('toolsPane').style.width="30vw";
+            document.getElementById('toolsPane').style.zindex="300";
+            dijit.byId("borderContainer").resize();
 		  var resultItems = [];
 		  var resultCount = results.features.length;
 		  dijit.byId("toolsPane").destroyDescendants(false);
@@ -557,10 +569,12 @@
 						
 					resultItems.push("<div><h3 id='tableheadtext'>Tax Information</h3></div>");
 					resultItems.push("<table class ='tg'>"
-					+"<tr><td class ='tg-qmme' title='as of "+ Date +"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td></tr>"
-					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td></tr>"
+					+"<tr><td style='border-bottom-width:1px;'></td><td class ='tg-qmme' style='border-bottom-width:1px;'>This Parcel</td><td class ='tg-qmme' style='border-bottom-width:1px;'> Neighborhood Median</td></tr>"
+					+"<tr><td class ='tg-qmme'  title='as of "+Date+"'>DOF Value: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_fmv), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>DOF Value pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.fmv_pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_fmvpsf), "--")+"</td></tr>"
+					+"<tr><td class ='tg-qmme'>Agi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Agi_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_agi), "--")+" </td></tr>"
+					+"<tr><td class ='tg-qmme'>Exp_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Exp_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_exp), "--")+" </td></tr>"
+					+"<tr><td class ='tg-qmme'>Noi_Pgsf: </td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.Noi_Pgsf), "--")+"</td><td class ='tg-yw4l'> $"+setNullValue(localeNumber.format(featureAttributes.mid_noi), "--")+" </td></tr>"
 					+"</table>");
 					resultItems.push("<br><div><h3 id='tableheadtext'>Guideline Information</h3></div>");
 					resultItems.push("<table class='tg' >"
@@ -580,7 +594,7 @@
 					resultItems.push("<table class ='tg'><tr><td > <a href='http://www1.nyc.gov/site/finance/taxes/property.page'  target='_blank'>View Property Tax Bills</a></td></tr>"
 						+"<tr><td ><a href='http://www1.nyc.gov/site/finance/benefits/property-related-benefits.page'  target='_blank'>Exemptions and Abatements</a></td></tr>"
 						+"<tr><td ><a href='http://www1.nyc.gov/site/finance/taxes/property-forms/property-forms-assessments-and-valuations.page' target='_blank'>Request Data Correction</a></td></tr>"
-						+"<tr><td ><a style='font-weight: bold;' href='http://maps.google.com/?q="+featureAttributes.Street_Num+" "+featureAttributes.Street_Nam +", new york, ny' target='_blank'>Search on Google Map</a></td></tr></table>");
+						+"<tr><td ><a style='font-weight: bold;' href='http://maps.google.com/?q="+featureAttributes.Street_Num+" "+featureAttributes.Street_Nam +", "+addressTown+", ny' target='_blank'>Search on Google Map</a></td></tr></table>");
 					
 					function setNullValue(value, defaultValue){
 						if (value == 0 || value ==""||value == "0" ||value == "$0") {
@@ -668,28 +682,31 @@
         });   
 
 
+    function resizeWindow() {
+            dijit.byId("borderContainer").resize();
+    }
 	});
    </script>
 </head>
 
 
-  <body class="claro">
+  <body class="claro"  onresize="resizeWindow()">
   <div  data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false, design:'headline'" id="borderContainer">
     <div id="topPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">
       	
 		<table id= headtable>
 			<tr>
 				<td><img class=leading style= "padding-top:2px; padding-left: 5px;" src="http://www1.nyc.gov/assets/home/images/global/nyc_white.png"  height="12" width="37"></td>
-				<td><div class=center>| Tax Class 2 Property Search Map: Manhattan</div></td>
-				<td><a class=tailing href='http://www1.nyc.gov' target='_blank'>| Home</a></td>
+				<td><div class=center>| Tax Class 2 Property Search Map: Queens</div></td>
+				<td><a class=tailing href='/LinkPage_work/mapindex.html' target='_blank'>| Home</a></td>
 			</tr>
 		</table>
     </div>
-    <div id="toolsPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'leading', splitter: true, style:  {overflow: 'auto'}">
+    <div id="toolsPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'leading', splitter: false, style:  {overflow: 'auto'}">
       <!--div id="layerList"></div-->
 	<div id="intro">
 		<h4>This is an interactive map for Tax Class 2 Properties in New York City.</h4>
-		<p>You are currently in the Borough Map of Manhattan.</p>
+		<p>You are currently in the Borough Map of Queens.</p>
 		<p>Enter a Block and Lot number in the box and click "Get Non Condo" to search for rental buildings or Coop buildings .</p>
 		<p>Or click "Get Condo Unit" to search for units in Condominium Buidlings or Development .</p>
 		<p>Then click on "Get Condo Suffix Details" for information on the Condominium Buidlings or Development.</p>
