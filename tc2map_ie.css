@@ -1,0 +1,193 @@
+
+    html, body, #borderContainer, #map {
+      width: 100%;
+      height: 100%;
+	}
+
+	html, body {
+	  margin: 0;
+	  overflow: hidden;
+	}
+
+	#tablePane, #mapPane, #toolsPane {
+	  padding: 0;
+	}
+
+
+		#toolsPane {
+		  width: 300px;
+		}
+
+	#tablePane {
+	  height: 200px;
+	}
+
+	#map progress {
+	  position: absolute;
+	  z-index: 1;
+	  width: 100%;
+	  bottom: 2em;
+	  left: 0;
+	}
+	.esriPopup .action.zoomTo { display: none; }
+	.esriPopup .titleButton.maximize { display: none; }
+	/* Hide the progress bar when map is not updating */
+	#map:not([data-updating]) progress {
+	  display: none;
+	}
+	#SearchBox_sh{
+         position: absolute;
+		 font-family: arial;
+		 font-weight: bold;
+		 font-size: 12px;
+         height: 150px;
+         left: 0px;
+         top: 0px;
+         width: 450px;
+         z-index: 50;
+		 background-color:  transparent;		
+	}
+    #SearchBox {
+         background: #fff;
+         color: #444;
+         position: absolute;
+		 font-family: arial;
+		 font-weight: bold;
+		 font-size: 12px;
+         height: 150px;
+         left: 50px;
+         margin: 5px;
+         padding: 10px;
+         top: 10px;
+         width: 350px;
+         z-index: 40;
+		 border: solid 1px #001B33;
+		 border-radius: 4px;
+		 background-color:  #fcfcfc;
+      }
+    .shadow {
+         box-shadow: 0 0 5px #888;
+    }
+	#BasemapToggle {
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+		z-index: 45;
+	}	
+	.claro .dijitTooltipConnector {
+		border: 0;
+		z-index: 2;
+		background-image: none; 
+		background-repeat: no-repeat;
+		width: 16px;
+		height: 14px;
+		background-color: transparent;
+	}
+	.dijitTooltipBelow {
+		padding-top: 0px;
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	#info{
+		color: white;
+		height: 0px;
+	}
+	  /*#search {
+         display: block;
+         position: absolute;
+         z-index: 40;
+         top: 100px;
+         left: 65px;
+      }
+	#infobox {
+		top: 31px;
+		color: #444;
+		height: auto;
+		font-family: arial;
+		font-weight: bold;
+		font-size: 12px;
+		left: 60px;
+		margin: 5px;
+		padding: 10px;
+		position: absolute;
+		width: 400px;
+		z-index: 40;
+		border: solid 1px #001B33;
+		border-radius: 4px;
+		background-color:  #f2f2f2;
+      }
+	  .searchIcon {
+			  width: 0px;
+			  height: 0px;
+			  line-height: 0px;
+			  display: hide;
+			}
+
+    .arcgisSearch .searchBtn {
+            display: none;
+          }
+
+*/
+	#intro{
+		padding: 10px;
+	}
+	#headtable {
+		border: 0px solid #0052A3;
+		background-color: #0052A3;
+		width: 100%;	
+	}
+	.claro .dijitContentPane {
+    padding: 0;
+	}
+	/*For IE*/
+	#toolsPane{
+	background-color: #f2f2f2;
+	}
+	.leading, .center, .tailing {		
+		border: 0px solid #0052A3;
+		background-color: #0052A3;
+		font-family: arial;
+        font-weight: bold;
+		color: white;
+		 }
+	#tableheadtext{
+		font-family: arial;
+        font-weight: bold;
+		color:#003366;
+		text-shadow:1px 1px 5px #99ccff;
+		margin: 0px;
+	}
+	.comments{
+		font-family: arial;
+	    font-size: small;
+		padding: 0px;	
+	}
+	.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+	.tg td{
+		font-family:Arial, sans-serif;font-size:12px;padding:1px 10px;
+		border-style:solid;border-width:0px;overflow:hidden;word-break:normal;
+		border-top-width:1px;border-bottom-width:0px;border-color: #0052A3;}
+	.tg th{font-family:Arial, sans-serif;font-size:12px;font-weight:bold;padding:1px 17px;background-color:#b3d9ff;text-align:left;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-top-width:1px;border-bottom-width:0px;border-color: #0052A3;}
+	.tg .tg-qmme{font-family:Arial, Helvetica, sans-serif  !important;;font-color:#808080;vertical-align:top;  font-weight: bold; }
+	.tg .tg-yw4l{vertical-align:top}
+	.tg tr:hover {background-color:#e5f2ff;}
+	
+	
+	/*.tftable {font-family:Arial, sans-serif;font-size:14px;font-weight:normal;color:#333333;width:100%;border-width: 0px;border-color: #0052A3;border-collapse: collapse;}
+	.tftable th {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #0052A3;text-align:left;}
+	.tftable tr {background-color:#ffffff; border-width:0px;}
+	.tftable td {font-size:12px;border-width: 1px;padding:1px 10px; border-style: solid;border-color: #0052A3;}
+	.tftable tr:hover {background-color:#e5f2ff;}*/
+	a:link {
+		text-decoration: none;
+	}
+
+	a:visited {
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: none;
+		color:  #ff6600;
+	}
+	.button:hover { background-color: #b5d7e3; }
